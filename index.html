@@ -391,8 +391,36 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .fs-status-pill.fs-status-error{background:var(--rdl);color:var(--rd);border-color:transparent;}
 .fs-status-pill.fs-status-offline{background:var(--s2);color:var(--tx3);}
 .tblbtn:hover{background:var(--s2);border-color:var(--bd2);color:var(--bl);}
+.tblbtn.active{background:var(--pu);color:#fff;border-color:var(--pu);}
 .md-body-ta{width:100%;min-height:160px;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:'DM Mono',monospace;line-height:1.7;background:var(--surface);color:var(--tx);outline:none;resize:vertical;}
 .md-body-ta:focus{border-color:var(--acm);}
+/* Zulip markdown preview pane — mirrors .md-body-ta's box so the toggle
+   between edit/preview doesn't jump in size. */
+.zmd-preview{width:100%;min-height:160px;max-height:340px;overflow-y:auto;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:var(--font-body);line-height:1.6;background:var(--surface);color:var(--tx);box-sizing:border-box;}
+.zmd-preview h1,.zmd-preview h2,.zmd-preview h3,.zmd-preview h4,.zmd-preview h5,.zmd-preview h6{margin:10px 0 6px;line-height:1.3;}
+.zmd-preview h1{font-size:19px;border-bottom:1px solid var(--bd);padding-bottom:4px;}
+.zmd-preview h2{font-size:16px;border-bottom:1px solid var(--bd);padding-bottom:3px;}
+.zmd-preview h3{font-size:14px;}
+.zmd-preview h4{font-size:13px;color:var(--tx2);}
+.zmd-preview h5,.zmd-preview h6{font-size:12px;color:var(--tx3);}
+.zmd-preview p{margin:0 0 8px;}
+.zmd-preview p:last-child{margin-bottom:0;}
+.zmd-preview ul,.zmd-preview ol{margin:0 0 8px;padding-left:22px;}
+.zmd-preview li{margin:2px 0;}
+.zmd-preview blockquote{margin:0 0 8px;padding:4px 10px;border-left:3px solid var(--bd2);color:var(--tx2);background:var(--s2);border-radius:0 4px 4px 0;}
+.zmd-preview code{font-family:'DM Mono',monospace;background:var(--s2);padding:1px 5px;border-radius:3px;font-size:11px;}
+.zmd-preview pre{background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);padding:8px 10px;overflow-x:auto;margin:0 0 8px;}
+.zmd-preview pre code{background:none;padding:0;}
+.zmd-preview a{color:var(--bl);text-decoration:none;}
+.zmd-preview a:hover{text-decoration:underline;}
+.zmd-preview hr{border:none;border-top:1px solid var(--bd);margin:10px 0;}
+.zmd-preview details{border:1px solid var(--bd);border-radius:var(--rs);padding:6px 10px;margin:0 0 8px;background:var(--s2);}
+.zmd-preview summary{cursor:pointer;font-weight:600;}
+.zmd-mention{background:var(--pul);color:var(--pu);padding:0 5px;border-radius:3px;font-weight:600;font-size:11px;}
+.zmd-channel{background:var(--acl);color:var(--acm);padding:0 5px;border-radius:3px;font-weight:600;font-size:11px;}
+.emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;width:186px;}
+.emoji-grid button{font-size:16px;padding:4px;border:none;background:none;cursor:pointer;border-radius:4px;line-height:1;}
+.emoji-grid button:hover{background:var(--s2);}
 .etl-inline-table-wrap{margin:6px 0;}
 .etl-inline-table-wrap:focus-within{outline:1.5px dashed var(--acm);outline-offset:2px;}
 .etl-inline-table-wrap table{border-collapse:collapse;width:100%;}
@@ -1185,9 +1213,35 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
       <div class="fr">
         <div class="fg2"><label>Description</label><input type="text" id="zc-desc" placeholder="When to use this template"></div>
       </div>
+      <div class="fr">
+        <div class="fg2" style="max-width:220px"><label>Channel</label><input type="text" id="zc-channel" placeholder="e.g. #carrier-integration"></div>
+        <div class="fg2"><label>Topic</label><input type="text" id="zc-topic" placeholder="e.g. SFTP Cert — [Partner Name]"></div>
+      </div>
       <div class="fg2" style="margin-bottom:10px"><label>Zulip Message (Markdown)</label>
-        <div class="edtoolbar"><button type="button" class="tblbtn" title="Insert table" onclick="insertZulipTable('zc')"><i class="ti ti-table"></i></button></div>
+        <div class="edtoolbar" style="justify-content:space-between;flex-wrap:wrap;gap:4px">
+          <div style="display:flex;gap:3px;flex-wrap:wrap">
+            <button type="button" class="tblbtn" title="Bold" onclick="boldZulip('zc')"><i class="ti ti-bold"></i></button>
+            <button type="button" class="tblbtn" title="Italic" onclick="italicZulip('zc')"><i class="ti ti-italic"></i></button>
+            <button type="button" class="tblbtn" title="Strikethrough" onclick="strikeZulip('zc')"><i class="ti ti-strikethrough"></i></button>
+            <button type="button" class="tblbtn" title="Inline code" onclick="inlineCodeZulip('zc')"><i class="ti ti-code"></i></button>
+            <button type="button" class="tblbtn" title="Code block" onclick="codeBlockZulip('zc')"><i class="ti ti-code-dots"></i></button>
+            <button type="button" class="tblbtn" title="Link" onclick="insertZulipLink('zc')"><i class="ti ti-link"></i></button>
+            <button type="button" class="tblbtn" title="Heading" onclick="headingZulip('zc')"><i class="ti ti-heading"></i></button>
+            <button type="button" class="tblbtn" title="Quote" onclick="quoteZulip('zc')"><i class="ti ti-quote"></i></button>
+            <button type="button" class="tblbtn" title="Bulleted list" onclick="bulletListZulip('zc')"><i class="ti ti-list"></i></button>
+            <button type="button" class="tblbtn" title="Numbered list" onclick="numberedListZulip('zc')"><i class="ti ti-list-numbers"></i></button>
+            <button type="button" class="tblbtn" title="Mention someone" onclick="mentionZulip('zc')"><i class="ti ti-at"></i></button>
+            <button type="button" class="tblbtn" title="Mention a channel" onclick="channelZulip('zc')"><i class="ti ti-hash"></i></button>
+            <div class="tbl-dd-wrap">
+              <button type="button" class="tblbtn" title="Insert emoji" onclick="toggleZulipEmojiPicker(event,'zc')"><i class="ti ti-mood-smile"></i></button>
+              <div class="tbl-dd-menu" id="zc-emoji-menu"></div>
+            </div>
+            <button type="button" class="tblbtn" title="Insert table" onclick="insertZulipTable('zc')"><i class="ti ti-table"></i></button>
+          </div>
+          <button type="button" class="tblbtn" id="zc-preview-btn" title="Toggle preview" onclick="toggleZulipPreview('zc')"><i class="ti ti-eye"></i> Preview</button>
+        </div>
         <textarea id="zc-body" class="md-body-ta" placeholder="Hi @**Partner** :wave:&#10;&#10;Message body in Zulip Markdown…&#10;&#10;**Bold**, *italic*, `code`, and tables all render natively in Zulip."></textarea>
+        <div id="zc-body-preview" class="zmd-preview" style="display:none"></div>
       </div>
       <div class="cond-box" style="margin-bottom:10px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -1515,7 +1569,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.26.14'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.27.2'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -2630,6 +2684,7 @@ function buildAddDraftPayload(prefix){
     domain:isZulip?'zulip':'email',sourceTemplateId:null,
     cat:val(prefix+'-cat'),country:val(prefix+'-country'),type:val(prefix+'-type'),proc:val(prefix+'-proc'),dtype:val(prefix+'-dtype'),
     name:val(prefix+'-name'),desc:val(prefix+'-desc'),subj:isZulip?'':val(prefix+'-subj'),
+    channel:isZulip?val('zc-channel'):'',topic:isZulip?val('zc-topic'):'',
     body:isZulip?val('zc-body'):(ncQuill?ncQuill.root.innerHTML:''),
     conds:[...document.querySelectorAll('#'+prefix+'-conds .cbi')].map(row=>({k:row.querySelector('input').value.trim(),v:row.querySelector('select').value})).filter(c=>c.k),
     todos:getTodos(prefix),
@@ -2657,12 +2712,13 @@ function openAddZulipModal(){
 }
 function closeAddZulipModal(){
   document.getElementById('add-zulip-modal').classList.remove('open');
-  ['zc-name','zc-desc','zc-body'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+  ['zc-name','zc-desc','zc-channel','zc-topic','zc-body'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
   document.getElementById('zc-conds').innerHTML='';zNewCC=0;
   renderTodoList('zc',[]);
+  resetZulipPreviewState('zc');
 }
 function isAddZulipDirty(){
-  return !!(val('zc-name')||val('zc-desc')||val('zc-body')
+  return !!(val('zc-name')||val('zc-desc')||val('zc-channel')||val('zc-topic')||val('zc-body')
     ||document.querySelectorAll('#zc-conds .cbi').length
     ||document.querySelectorAll('#zc-todo-list .todo-row').length);
 }
@@ -2688,7 +2744,7 @@ function applyDraftToAddForm(prefix,d){
   setVal(prefix+'-type',d.type);setVal(prefix+'-proc',d.proc);setVal(prefix+'-dtype',d.dtype);setVal(prefix+'-country',d.country);
   setVal(prefix+'-name',d.name);setVal(prefix+'-desc',d.desc);
   if(!isZulip)setVal(prefix+'-subj',d.subj);
-  if(isZulip)setVal('zc-body',d.body); else if(ncQuill)ncQuill.root.innerHTML=d.body;
+  if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill)ncQuill.root.innerHTML=d.body;
   (d.conds||[]).forEach(c=>{addCRow(prefix+'-conds',isZulip?'zck':'nck',isZulip?'zcv':'ncv');fillLastCondRow(prefix+'-conds',c.k,c.v);});
   renderTodoList(prefix,d.todos||[]);
 }
@@ -3106,7 +3162,9 @@ function showLibTplViewer(id,trEl){
   // container with no reserved indent space, since Quill doesn't use
   // native list markers at all and instead draws its own via ::before).
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
-  const subjRow=isZulip?'':`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>`;
+  const subjRow=isZulip
+    ?`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Topic:</b> ${esc(t.topic)}</div>`:''}`
+    :`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>`;
   document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   document.getElementById('lib-tpl-viewer').classList.add('show');
   document.getElementById('lib-tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -3214,7 +3272,8 @@ function viewModal(id){
     ?`<div class="ql-editor" style="padding:14px;min-height:0;font-size:12px;line-height:1.75;color:var(--tx)">${stripTableWrappers(t.body)}</div>`
     :`<div class="ebody">${t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>')}</div>`;
   const headerRow=isZulip
-    ?''
+    ?((t.channel||t.topic)?`${t.channel?`<div class="ef"><span class="efl">Channel:</span><span class="efv">${esc(t.channel)}</span></div>`:''}
+      ${t.topic?`<div class="ef"><span class="efl">Topic:</span><span class="efv">${esc(t.topic)}</span></div>`:''}`:'')
     :`<div class="ef"><span class="efl">To:</span><span class="efv"><span class="ph">[Partner Email]</span></span></div>
       <div class="ef"><span class="efl">Subject:</span><span class="efv">${esc(t.subj)}</span></div>`;
   const todoDisplay=`<div class="cond-box" style="margin-bottom:10px">
@@ -3383,13 +3442,37 @@ function editModal(id){
     </div>
     <div class="er"><span class="el">Description</span><input class="ef2" id="e-desc" value="${esc(t.desc)}"></div>
     ${isZulip?'':`<div class="er"><span class="el">Subject</span><input class="ef2" id="e-subj" value="${esc(t.subj||'')}"></div>`}
+    ${isZulip?`<div style="display:flex;gap:8px;margin-bottom:11px">
+      <div style="flex:0 0 220px"><span class="el">Channel</span><input class="ef2" id="e-channel" value="${esc(t.channel||'')}" placeholder="e.g. #carrier-integration"></div>
+      <div style="flex:1"><span class="el">Topic</span><input class="ef2" id="e-topic" value="${esc(t.topic||'')}" placeholder="e.g. SFTP Cert — [Partner Name]"></div>
+    </div>`:''}
     <div class="er">
       <span class="el">${isZulip?'Zulip Message (Markdown)':'Body'}</span>
-      ${isZulip?`<div class="edtoolbar" style="justify-content:flex-end">
-        <button type="button" class="tblbtn" title="Insert table" onclick="insertZulipTable('e')"><i class="ti ti-table"></i></button>
+      ${isZulip?`<div class="edtoolbar" style="justify-content:space-between;flex-wrap:wrap;gap:4px">
+        <div style="display:flex;gap:3px;flex-wrap:wrap">
+          <button type="button" class="tblbtn" title="Bold" onclick="boldZulip('e')"><i class="ti ti-bold"></i></button>
+          <button type="button" class="tblbtn" title="Italic" onclick="italicZulip('e')"><i class="ti ti-italic"></i></button>
+          <button type="button" class="tblbtn" title="Strikethrough" onclick="strikeZulip('e')"><i class="ti ti-strikethrough"></i></button>
+          <button type="button" class="tblbtn" title="Inline code" onclick="inlineCodeZulip('e')"><i class="ti ti-code"></i></button>
+          <button type="button" class="tblbtn" title="Code block" onclick="codeBlockZulip('e')"><i class="ti ti-code-dots"></i></button>
+          <button type="button" class="tblbtn" title="Link" onclick="insertZulipLink('e')"><i class="ti ti-link"></i></button>
+          <button type="button" class="tblbtn" title="Heading" onclick="headingZulip('e')"><i class="ti ti-heading"></i></button>
+          <button type="button" class="tblbtn" title="Quote" onclick="quoteZulip('e')"><i class="ti ti-quote"></i></button>
+          <button type="button" class="tblbtn" title="Bulleted list" onclick="bulletListZulip('e')"><i class="ti ti-list"></i></button>
+          <button type="button" class="tblbtn" title="Numbered list" onclick="numberedListZulip('e')"><i class="ti ti-list-numbers"></i></button>
+          <button type="button" class="tblbtn" title="Mention someone" onclick="mentionZulip('e')"><i class="ti ti-at"></i></button>
+          <button type="button" class="tblbtn" title="Mention a channel" onclick="channelZulip('e')"><i class="ti ti-hash"></i></button>
+          <div class="tbl-dd-wrap">
+            <button type="button" class="tblbtn" title="Insert emoji" onclick="toggleZulipEmojiPicker(event,'e')"><i class="ti ti-mood-smile"></i></button>
+            <div class="tbl-dd-menu" id="e-emoji-menu"></div>
+          </div>
+          <button type="button" class="tblbtn" title="Insert table" onclick="insertZulipTable('e')"><i class="ti ti-table"></i></button>
+        </div>
+        <button type="button" class="tblbtn" id="e-preview-btn" title="Toggle preview" onclick="toggleZulipPreview('e')"><i class="ti ti-eye"></i> Preview</button>
       </div>`:''}
       <div id="e-body-editor" style="${isZulip?'display:none':''}"></div>
       <textarea id="e-body-zulip" class="md-body-ta" style="${isZulip?'':'display:none'}"></textarea>
+      <div id="e-body-zulip-preview" class="zmd-preview" style="display:none"></div>
       <textarea id="e-body" style="display:none"></textarea>
     </div>
     <div class="er cond-box">
@@ -3465,7 +3548,9 @@ function currentEditFormValues(){
     name:val('e-name'),country:val('e-country')||'TH',cat,type:val('e-type'),
     proc:cat==='integration'?val('e-proc'):cat,
     dtype:(cat==='coordination'||cat==='followup'||cat==='maintenance')?val('e-dtype'):null,
-    desc:val('e-desc'),subj:isZulip?'':val('e-subj'),body,conds,todos:getTodos('e'),
+    desc:val('e-desc'),subj:isZulip?'':val('e-subj'),
+    channel:isZulip?val('e-channel'):'',topic:isZulip?val('e-topic'):'',
+    body,conds,todos:getTodos('e'),
   };
 }
 function isEditDirty(){
@@ -3492,7 +3577,7 @@ function applyDraftToEditForm(d){
   setVal('e-type',d.type);setVal('e-proc',d.proc);setVal('e-dtype',d.dtype);setVal('e-country',d.country);
   setVal('e-name',d.name);setVal('e-desc',d.desc);
   if(d.domain!=='zulip')setVal('e-subj',d.subj);
-  if(d.domain==='zulip')setVal('e-body-zulip',d.body); else if(editQuill)editQuill.root.innerHTML=d.body;
+  if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill)editQuill.root.innerHTML=d.body;
   (d.conds||[]).forEach(c=>{addEditCRow(document.querySelectorAll('#ec-rows .cbi').length);fillLastCondRow('ec-rows',c.k,c.v);});
   renderTodoList('e',d.todos||[]);
 }
@@ -3556,6 +3641,7 @@ function saveEdit(id){
   const v=currentEditFormValues();
   t.name=v.name;t.country=v.country;t.cat=v.cat;t.type=v.type;t.proc=v.proc;t.dtype=v.dtype;t.desc=v.desc;
   if(t.domain!=='zulip')t.subj=v.subj;
+  else{t.channel=v.channel;t.topic=v.topic;}
   t.body=v.body;t.conds=v.conds;t.todos=v.todos;
   t.kw=[t.type.toLowerCase(),t.proc,...(t.dtype?[t.dtype.toLowerCase()]:[]),...t.name.toLowerCase().split(' '),...t.desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   t.updatedAt=new Date().toISOString();
@@ -3571,7 +3657,7 @@ function saveEdit(id){
 // existed, same pattern as tplDtype()'s dtype fallback — no migration
 // write needed against the live shared database.
 // ══════════════════════════════════════════════════
-const HISTORY_FIELD_LABELS={name:'Name',desc:'Description',subj:'Subject',body:'Body',cat:'Category',type:'Type',proc:'Process',dtype:'Data Type',country:'Country',conds:'Conditions',todos:'Documents'};
+const HISTORY_FIELD_LABELS={name:'Name',desc:'Description',subj:'Subject',channel:'Channel',topic:'Topic',body:'Body',cat:'Category',type:'Type',proc:'Process',dtype:'Data Type',country:'Country',conds:'Conditions',todos:'Documents'};
 function diffTemplateFields(before,after){
   const changed=[];
   Object.keys(HISTORY_FIELD_LABELS).forEach(k=>{
@@ -4161,7 +4247,8 @@ function showZTplViewer(id,trEl){
   document.getElementById('ztv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${t.type}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
   const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
   const body=t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
-  document.getElementById('ztv-body').innerHTML=`${conds}<div style="font-size:12px;line-height:1.75;white-space:pre-wrap">${body}</div>`;
+  const ztvHead=`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Topic:</b> ${esc(t.topic)}</div>`:''}`;
+  document.getElementById('ztv-body').innerHTML=`${ztvHead}${conds}<div style="font-size:12px;line-height:1.75;white-space:pre-wrap">${body}</div>`;
   document.getElementById('ztpl-viewer').classList.add('show');
   document.getElementById('ztpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -4615,6 +4702,8 @@ function saveNewZulip(){
   const dtype=(cat==='coordination'||cat==='followup'||cat==='maintenance')?document.getElementById('zc-dtype').value:null;
   const name=document.getElementById('zc-name').value.trim();
   const desc=document.getElementById('zc-desc').value.trim();
+  const channel=document.getElementById('zc-channel').value.trim();
+  const topic=document.getElementById('zc-topic').value.trim();
   const body=document.getElementById('zc-body').value.trim();
   if(!name||!body){toast('Fill Name and Message.');return;}
   const conds=[];
@@ -4628,12 +4717,12 @@ function saveNewZulip(){
   const id='Z'+String(same.length+1).padStart(3,'0');
   const kw=[type.toLowerCase(),proc,country,...(dtype?[dtype.toLowerCase()]:[]),...name.toLowerCase().split(' '),...desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   const todos=getTodos('zc');
-  const newTpl={id,domain:'zulip',cat,country,type,proc,dtype,name,desc,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
+  const newTpl={id,domain:'zulip',cat,country,type,proc,dtype,name,desc,channel,topic,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
   logTemplateHistory(newTpl,null);
   templates.push(newTpl);
   saveTpl();
   if(editingDraftId){drafts=drafts.filter(d=>d.id!==editingDraftId);saveDraftsLS();updateDraftBadges();editingDraftId=null;}
-  ['zc-name','zc-desc','zc-body'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+  ['zc-name','zc-desc','zc-channel','zc-topic','zc-body'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
   document.getElementById('zc-conds').innerHTML='';zNewCC=0;
   renderTodoList('zc',[]);
   renderSidebarTypes();renderSidebarSubs();updateCounts();render();toast('Template '+id+' saved!');
@@ -5497,6 +5586,211 @@ function insertZulipTable(prefix){
   const pos=start+insertion.length;
   ta.setSelectionRange(pos,pos);
   toast('Markdown table inserted.');
+  refreshZulipPreview(prefix);
+}
+
+// ══════════════════════════════════════════════════
+// ZULIP MARKDOWN TOOLS — text-formatting toolbar buttons, an emoji picker,
+// and a lightweight Zulip-markdown-to-HTML preview renderer. The renderer is
+// an approximation for a quick visual check before sending — it is not a
+// byte-perfect match of Zulip's own server-side renderer (no live mentions/
+// channel lookups, no math/poll/todo widgets).
+// ══════════════════════════════════════════════════
+function zulipTaEl(prefix){return document.getElementById(prefix==='zc'?'zc-body':'e-body-zulip');}
+function zulipPreviewEl(prefix){return document.getElementById(prefix==='zc'?'zc-body-preview':'e-body-zulip-preview');}
+function resetZulipPreviewState(prefix){
+  const ta=zulipTaEl(prefix),prev=zulipPreviewEl(prefix),btn=document.getElementById(prefix+'-preview-btn');
+  if(prev)prev.style.display='none';
+  if(ta)ta.style.display='';
+  if(btn){btn.classList.remove('active');btn.innerHTML='<i class="ti ti-eye"></i> Preview';}
+}
+function wrapZulipMd(prefix,before,after,placeholder){
+  const ta=zulipTaEl(prefix);if(!ta)return;
+  const start=ta.selectionStart??ta.value.length,end=ta.selectionEnd??ta.value.length;
+  const sel=ta.value.slice(start,end)||placeholder||'';
+  ta.value=ta.value.slice(0,start)+before+sel+after+ta.value.slice(end);
+  ta.focus();
+  const selStart=start+before.length;
+  ta.setSelectionRange(selStart,selStart+sel.length);
+  refreshZulipPreview(prefix);
+}
+function insertZulipTemplate(prefix,before,placeholder,after){
+  const ta=zulipTaEl(prefix);if(!ta)return;
+  const start=ta.selectionStart??ta.value.length,end=ta.selectionEnd??ta.value.length;
+  const sel=ta.value.slice(start,end)||placeholder;
+  ta.value=ta.value.slice(0,start)+before+sel+after+ta.value.slice(end);
+  ta.focus();
+  const selStart=start+before.length;
+  ta.setSelectionRange(selStart,selStart+sel.length);
+  refreshZulipPreview(prefix);
+}
+function prefixZulipLines(prefix,marker){
+  const ta=zulipTaEl(prefix);if(!ta)return;
+  const start=ta.selectionStart??0,end=ta.selectionEnd??0;
+  const lineStart=ta.value.lastIndexOf('\n',start-1)+1;
+  let lineEnd=ta.value.indexOf('\n',end);if(lineEnd===-1)lineEnd=ta.value.length;
+  const lines=ta.value.slice(lineStart,lineEnd).split('\n');
+  const out=lines.map((l,i)=>typeof marker==='function'?marker(l,i):marker+l).join('\n');
+  ta.value=ta.value.slice(0,lineStart)+out+ta.value.slice(lineEnd);
+  ta.focus();
+  ta.setSelectionRange(lineStart,lineStart+out.length);
+  refreshZulipPreview(prefix);
+}
+function insertZulipLink(prefix){
+  const ta=zulipTaEl(prefix);if(!ta)return;
+  const start=ta.selectionStart??ta.value.length,end=ta.selectionEnd??ta.value.length;
+  const sel=ta.value.slice(start,end)||'link text';
+  const url='https://';
+  ta.value=ta.value.slice(0,start)+'['+sel+']('+url+')'+ta.value.slice(end);
+  ta.focus();
+  const urlStart=start+1+sel.length+2;
+  ta.setSelectionRange(urlStart,urlStart+url.length);
+  refreshZulipPreview(prefix);
+}
+function boldZulip(p){wrapZulipMd(p,'**','**','bold text');}
+function italicZulip(p){wrapZulipMd(p,'*','*','italic text');}
+function strikeZulip(p){wrapZulipMd(p,'~~','~~','strikethrough');}
+function inlineCodeZulip(p){wrapZulipMd(p,'`','`','code');}
+function codeBlockZulip(p){wrapZulipMd(p,'```\n','\n```','code here');}
+function quoteZulip(p){prefixZulipLines(p,'> ');}
+function headingZulip(p){prefixZulipLines(p,'### ');}
+function bulletListZulip(p){prefixZulipLines(p,'* ');}
+function numberedListZulip(p){prefixZulipLines(p,(l,i)=>(i+1)+'. '+l);}
+function mentionZulip(p){insertZulipTemplate(p,'@**','Name','**');}
+function channelZulip(p){insertZulipTemplate(p,'#**','channel','**');}
+
+// ── Emoji picker ──
+const ZULIP_EMOJI=[
+  ['wave','👋'],['tada','🎉'],['rocket','🚀'],['warning','⚠️'],['white_check_mark','✅'],['x','❌'],
+  ['thumbsup','👍'],['thumbsdown','👎'],['eyes','👀'],['heart','❤️'],['fire','🔥'],['smile','😄'],
+  ['thinking','🤔'],['clock','🕐'],['calendar','📅'],['email','📧'],['bell','🔔'],['star','⭐'],
+  ['bug','🐛'],['gear','⚙️'],['lock','🔒'],['question','❓'],['exclamation','❗'],['clap','👏'],
+  ['pray','🙏'],['zap','⚡'],['memo','📝'],['+1','👍'],['-1','👎'],['100','💯']
+];
+const ZULIP_EMOJI_MAP=Object.fromEntries(ZULIP_EMOJI);
+function toggleZulipEmojiPicker(ev,prefix){
+  ev.stopPropagation();
+  const menu=document.getElementById(prefix+'-emoji-menu');
+  if(!menu)return;
+  const isOpen=menu.classList.contains('open');
+  document.querySelectorAll('.tbl-dd-menu.open').forEach(m=>m.classList.remove('open'));
+  if(isOpen)return;
+  if(!menu.dataset.built){
+    menu.innerHTML='<div class="emoji-grid">'+ZULIP_EMOJI.map(([code,glyph])=>
+      `<button type="button" title=":${code}:" onclick="insertZulipEmoji(event,'${prefix}','${code}')">${glyph}</button>`
+    ).join('')+'</div>';
+    menu.dataset.built='1';
+  }
+  menu.classList.add('open');
+}
+function insertZulipEmoji(ev,prefix,code){
+  ev.stopPropagation();
+  const ta=zulipTaEl(prefix);if(!ta)return;
+  const start=ta.selectionStart??ta.value.length,end=ta.selectionEnd??ta.value.length;
+  const insertion=':'+code+':';
+  ta.value=ta.value.slice(0,start)+insertion+ta.value.slice(end);
+  ta.focus();
+  const pos=start+insertion.length;
+  ta.setSelectionRange(pos,pos);
+  document.querySelectorAll('.tbl-dd-menu.open').forEach(m=>m.classList.remove('open'));
+  refreshZulipPreview(prefix);
+}
+document.addEventListener('click',()=>{document.querySelectorAll('.tbl-dd-menu.open').forEach(m=>m.classList.remove('open'));});
+
+// ── Preview mode: approximate Zulip-markdown → HTML renderer ──
+function escZmd(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function zulipMdToHtml(raw){
+  if(!raw||!raw.trim())return '';
+  let src=raw.replace(/\r\n/g,'\n');
+  const blocks=[];
+  // Pull out fenced blocks (```, ```quote, ```spoiler Header) first so their
+  // contents don't get mangled by the inline-formatting passes below.
+  src=src.replace(/```(spoiler)?[ \t]*([^\n]*)\n([\s\S]*?)```/g,(m,isSpoiler,header,body)=>{
+    const key='ZMDBLOCK'+blocks.length+'END';
+    const inner=escZmd(body.replace(/\n$/,''));
+    if(isSpoiler)blocks.push(`<details><summary>${escZmd(header.trim()||'Details')}</summary><div>${inner}</div></details>`);
+    else if(header.trim()==='quote')blocks.push(`<blockquote>${inner}</blockquote>`);
+    else blocks.push(`<pre><code>${inner}</code></pre>`);
+    return key;
+  });
+  let html=escZmd(src);
+  // headings
+  html=html.replace(/^###### (.*)$/gm,'<h6>$1</h6>').replace(/^##### (.*)$/gm,'<h5>$1</h5>')
+    .replace(/^#### (.*)$/gm,'<h4>$1</h4>').replace(/^### (.*)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h1>$1</h1>');
+  // horizontal rule
+  html=html.replace(/^---+$/gm,'<hr>');
+  // blockquote (single-line "> ")
+  html=html.replace(/^&gt; ?(.*)$/gm,'<blockquote>$1</blockquote>');
+  html=html.replace(/<\/blockquote>\n<blockquote>/g,'\n');
+  // inline code (before bold/italic so code spans are left untouched)
+  html=html.replace(/`([^`\n]+)`/g,'<code>$1</code>');
+  // mentions / channel links (before bold/italic — both use ** internally)
+  html=html.replace(/@_\*\*([^*\n]+)\*\*/g,'<span class="zmd-mention">$1</span>');
+  html=html.replace(/@\*\*([^*\n]+)\*\*/g,'<span class="zmd-mention">@$1</span>');
+  html=html.replace(/@\*([^*\n]+)\*/g,'<span class="zmd-mention">@$1</span>');
+  html=html.replace(/#\*\*([^*\n]+)\*\*/g,'<span class="zmd-channel">#$1</span>');
+  // bold / italic / strikethrough
+  html=html.replace(/\*\*([^\n*]+)\*\*/g,'<b>$1</b>');
+  html=html.replace(/(^|[^*])\*([^\n*]+)\*/g,'$1<i>$2</i>');
+  html=html.replace(/~~([^\n~]+)~~/g,'<s>$1</s>');
+  // links
+  html=html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // emoji — known shortcodes become the real glyph, unknown ones stay as a pill
+  html=html.replace(/:([a-z0-9_+-]+):/gi,(m,code)=>{
+    const g=ZULIP_EMOJI_MAP[code.toLowerCase()];
+    return g?g:`<span class="zmd-mention">:${code}:</span>`;
+  });
+  // /me action lines
+  html=html.replace(/^\/me (.*)$/gm,'<i>▸ $1</i>');
+  // lists — group consecutive bullet/numbered lines into ul/ol
+  const lines=html.split('\n');
+  const out=[];let listType=null;
+  for(const line of lines){
+    const bulletM=line.match(/^\s*[*\-+] (.*)$/);
+    const numM=line.match(/^\s*\d+\. (.*)$/);
+    if(bulletM||numM){
+      const type=bulletM?'ul':'ol';
+      if(listType!==type){if(listType)out.push('</'+listType+'>');out.push('<'+type+'>');listType=type;}
+      out.push('<li>'+(bulletM?bulletM[1]:numM[1])+'</li>');
+    }else{
+      if(listType){out.push('</'+listType+'>');listType=null;}
+      out.push(line);
+    }
+  }
+  if(listType)out.push('</'+listType+'>');
+  html=out.join('\n');
+  // paragraphs — wrap remaining bare-text chunks, collapse blank-line runs
+  html=html.split(/\n{2,}/).map(chunk=>{
+    const t=chunk.trim();
+    if(!t)return '';
+    if(/^<(h[1-6]|ul|ol|li|blockquote|hr|pre|details)/i.test(t))return t;
+    if(/^ZMDBLOCK\d+END$/.test(t))return t;
+    return '<p>'+t.replace(/\n/g,'<br>')+'</p>';
+  }).join('');
+  // restore fenced blocks
+  html=html.replace(/ZMDBLOCK(\d+)END/g,(m,i)=>blocks[+i]);
+  return html;
+}
+function refreshZulipPreview(prefix){
+  const prev=zulipPreviewEl(prefix);
+  if(!prev||prev.style.display==='none')return;
+  const ta=zulipTaEl(prefix);
+  const html=zulipMdToHtml(ta?ta.value:'');
+  prev.innerHTML=html||'<span style="color:var(--tx3);font-style:italic">Nothing to preview yet — switch back to Edit and type a message.</span>';
+}
+function toggleZulipPreview(prefix){
+  const ta=zulipTaEl(prefix),prev=zulipPreviewEl(prefix),btn=document.getElementById(prefix+'-preview-btn');
+  if(!ta||!prev)return;
+  const showingPreview=prev.style.display!=='none';
+  if(showingPreview){
+    prev.style.display='none';ta.style.display='';ta.focus();
+    if(btn){btn.classList.remove('active');btn.innerHTML='<i class="ti ti-eye"></i> Preview';}
+  }else{
+    prev.style.display='block';ta.style.display='none';
+    refreshZulipPreview(prefix);
+    if(btn){btn.classList.add('active');btn.innerHTML='<i class="ti ti-eye-off"></i> Edit';}
+  }
 }
 
 // ══════════════════════════════════════════════════
