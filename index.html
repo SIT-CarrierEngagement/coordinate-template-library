@@ -257,6 +257,25 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .tpl-viewer.show{display:block;}
 .tpl-viewer-hd{padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
 .tpl-viewer-body{padding:14px;font-size:12px;line-height:1.7;max-height:340px;overflow-y:auto;font-family:var(--font-content);}
+/* List view — Zimbra-style layout: Data folders on top, list + a
+   persistent preview pane split side by side. Scoped under .lib-split so
+   the shared .ctbl-wrap/.tpl-viewer classes (also used, unchanged, by the
+   Configure ▸ All Templates tables) keep their original stacked layout. */
+.lib-folders{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--s2);}
+.lib-folder-tab{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--surface);font-size:11px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .12s;white-space:nowrap;}
+.lib-folder-tab:hover{border-color:var(--ac);color:var(--tx);}
+.lib-folder-tab.on{background:var(--acl);border-color:var(--ac);color:var(--ac);}
+.lib-folder-tab .nbadge{font-size:9.5px;}
+/* A fixed height on the split itself, with both children at height:100%,
+   is what actually guarantees the list and the preview pane match — capping
+   each side's max-height independently doesn't, since the preview's own
+   header bar adds height the plain list box doesn't have, so the two
+   columns' total heights drift apart depending on content length. */
+.lib-split{display:flex;align-items:stretch;height:560px;}
+.lib-split .ctbl-wrap{flex:1 1 42%;height:100%;max-height:none;border-radius:0;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.lib-split .tpl-viewer{flex:1 1 58%;height:100%;display:flex;flex-direction:column;margin-top:0;border:none;border-radius:0;min-width:0;}
+.lib-split .tpl-viewer-body{flex:1;max-height:none;}
+.tpl-viewer-placeholder{height:100%;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--tx3);}
 
 .delbtn{background:none;border:none;cursor:pointer;color:var(--tx3);font-size:14px;padding:3px;border-radius:3px;transition:all .15s;}
 .delbtn:hover{color:var(--rd);background:var(--rdl);}
@@ -327,6 +346,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .vtoggle{display:flex;border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden;flex-shrink:0;}
 .vtbtn{background:var(--surface);border:none;padding:6px 9px;cursor:pointer;color:var(--tx3);font-size:14px;display:flex;align-items:center;transition:all .15s;}
 .vtbtn+.vtbtn{border-left:1px solid var(--bd);}
+#quick-dark-toggle{border:1px solid var(--bd);border-radius:var(--rs);background:var(--surface);flex-shrink:0;}
+#quick-dark-toggle:hover{color:var(--tx);border-color:var(--acm);}
 .vtbtn.on{background:var(--bl);color:#fff;}
 .vtbtn:hover:not(.on){background:var(--s2);color:var(--tx);}
 
@@ -608,6 +629,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           <button class="btn btn-zulip" onclick="openAddZulipModal()"><i class="ti ti-message-2"></i> Add Zulip Template</button>
           <button class="btn btn-gen" title="Generate Zulip Template" onclick="openGenModal('zulip')"><i class="ti ti-sparkles"></i> Generate</button>
         </span>
+        <button class="vtbtn" id="quick-dark-toggle" onclick="toggleDarkModeQuick()" title="Toggle dark mode"><i class="ti ti-moon" id="quick-dark-icon"></i></button>
       </div>
     </div>
     <div class="fb">
@@ -626,34 +648,40 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
     <div class="content">
       <div class="grid" id="grid"></div>
       <div class="empty" id="empty" style="display:none"><i class="ti ti-mail-off"></i><p>No templates match.</p></div>
-      <!-- List view (mirrors Configure ▸ All Templates table) -->
+      <!-- List view — Zimbra-style: Data folders across the top, a list
+           on the left, and a persistent preview pane on the right. -->
       <div class="lib-table-wrap" id="lib-table-wrap">
         <div class="csec">
-          <div class="ctbl-wrap">
-            <table class="ctbl">
-              <thead><tr>
-                <th data-col="id" onclick="libSort('id',this)">ID<span class="sort-icon"></span></th>
-                <th data-col="country" onclick="libSort('country',this)">Country<span class="sort-icon"></span></th>
-                <th data-col="type" onclick="libSort('type',this)">Data<span class="sort-icon"></span></th>
-                <th data-col="proc" onclick="libSort('proc',this)">Process<span class="sort-icon"></span></th>
-                <th data-col="name" onclick="libSort('name',this)">Name<span class="sort-icon"></span></th>
-              </tr></thead>
-              <tbody id="lib-tb"></tbody>
-            </table>
-          </div>
-          <!-- Template viewer -->
-          <div class="tpl-viewer" id="lib-tpl-viewer">
-            <div class="tpl-viewer-hd">
-              <div>
-                <span id="ltv-title" style="font-size:13px;font-weight:600"></span>
-                <span id="ltv-meta" style="margin-left:8px"></span>
+          <div class="lib-folders" id="lib-folders"></div>
+          <div class="lib-split">
+            <div class="ctbl-wrap">
+              <table class="ctbl">
+                <thead><tr>
+                  <th data-col="id" onclick="libSort('id',this)">ID<span class="sort-icon"></span></th>
+                  <th data-col="country" onclick="libSort('country',this)">Country<span class="sort-icon"></span></th>
+                  <th data-col="type" onclick="libSort('type',this)">Data<span class="sort-icon"></span></th>
+                  <th data-col="proc" onclick="libSort('proc',this)">Process<span class="sort-icon"></span></th>
+                  <th data-col="name" onclick="libSort('name',this)">Name<span class="sort-icon"></span></th>
+                </tr></thead>
+                <tbody id="lib-tb"></tbody>
+              </table>
+            </div>
+            <!-- Template viewer — always present, like Zimbra's reading pane -->
+            <div class="tpl-viewer" id="lib-tpl-viewer">
+              <div class="tpl-viewer-hd">
+                <div>
+                  <span id="ltv-title" style="font-size:13px;font-weight:600"></span>
+                  <span id="ltv-meta" style="margin-left:8px"></span>
+                </div>
+                <div style="display:none;gap:6px" id="ltv-actions">
+                  <button class="btn" style="font-size:11px;padding:3px 9px" onclick="openModalFromLibViewer()"><i class="ti ti-external-link"></i> Open</button>
+                  <button class="xbtn" onclick="closeLibTplViewer()"><i class="ti ti-x"></i></button>
+                </div>
               </div>
-              <div style="display:flex;gap:6px">
-                <button class="btn" style="font-size:11px;padding:3px 9px" onclick="openModalFromLibViewer()"><i class="ti ti-external-link"></i> Open</button>
-                <button class="xbtn" onclick="closeLibTplViewer()"><i class="ti ti-x"></i></button>
+              <div class="tpl-viewer-body" id="ltv-body">
+                <div class="tpl-viewer-placeholder"><i class="ti ti-mail-opened" style="font-size:28px"></i><span>Select a template to preview</span></div>
               </div>
             </div>
-            <div class="tpl-viewer-body" id="ltv-body"></div>
           </div>
         </div>
       </div>
@@ -1400,6 +1428,14 @@ function saveTypes(){localStorage.setItem('etl_itypes',JSON.stringify(intTypes))
 // live shared database.
 function tplDtype(t){return t.dtype||'Others';}
 function dtypeOrder(){return [...iTypes(),'Others'];}
+// Data Type on an Integration template lives directly in its own `type`
+// field (iAPI/PNR/ALP/…); Coordination/Follow-up/Maintenance carry it in a
+// separate `dtype` field instead (their `type` means something else — a
+// coordination label, a follow-up stage, a maintenance kind). Shared by the
+// grid's sub-dividers and the List view's folder tabs.
+function effDtype(t){return t.cat==='integration'?t.type:tplDtype(t);}
+// Integration > Coordination > Follow-up > Maintenance > Others/custom.
+function categoryRank(t){const i=BUILTIN_CATS.indexOf(t.cat);return i>=0?i:99;}
 
 // Countries
 const PINNED_COUNTRIES=['TH','LA'];
@@ -1479,7 +1515,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.26.10'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.26.12'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -2874,6 +2910,7 @@ function render(){
   if(libViewMode==='list'){
     document.getElementById('grid').innerHTML='';
     em.style.display=list.length?'none':'block';
+    renderLibFolders();
     renderLibTable(list);
     updateBulkBar();
     return;
@@ -2908,13 +2945,6 @@ function render(){
   const coList=list.filter(t=>t.cat==='coordination');
 
   const sortGen=(arr)=>[...arr].sort((a,b)=>a.name.localeCompare(b.name));
-  // Data Type on an Integration template lives directly in its own `type`
-  // field (iAPI/PNR/ALP/…); Coordination/Follow-up/Maintenance carry it in
-  // a separate `dtype` field instead (their `type` means something else —
-  // a coordination label, a follow-up stage, a maintenance kind). This
-  // normalizes both onto one lookup so every category can sub-group the
-  // same way.
-  const effDtype=(t)=>t.cat==='integration'?t.type:tplDtype(t);
 
   const sec=(items,label,icon,extraStyle)=>{
     if(!items.length) return;
@@ -2987,8 +3017,55 @@ function libSort(col,th){
   th.classList.add(libSortDir===1?'sort-asc':'sort-desc');
   render();
 }
+// Folder tabs — Data Type, single-select like a real folder (clicking one
+// replaces the previous selection instead of adding to it), sharing the
+// same chips.type state the Grid view's Data chips use so both views stay
+// in sync. Counts ignore the Data filter itself but respect every other
+// active filter (country/process/search), same as a real mail folder count
+// would.
+function libDataCounts(){
+  const domain=sideState.domain||'email';
+  const cs=chips.country||new Set(),ps=chips.proc||new Set();
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  const counts={};
+  templates.forEach(t=>{
+    if((t.domain||'email')!==domain)return;
+    if(ps.size>0 && !ps.has(t.proc))return;
+    if(cs.size>0 && t.country!=='ALL COUNTRY' && !cs.has(t.country||''))return;
+    if(q){
+      const hay=[t.name,t.desc,t.type,t.proc,t.subj||'',t.country||'',...(t.kw||[]),...(t.conds||[]).map(c=>c.k+' '+c.v)].join(' ').toLowerCase();
+      if(!hay.includes(q))return;
+    }
+    const dt=effDtype(t);
+    counts[dt]=(counts[dt]||0)+1;
+  });
+  return counts;
+}
+function renderLibFolders(){
+  const el=document.getElementById('lib-folders');if(!el)return;
+  const counts=libDataCounts();
+  const ts=chips.type||new Set();
+  const total=Object.values(counts).reduce((a,b)=>a+b,0);
+  const tabs=[`<button class="lib-folder-tab${ts.size===0?' on':''}" onclick="clearLibFolder()"><i class="ti ti-folder"></i> All<span class="nbadge">${total}</span></button>`];
+  dtypeOrder().filter(dt=>counts[dt]).forEach(dt=>{
+    tabs.push(`<button class="lib-folder-tab${ts.has(dt)?' on':''}" onclick="toggleLibFolder('${dt}')"><i class="ti ti-folder"></i> ${esc(dt)}<span class="nbadge">${counts[dt]}</span></button>`);
+  });
+  el.innerHTML=tabs.join('');
+}
+function toggleLibFolder(dt){
+  chips.type=(chips.type&&chips.type.has(dt))?new Set():new Set([dt]);
+  renderTypeChips();render();
+}
+function clearLibFolder(){
+  chips.type=new Set();
+  renderTypeChips();render();
+}
 function renderLibTable(list){
   const sorted=[...list].sort((a,b)=>{
+    // Integration > Coordination > Follow-up > Maintenance > Others always
+    // comes first, regardless of which column header is clicked — the
+    // clicked column only breaks ties within a category.
+    const rd=categoryRank(a)-categoryRank(b); if(rd!==0) return rd;
     let av='',bv='';
     if(libSortCol==='id'){av=a.id;bv=b.id;}
     else if(libSortCol==='country'){av=a.country||'';bv=b.country||'';}
@@ -3014,6 +3091,7 @@ function showLibTplViewer(id,trEl){
   document.querySelectorAll('#lib-tb tr').forEach(r=>r.classList.remove('cfg-selected'));
   if(trEl)trEl.classList.add('cfg-selected');
   const t=templates.find(x=>x.id===id); if(!t) return;
+  const actionsEl=document.getElementById('ltv-actions');if(actionsEl)actionsEl.style.display='flex';
   document.getElementById('ltv-title').textContent=t.name;
   const ts=styleForType(t),ps=styleForProc(t);
   const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${t.country}</span>`:'';
@@ -3021,16 +3099,26 @@ function showLibTplViewer(id,trEl){
   const isZulip=t.domain==='zulip';
   const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(t.body);
   const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
+  // Wrapped in .ql-editor so list bullets, font-class runs, headings etc.
+  // render through Quill's own CSS — the exact same rules that apply while
+  // actually editing this content in the Add/Edit modal — instead of
+  // falling back to bare-browser defaults (native bullets sit outside the
+  // container with no reserved indent space, since Quill doesn't use
+  // native list markers at all and instead draws its own via ::before).
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   const subjRow=isZulip?'':`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>`;
-  document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div style="font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
+  document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   document.getElementById('lib-tpl-viewer').classList.add('show');
   document.getElementById('lib-tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function closeLibTplViewer(){
-  const v=document.getElementById('lib-tpl-viewer');if(v)v.classList.remove('show');
   document.querySelectorAll('#lib-tb tr').forEach(r=>r.classList.remove('cfg-selected'));
   libTvCurId=null;
+  const titleEl=document.getElementById('ltv-title');if(titleEl)titleEl.textContent='';
+  const metaEl=document.getElementById('ltv-meta');if(metaEl)metaEl.innerHTML='';
+  const actionsEl=document.getElementById('ltv-actions');if(actionsEl)actionsEl.style.display='none';
+  const bodyEl=document.getElementById('ltv-body');
+  if(bodyEl)bodyEl.innerHTML='<div class="tpl-viewer-placeholder"><i class="ti ti-mail-opened" style="font-size:28px"></i><span>Select a template to preview</span></div>';
 }
 function openModalFromLibViewer(){if(libTvCurId)openModal(libTvCurId);}
 
@@ -3123,7 +3211,7 @@ function viewModal(id){
   const isZulip=t.domain==='zulip';
   const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(t.body);
   const bodyDisplay=isHtml
-    ?`<div style="padding:14px;font-size:12px;line-height:1.75;color:var(--tx)">${stripTableWrappers(t.body)}</div>`
+    ?`<div class="ql-editor" style="padding:14px;min-height:0;font-size:12px;line-height:1.75;color:var(--tx)">${stripTableWrappers(t.body)}</div>`
     :`<div class="ebody">${t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>')}</div>`;
   const headerRow=isZulip
     ?''
@@ -3922,7 +4010,7 @@ function showTplViewer(id,trEl){
   const isHtml=/<[a-z][\s\S]*>/i.test(t.body);
   const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
-  document.getElementById('tv-body').innerHTML=`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div style="font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
+  document.getElementById('tv-body').innerHTML=`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   document.getElementById('tpl-viewer').classList.add('show');
   document.getElementById('tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -5516,11 +5604,19 @@ const THEME_PRESETS=[
 function applyThemePreset(id){
   const preset=THEME_PRESETS.find(p=>p.id===id);if(!preset)return;
   const overrides=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
+  // Presets ship their LIGHT-mode hex values. In dark mode, applying them
+  // raw used to overwrite the dimmed palette with bright light colors while
+  // the dark-mode toggle stayed on — right data, wrong brightness. Route
+  // each token through the same dimVariant() conversion applyDarkNeutrals()
+  // uses, so the preset's hue carries over but stays dark; the light hex is
+  // still what's saved, so switching back to light mode later is correct.
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
   Object.entries(preset.tokens).forEach(([k,v])=>{
-    document.documentElement.style.setProperty(k,v);
+    document.documentElement.style.setProperty(k,isDark?dimVariant(v,k):v);
     overrides[k]=v;
   });
   localStorage.setItem('etl_theme_vars',JSON.stringify(overrides));
+  if(isDark)adaptAccentForDarkMode(true); // --surface just changed; re-mix the accent tint to match
   renderDesignPanel();
   scheduleSync();
   toast('Applied "'+preset.name+'" theme.');
@@ -5605,7 +5701,20 @@ function setDarkMode(on){
   adaptAccentForDarkMode(on);
   localStorage.setItem('etl_dark_mode',on?'1':'0');
   const cb=document.getElementById('dark-mode-toggle');if(cb)cb.checked=on;
+  updateQuickDarkIcon();
   scheduleSync();
+}
+// Quick toggle in the Library topbar — same state as the Configure ▸
+// Appearance checkbox, just reachable without opening Settings.
+function toggleDarkModeQuick(){
+  setDarkMode(document.documentElement.getAttribute('data-theme')!=='dark');
+}
+function updateQuickDarkIcon(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const icon=document.getElementById('quick-dark-icon');
+  if(icon)icon.className='ti '+(isDark?'ti-sun':'ti-moon');
+  const btn=document.getElementById('quick-dark-toggle');
+  if(btn)btn.title=isDark?'Switch to light mode':'Switch to dark mode';
 }
 // Wires a hex-code text field to a color picker + apply function, so typing a
 // valid hex updates the UI immediately (called once at init for every
@@ -5833,6 +5942,14 @@ makeCsecsCollapsible(document.getElementById('cfg-panel-stg'));
   loadThemeVarOverrides();
   const savedFont=localStorage.getItem('etl_font_body');if(savedFont&&savedFont!=='Poppins'){loadFont(savedFont);document.documentElement.style.setProperty('--font-body',`'${savedFont}',sans-serif`);}
   applyDarkNeutrals(localStorage.getItem('etl_dark_mode')==='1');
+  updateQuickDarkIcon();
+  // .ql-font-* CSS classes are normally injected lazily, only when an
+  // Add/Edit editor toolbar first initializes — a read-only preview (List
+  // view, View modal, Configure viewer) opened before any editor ever ran
+  // this session would show saved font-class runs falling back to the
+  // default content font instead. Generating them upfront means every
+  // preview can render a template's actual chosen font immediately.
+  refreshFontWhitelist();
   bindHexInput('design-accent','design-accent-hex',applyAccent);
   bindHexInput('design-accent-bg','design-accent-bg-hex',applyAccentBg);
   bindHexInput('design-zulip-accent','design-zulip-accent-hex',applyZulipAccent);
