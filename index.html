@@ -1515,7 +1515,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.26.12'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.26.14'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -4704,11 +4704,33 @@ function fillLastCondRow(containerId,k,v){
   if(kInp)kInp.value=k;
   if(vSel)vSel.value=v;
 }
+// Custom fonts (Calibri etc., added in Personalize Design) are applied via
+// a CSS class (.ql-font-calibri) whose actual font-family rule lives in a
+// <style> tag this app injects into its own <head> — it never travels with
+// copied HTML, so pasting into an external app like Zimbra leaves the class
+// name behind with no matching rule anywhere, silently falling back to the
+// wrapper's default font. Converting each run to an inline font-family
+// (read via getComputedStyle, which resolves correctly since the class
+// rule genuinely exists on THIS page right now) bakes the real value in
+// before it ever leaves the document, so it now travels with the HTML.
+function inlineQlFontClasses(html){
+  const tmp=document.createElement('div');
+  tmp.style.cssText='position:fixed;left:-9999px;top:0;';
+  tmp.innerHTML=html;
+  document.body.appendChild(tmp);
+  tmp.querySelectorAll('[class*="ql-font-"]').forEach(el=>{
+    const fam=getComputedStyle(el).fontFamily;
+    if(fam)el.style.fontFamily=fam;
+  });
+  const out=tmp.innerHTML;
+  document.body.removeChild(tmp);
+  return out;
+}
 // Wrap plain/HTML template bodies in inline-styled markup so pasting into
 // rich-text mail clients (Zimbra, Outlook, Gmail) preserves formatting.
 function bodyToRichHtml(body){
   const isHtml=/<[a-z][\s\S]*>/i.test(body);
-  if(isHtml) return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#1a1916">${stripTableWrappers(body)}</div>`;
+  if(isHtml) return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#1a1916">${inlineQlFontClasses(stripTableWrappers(body))}</div>`;
   const e2=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const paras=body.split(/\n{2,}/).map(p=>`<p style="margin:0 0 12px">${e2(p).replace(/\n/g,'<br>')}</p>`).join('');
   return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#1a1916">${paras}</div>`;
@@ -4767,12 +4789,22 @@ Quill.register(SizeStyle,true);
 // small/large/huge whitelist — with a custom numeric whitelist every entry
 // falls back to the generic "Normal" placeholder unless we inject a
 // label rule per value ourselves.
+//
+// The actual applied value stays in px (unchanged — no visual difference to
+// any existing template, no data migration needed). Only the NUMBER shown
+// in the picker is the pt-equivalent (px × 0.75, the standard 96dpi
+// conversion), because that's the unit Zimbra's own compose window reports
+// sizes in — pasting text set here to "12" used to show up as "9" in
+// Zimbra's size box (12px = 9pt) even though the actual rendered text was
+// the right size the whole time. Showing "9" here to begin with means the
+// number the user picks is the same number they'll see after pasting.
+function ptLabel(px){return Math.round(parseFloat(px)*0.75);}
 function ensureSizeCss(px){
   const id='qlsize-'+px;
   if(!document.getElementById(id)){
     const style=document.createElement('style');
     style.id=id;
-    const label=px.replace('px','');
+    const label=ptLabel(px);
     style.textContent=`.ql-picker.ql-size .ql-picker-label[data-value="${px}"]::before,
       .ql-picker.ql-size .ql-picker-item[data-value="${px}"]::before{content:'${label}';}`;
     document.head.appendChild(style);
