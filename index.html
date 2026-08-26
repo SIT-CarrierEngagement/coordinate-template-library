@@ -1479,7 +1479,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.26.9'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.26.10'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -1543,7 +1543,7 @@ async function pushHtmlToGithub(){
 // Purely cosmetic — the version shown in the "What's New" changelog. NEVER
 // used for the cloud-sync version gate (that's APP_VERSION above); changing
 // this has zero effect on sync safety.
-const CHANGELOG_VERSION='2026.08.01';
+const CHANGELOG_VERSION='2026.08.00';
 let sbClient=null,sbChannel=null,syncTimer=null,lastPushedJSON=null,staleVersion=false;
 function compareVersions(a,b){
   const pa=String(a||'').replace(/^v/i,'').split(/\D+/).map(Number);
