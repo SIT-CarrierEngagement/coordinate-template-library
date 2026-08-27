@@ -201,8 +201,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .eheadr{background:#f0efe9;padding:10px 14px;border-bottom:1px solid #e2e0d8;}
 .ef{display:flex;gap:7px;font-size:11px;padding:2px 0;}
 .efl{color:#9c9a93;min-width:36px;}
-.efv{color:#1a1916;font-weight:500;}
-.ebody{padding:14px;font-size:12px;line-height:1.75;white-space:pre-wrap;color:#1a1916;}
+.efv{color:#000000;font-weight:500;}
+.ebody{padding:14px;font-size:12px;line-height:1.75;white-space:pre-wrap;color:#000000;}
 .ebody .ph{color:#6d5a69;font-style:italic;background:#f4eef2;padding:0 3px;border-radius:3px;font-size:11px;}
 .cbar{padding:8px 13px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:7px;}
 
@@ -286,7 +286,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .tpl-viewer{border:1px solid var(--bd);border-radius:var(--r);background:var(--surface);margin-top:12px;overflow:hidden;display:none;}
 .tpl-viewer.show{display:block;}
 .tpl-viewer-hd{padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
-.tpl-viewer-body{padding:14px;font-size:12px;line-height:1.7;max-height:340px;overflow-y:auto;font-family:var(--font-content);}
+/* Fixed light "paper" regardless of app theme — same rationale as .eprev/
+   .ql-editor: this pane shows the actual email/message content, always
+   authored and read against white, same as the Card/Modal View. */
+.tpl-viewer-body{padding:14px;font-size:12px;line-height:1.7;max-height:340px;overflow-y:auto;font-family:var(--font-content);background:#ffffff;color:#000000;}
 /* List view — Zimbra-style layout: Data folders on top, list + a
    persistent preview pane split side by side. Scoped under .lib-split so
    the shared .ctbl-wrap/.tpl-viewer classes (also used, unchanged, by the
@@ -350,7 +353,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
    carry their own highlight colors authored against that assumption. Only
    the surrounding chrome (toolbar, modal, sidebar) follows dark mode. */
 .ql-container.ql-snow{border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);background:#ffffff;font-family:var(--font-content);font-size:12px;min-height:160px;}
-.ql-editor{min-height:160px;line-height:1.7;color:#1a1916;padding:10px 12px;}
+.ql-editor{min-height:160px;line-height:1.7;color:#000000;padding:10px 12px;}
 .ql-editor.ql-blank::before{color:#9c9a93;font-style:normal;font-size:12px;}
 .ql-snow .ql-stroke{stroke:var(--tx2);}
 .ql-snow .ql-fill{fill:var(--tx2);}
@@ -442,7 +445,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .md-body-ta:focus{border-color:var(--acm);}
 /* Zulip markdown preview pane — mirrors .md-body-ta's box so the toggle
    between edit/preview doesn't jump in size. */
-.zmd-preview{width:100%;min-height:160px;max-height:340px;overflow-y:auto;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:var(--font-body);line-height:1.6;background:#ffffff;color:#1a1916;box-sizing:border-box;}
+.zmd-preview{width:100%;min-height:160px;max-height:340px;overflow-y:auto;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:var(--font-body);line-height:1.6;background:#ffffff;color:#000000;box-sizing:border-box;}
 .zmd-preview h1,.zmd-preview h2,.zmd-preview h3,.zmd-preview h4,.zmd-preview h5,.zmd-preview h6{margin:10px 0 6px;line-height:1.3;}
 .zmd-preview h1{font-size:19px;border-bottom:1px solid var(--bd);padding-bottom:4px;}
 .zmd-preview h2{font-size:16px;border-bottom:1px solid var(--bd);padding-bottom:3px;}
@@ -1635,7 +1638,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.28.2'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.28.4'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -3307,8 +3310,8 @@ function showLibTplViewer(id,trEl){
   // native list markers at all and instead draws its own via ::before).
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   const subjRow=isZulip
-    ?`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Topic:</b> ${esc(t.topic)}</div>`:''}`
-    :`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>`;
+    ?`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Topic:</b> ${esc(t.topic)}</div>`:''}`
+    :`<div style="margin-bottom:6px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Subject:</b> ${esc(t.subj)}</div>`;
   document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   fixInvisibleBodyText(document.querySelector('#ltv-body .ql-editor'));
   document.getElementById('lib-tpl-viewer').classList.add('show');
@@ -5060,10 +5063,10 @@ function inlineQlFontClasses(html){
 // rich-text mail clients (Zimbra, Outlook, Gmail) preserves formatting.
 function bodyToRichHtml(body){
   const isHtml=/<[a-z][\s\S]*>/i.test(body);
-  if(isHtml) return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#1a1916">${inlineQlFontClasses(stripTableWrappers(body))}</div>`;
+  if(isHtml) return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#000000">${inlineQlFontClasses(stripTableWrappers(body))}</div>`;
   const e2=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const paras=body.split(/\n{2,}/).map(p=>`<p style="margin:0 0 12px">${e2(p).replace(/\n/g,'<br>')}</p>`).join('');
-  return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#1a1916">${paras}</div>`;
+  return `<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#000000">${paras}</div>`;
 }
 async function copyPlainText(text){
   try{await navigator.clipboard.writeText(text);return true;}catch(e){return false;}
@@ -5493,7 +5496,7 @@ function fixInvisibleBodyText(container){
     if(!m||m.length<3)return;
     const [r,g,b]=m.map(Number);
     const lum=(0.299*r+0.587*g+0.114*b)/255;
-    if(lum>0.7)el.style.setProperty('color','#1a1916','important');
+    if(lum>0.7)el.style.setProperty('color','#000000','important');
   });
 }
 // Measures this modal's sticky header so the Quill toolbar (also sticky, see
