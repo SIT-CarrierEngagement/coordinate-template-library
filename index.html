@@ -26,7 +26,7 @@
   --pk:#7a1a5a;--pkl:#fde8f5;
   --cy:#0a5a4a;--cyl:#e3fbf5;
   --green:#1a6b3a;--greenl:#e8f4ec;
-  --r:10px;--rs:6px;
+  --r:10px;--rs:6px;--topbar-h:74px;
   --sh:0 1px 3px rgba(0,0,0,.08);--shm:0 4px 16px rgba(0,0,0,.12);
   --font-body:'Poppins',sans-serif;
   --font-content:'Sora',sans-serif;
@@ -38,7 +38,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 /* ── SIDEBAR ── */
 .sb{width:236px;min-width:236px;background:var(--surface);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.sb-logo{padding:14px 14px 10px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.sb-logo{height:var(--topbar-h);padding:14px 14px 10px;border-bottom:1px solid var(--bd);flex-shrink:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
 .sb-logo h1{font-size:11px;font-weight:600;}
 .sb-logo p{font-size:11.5px;color:var(--tx3);margin-top:1px;}
 .changelog-trigger{display:block;background:none;border:none;padding:0;margin-top:6px;font-size:10.5px;color:var(--tx3);cursor:pointer;font-family:var(--font-body);text-decoration:underline;text-underline-offset:2px;}
@@ -97,18 +97,39 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 /* Content */
 .content{padding:16px 20px;flex:1;overflow-y:auto;}
-.sh{display:flex;align-items:center;gap:8px;margin:22px 0 10px;grid-column:1/-1;}
+.sh{display:flex;align-items:center;gap:8px;margin:22px 0 10px;padding:9px 12px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);grid-column:1/-1;}
 .sh:first-child{margin-top:0;}
-.sh-line{flex:1;height:1px;background:var(--bd);}
-.sh-cnt{font-size:10px;color:var(--tx3);background:var(--s2);padding:1px 6px;border-radius:6px;font-family:'DM Mono',monospace;}
+.sh-line{flex:1;height:1px;background:var(--bd2);}
+.sh-cnt{font-size:13px;color:var(--tx3);background:var(--surface);padding:1px 6px;border-radius:6px;font-family:'DM Mono',monospace;}
 .sh-sub{display:flex;align-items:center;gap:7px;margin:14px 0 8px;grid-column:1/-1;cursor:pointer;user-select:none;}
 .sh-sub:first-of-type{margin-top:4px;}
 .sh-sub-chevron{font-size:12px;color:var(--tx3);transition:transform .15s;flex-shrink:0;}
 .sh-sub.collapsed .sh-sub-chevron{transform:rotate(-90deg);}
-.sh-sub-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);white-space:nowrap;}
-.sh-sub-cnt{font-size:9.5px;color:var(--tx3);}
+.sh-sub-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);white-space:nowrap;}
+.sh-sub-cnt{font-size:12px;color:var(--tx3);}
 .sh-sub-line{flex:1;height:1px;background:var(--bd);opacity:.55;}
 .sh-sub:hover .sh-sub-label,.sh-sub:hover .sh-sub-chevron{color:var(--tx2);}
+
+/* Star / favorite toggle — used on cards, View modal, List View viewer, and
+   Configure table viewers. Amber regardless of theme/accent so it reads as
+   its own signal, not a re-skinned accent color. */
+.star-btn{background:none;border:none;cursor:pointer;padding:2px;display:inline-flex;align-items:center;justify-content:center;color:var(--tx3);font-size:15px;line-height:1;transition:color .15s,transform .1s;flex-shrink:0;}
+.star-btn:hover{color:var(--or);transform:scale(1.12);}
+.star-btn.starred{color:var(--or);}
+
+/* Popular Templates page — Email / Zulip side-by-side columns, each header
+   tinted with that domain's own accent color (matches the Email/Zulip tab
+   and sidebar session colors elsewhere in the app). */
+.pop-cols{display:flex;align-items:stretch;gap:0;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;background:var(--surface);}
+.pop-col{flex:1;min-width:0;}
+.pop-col+.pop-col{border-left:1px solid var(--bd);}
+.pop-col-hd{display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+.pop-col-hd .cpill{margin-left:auto;}
+.pop-col-hd-email{background:var(--acl);color:var(--ac);}
+.pop-col-hd-zulip{background:var(--pul);color:var(--pu);}
+.pop-col-body{padding:14px 16px;}
+.pop-col-body .grid{grid-template-columns:1fr;}
+.pop-col-body .sh-sub:first-child{margin-top:0 !important;}
 
 /* Grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:11px;}
@@ -120,8 +141,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .card-sel{position:absolute;top:10px;right:10px;width:16px;height:16px;border-radius:4px;border:1.5px solid var(--bd2);background:var(--surface);display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
 .card.selected .card-sel{background:var(--bl);border-color:var(--bl);color:#fff;}
 .ch{display:flex;align-items:flex-start;margin-bottom:7px;padding-right:22px;gap:4px;flex-wrap:nowrap;}
-.tbadge{font-size:10.5px;font-weight:600;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;flex-shrink:1;}
-.pbadge{font-size:10.5px;padding:2px 6px;border-radius:4px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;flex-shrink:1;}
+.tbadge{font-size:10.5px;font-weight:600;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;flex-shrink:1;border:1px solid rgba(120,120,120,.22);}
+.pbadge{font-size:10.5px;padding:2px 6px;border-radius:4px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;flex-shrink:1;border:1px solid rgba(120,120,120,.22);}
 .ctitle{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:3px;line-height:1.3;}
 .cdesc{font-size:11.5px;color:var(--tx2);line-height:1.5;margin-bottom:7px;}
 .cconds{margin-bottom:7px;}
@@ -150,6 +171,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
    the base layer so they always land on top regardless of DOM order. */
 #drafts-modal,#history-modal,#table-insert-modal{z-index:110;}
 .modal{background:var(--surface);border-radius:14px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:var(--shm);transform:translateY(8px);transition:transform .2s;}
+.modal-wide{max-width:70vw;}
 .ov.open .modal{transform:translateY(0);}
 .mh{padding:16px 20px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:1;}
 .mt{font-size:15.5px;font-weight:600;}
@@ -163,7 +185,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .ceval h3{font-size:12px;font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:5px;}
 .crow{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);}
 .crow:last-of-type{border-bottom:none;}
-.crow label{font-size:12px;color:var(--tx2);flex:1;}
+.crow label{font-size:12px;font-weight:500;color:var(--tx);flex:1;}
 .ynt{display:flex;border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden;}
 .ynb{padding:3px 11px;font-size:11px;font-weight:500;border:none;cursor:pointer;font-family:var(--font-body);background:var(--surface);color:var(--tx3);transition:all .15s;}
 .ynb.yes.on{background:var(--green);color:#fff;}
@@ -172,14 +194,16 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .rbox.match{background:var(--greenl);color:var(--green);border:1px solid #9dd4b0;}
 .rbox.nomatch{background:var(--rdl);color:var(--rd);border:1px solid #f0b8b8;}
 
-/* Email preview */
-.eprev{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;}
-.eheadr{background:var(--s2);padding:10px 14px;border-bottom:1px solid var(--bd);}
+/* Email preview — fixed light "paper" regardless of app theme, same
+   rationale as .ql-editor above: this represents the actual email/message,
+   authored and read against a white background. */
+.eprev{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;background:#ffffff;}
+.eheadr{background:#f0efe9;padding:10px 14px;border-bottom:1px solid #e2e0d8;}
 .ef{display:flex;gap:7px;font-size:11px;padding:2px 0;}
-.efl{color:var(--tx3);min-width:36px;}
-.efv{color:var(--tx);font-weight:500;}
-.ebody{padding:14px;font-size:12px;line-height:1.75;white-space:pre-wrap;}
-.ebody .ph{color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px;}
+.efl{color:#9c9a93;min-width:36px;}
+.efv{color:#1a1916;font-weight:500;}
+.ebody{padding:14px;font-size:12px;line-height:1.75;white-space:pre-wrap;color:#1a1916;}
+.ebody .ph{color:#6d5a69;font-style:italic;background:#f4eef2;padding:0 3px;border-radius:3px;font-size:11px;}
 .cbar{padding:8px 13px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:7px;}
 
 /* Edit fields */
@@ -218,12 +242,18 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .csec.col2 .csh-chev{transform:translateY(-50%) rotate(-90deg);}
 .csec.col2>*:not(.csh){display:none;}
 
-/* ── LIBRARY TABS (Email / Zulip) ── */
-.lib-tabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin-bottom:0;flex-shrink:0;padding:0 20px;background:var(--surface);}
-.lib-tab{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--tx3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:var(--font-body);}
+/* ── LIBRARY TABS (Popular / Email / Zulip) ── */
+.lib-tabs{height:var(--topbar-h);box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:2px solid var(--bd);margin-bottom:0;flex-shrink:0;padding:0 20px;background:var(--surface);}
+.lib-tabs-left{display:flex;gap:2px;height:100%;align-items:center;}
+.lib-tabs-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.lib-tab{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--tx3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;font-family:var(--font-body);}
 .lib-tab:hover{color:var(--tx);}
-.lib-tab.active{color:var(--ac);border-bottom-color:var(--ac);font-weight:600;}
-.lib-tab:nth-child(2).active{color:var(--pu);border-bottom-color:var(--pu);}
+.lib-tab-email{color:var(--ac);}
+.lib-tab-zulip{color:var(--pu);}
+.lib-tab-email.active{border-bottom-color:var(--ac);font-weight:700;}
+.lib-tab-zulip.active{border-bottom-color:var(--pu);font-weight:700;}
+.lib-tab-popular{color:var(--or);border-radius:8px 8px 0 0;}
+.lib-tab-popular.active{background:var(--orl);border-bottom-color:var(--or);font-weight:700;}
 
 /* CONFIG SECTIONS */
 .csec{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:16px;}
@@ -302,16 +332,26 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .chk{width:14px;height:14px;accent-color:var(--bl);cursor:pointer;}
 
 /* TOAST */
-.toast{position:fixed;bottom:18px;right:18px;background:var(--tx);color:#fff;padding:8px 13px;border-radius:var(--rs);font-size:12px;display:flex;align-items:center;gap:7px;z-index:300;transform:translateY(60px);opacity:0;transition:all .25s;box-shadow:var(--shm);}
+/* Fixed dark background + white text regardless of theme/dark-mode — unlike
+   most of the app, the toast should NOT track var(--tx), since that token
+   deliberately flips from dark (light mode) to light (dark mode) for body
+   text, which would turn this into near-white-on-white in dark mode. */
+.toast{position:fixed;bottom:18px;right:18px;background:#1f1d19;color:#fff;padding:8px 13px;border-radius:var(--rs);font-size:12px;display:flex;align-items:center;gap:7px;z-index:300;transform:translateY(60px);opacity:0;transition:all .25s;box-shadow:var(--shm);}
 .toast.show{transform:translateY(0);opacity:1;}
 .page{display:none;flex-direction:column;flex:1;min-height:0;}
 .page.active{display:flex;}
 
 /* Quill */
 .ql-toolbar.ql-snow{border:1px solid var(--bd);border-radius:var(--rs) var(--rs) 0 0;background:var(--s2);padding:6px 8px;font-family:var(--font-content);position:sticky;top:var(--mh-h,54px);z-index:1;}
-.ql-container.ql-snow{border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);background:var(--surface);font-family:var(--font-content);font-size:12px;min-height:160px;}
-.ql-editor{min-height:160px;line-height:1.7;color:var(--tx);padding:10px 12px;}
-.ql-editor.ql-blank::before{color:var(--tx3);font-style:normal;font-size:12px;}
+/* The editing/preview surface itself stays fixed light-paper regardless of
+   app theme — an email or Zulip message is composed and read assuming a
+   white background (like real Outlook/Gmail/Zulip compose panes, which
+   keep their message body white even in dark mode), and template bodies
+   carry their own highlight colors authored against that assumption. Only
+   the surrounding chrome (toolbar, modal, sidebar) follows dark mode. */
+.ql-container.ql-snow{border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rs) var(--rs);background:#ffffff;font-family:var(--font-content);font-size:12px;min-height:160px;}
+.ql-editor{min-height:160px;line-height:1.7;color:#1a1916;padding:10px 12px;}
+.ql-editor.ql-blank::before{color:#9c9a93;font-style:normal;font-size:12px;}
 .ql-snow .ql-stroke{stroke:var(--tx2);}
 .ql-snow .ql-fill{fill:var(--tx2);}
 .ql-snow.ql-toolbar button:hover .ql-stroke,.ql-snow .ql-toolbar button:hover .ql-stroke{stroke:var(--acm);}
@@ -321,6 +361,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .ql-snow.ql-toolbar .ql-picker-label{color:var(--tx2);}
 .ql-snow .ql-picker-options{background:var(--surface);border:1px solid var(--bd);border-radius:var(--rs);}
 .ql-snow .ql-picker.ql-size .ql-picker-options{max-height:245px;overflow-y:auto;}
+/* "No Color" swatch (empty-string value) for the Highlight/Background
+   picker — clears the format. Drawn with a diagonal strike so it reads as
+   "clear" rather than as a blank/white swatch. */
+.ql-picker.ql-background .ql-picker-item[data-value=""]{border:1px solid var(--bd2);position:relative;background:var(--surface) !important;}
+.ql-picker.ql-background .ql-picker-item[data-value=""]::after{content:'';position:absolute;inset:2px;background:linear-gradient(to top right,transparent 46%,var(--rd) 48%,var(--rd) 52%,transparent 54%);}
+.ql-picker.ql-background .ql-picker-label[data-value=""]::before{content:'';}
 /* Multi-select filter */
 .cf-multi-wrap{display:flex;align-items:center;gap:4px;padding:3px 7px;border:1px solid var(--bd);border-radius:3px;background:var(--bg);cursor:pointer;min-height:26px;font-size:11px;font-family:var(--font-body);}
 .cf-multi-wrap:hover{border-color:var(--bd2);}
@@ -396,7 +442,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .md-body-ta:focus{border-color:var(--acm);}
 /* Zulip markdown preview pane — mirrors .md-body-ta's box so the toggle
    between edit/preview doesn't jump in size. */
-.zmd-preview{width:100%;min-height:160px;max-height:340px;overflow-y:auto;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:var(--font-body);line-height:1.6;background:var(--surface);color:var(--tx);box-sizing:border-box;}
+.zmd-preview{width:100%;min-height:160px;max-height:340px;overflow-y:auto;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:var(--font-body);line-height:1.6;background:#ffffff;color:#1a1916;box-sizing:border-box;}
 .zmd-preview h1,.zmd-preview h2,.zmd-preview h3,.zmd-preview h4,.zmd-preview h5,.zmd-preview h6{margin:10px 0 6px;line-height:1.3;}
 .zmd-preview h1{font-size:19px;border-bottom:1px solid var(--bd);padding-bottom:4px;}
 .zmd-preview h2{font-size:16px;border-bottom:1px solid var(--bd);padding-bottom:3px;}
@@ -501,14 +547,14 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           All Email Templates <span class="nbadge" id="cnt-email-all">0</span>
         </button>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-int">
+        <div class="fg col" id="fg-int">
           <div class="fgh" onclick="toggleFg('fg-int',event)">
-            <i class="ti ti-chevron-down fgi"></i><span class="fgl">Data Types</span>
+            <i class="ti ti-chevron-down fgi"></i><span class="fgl">Integration</span>
           </div>
           <div class="fgc" id="sb-int-tree"></div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-eco">
+        <div class="fg col" id="fg-eco">
           <div class="fgh" onclick="toggleFg('fg-eco',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Coordination</span>
           </div>
@@ -520,7 +566,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-fu">
+        <div class="fg col" id="fg-fu">
           <div class="fgh" onclick="toggleFg('fg-fu',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Follow-up</span>
           </div>
@@ -532,7 +578,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-ma">
+        <div class="fg col" id="fg-ma">
           <div class="fgh" onclick="toggleFg('fg-ma',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Maintenance</span>
           </div>
@@ -544,7 +590,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-ecustom">
+        <div class="fg col" id="fg-ecustom">
           <div class="fgh" onclick="toggleFg('fg-ecustom',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Custom Categories</span>
           </div>
@@ -564,14 +610,14 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           All Zulip Templates <span class="nbadge" id="cnt-zulip-all">0</span>
         </button>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-zint">
+        <div class="fg col" id="fg-zint">
           <div class="fgh" onclick="toggleFg('fg-zint',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Integration</span>
           </div>
           <div class="fgc" id="sb-zint-tree"></div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-zco">
+        <div class="fg col" id="fg-zco">
           <div class="fgh" onclick="toggleFg('fg-zco',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Coordination</span>
           </div>
@@ -583,7 +629,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-zfu">
+        <div class="fg col" id="fg-zfu">
           <div class="fgh" onclick="toggleFg('fg-zfu',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Follow-up</span>
           </div>
@@ -595,7 +641,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-zma">
+        <div class="fg col" id="fg-zma">
           <div class="fgh" onclick="toggleFg('fg-zma',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Maintenance</span>
           </div>
@@ -607,7 +653,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           </div>
         </div>
         <div class="ndiv"></div>
-        <div class="fg" id="fg-zcustom">
+        <div class="fg col" id="fg-zcustom">
           <div class="fgh" onclick="toggleFg('fg-zcustom',event)">
             <i class="ti ti-chevron-down fgi"></i><span class="fgl">Custom Categories</span>
           </div>
@@ -634,21 +680,39 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
        Configuration pages, so switching domains never requires leaving
        Configure first. -->
   <div class="lib-tabs">
-    <button class="lib-tab active" id="libtab-email" onclick="switchLibDomain('email')">Email Templates <span class="cpill" id="libtab-cnt-email">0</span></button>
-    <button class="lib-tab" id="libtab-zulip" onclick="switchLibDomain('zulip')">Zulip Templates <span class="cpill" id="libtab-cnt-zulip">0</span></button>
+    <div class="lib-tabs-left">
+      <button class="lib-tab lib-tab-popular active" id="libtab-popular" onclick="showPopular()"><i class="ti ti-star"></i> Popular Templates</button>
+      <button class="lib-tab lib-tab-email" id="libtab-email" onclick="switchLibDomain('email')">Email Templates <span class="cpill" id="libtab-cnt-email">0</span></button>
+      <button class="lib-tab lib-tab-zulip" id="libtab-zulip" onclick="switchLibDomain('zulip')">Zulip Templates <span class="cpill" id="libtab-cnt-zulip">0</span></button>
+    </div>
+    <div class="lib-tabs-right">
+      <div class="vtoggle">
+        <button class="vtbtn" id="vt-grid" onclick="setLibView('grid')" title="Box view"><i class="ti ti-layout-grid"></i></button>
+        <button class="vtbtn" id="vt-list" onclick="setLibView('list')" title="List view"><i class="ti ti-list"></i></button>
+      </div>
+      <button class="vtbtn" id="quick-dark-toggle" onclick="toggleDarkModeQuick()" title="Toggle dark mode"><i class="ti ti-moon" id="quick-dark-icon"></i></button>
+    </div>
   </div>
+  <!-- Popular Templates page — starred templates, split Email/Zulip, each
+       grouped by Data Type. This is the app's default landing page. -->
+  <div id="page-popular" class="page active">
+    <div class="topbar">
+      <h2 style="font-size:14px;font-weight:600"><i class="ti ti-star" style="color:var(--or)"></i> Popular Templates</h2>
+      <span style="font-size:11px;color:var(--tx3)">Starred templates from Email &amp; Zulip, grouped by Data Type</span>
+    </div>
+    <div class="content">
+      <div id="pop-body"></div>
+    </div>
+  </div>
+
   <!-- Library page -->
-  <div id="page-lib" class="page active">
+  <div id="page-lib" class="page">
     <div class="topbar">
       <div class="sw"><i class="ti ti-search"></i>
         <input type="text" id="q" placeholder="Search templates, keywords, conditions…" oninput="render()">
       </div>
       <div class="tr">
         <span id="rcnt" class="cpill">0</span>
-        <div class="vtoggle">
-          <button class="vtbtn" id="vt-grid" onclick="setLibView('grid')" title="Box view"><i class="ti ti-layout-grid"></i></button>
-          <button class="vtbtn" id="vt-list" onclick="setLibView('list')" title="List view"><i class="ti ti-list"></i></button>
-        </div>
         <span id="topbar-email-actions">
           <button class="btn btn-p" onclick="openAddEmailModal()"><i class="ti ti-mail"></i> Add Email Template</button>
           <button class="btn btn-gen" title="Generate Email Template" onclick="openGenModal('email')"><i class="ti ti-sparkles"></i> Generate</button>
@@ -657,7 +721,6 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
           <button class="btn btn-zulip" onclick="openAddZulipModal()"><i class="ti ti-message-2"></i> Add Zulip Template</button>
           <button class="btn btn-gen" title="Generate Zulip Template" onclick="openGenModal('zulip')"><i class="ti ti-sparkles"></i> Generate</button>
         </span>
-        <button class="vtbtn" id="quick-dark-toggle" onclick="toggleDarkModeQuick()" title="Toggle dark mode"><i class="ti ti-moon" id="quick-dark-icon"></i></button>
       </div>
     </div>
     <div class="fb">
@@ -701,7 +764,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
                   <span id="ltv-title" style="font-size:13px;font-weight:600"></span>
                   <span id="ltv-meta" style="margin-left:8px"></span>
                 </div>
-                <div style="display:none;gap:6px" id="ltv-actions">
+                <div style="display:none;gap:6px;align-items:center" id="ltv-actions">
+                  <span id="ltv-star"></span>
                   <button class="btn" style="font-size:11px;padding:3px 9px" onclick="openModalFromLibViewer()"><i class="ti ti-external-link"></i> Open</button>
                   <button class="xbtn" onclick="closeLibTplViewer()"><i class="ti ti-x"></i></button>
                 </div>
@@ -1123,7 +1187,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 <!-- ADD EMAIL TEMPLATE MODAL -->
 <div class="ov" id="add-email-modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="mh">
       <div><div class="mt"><i class="ti ti-mail" style="font-size:14px;margin-right:5px"></i>Add Email Template</div></div>
       <div style="display:flex;gap:5px;align-items:center">
@@ -1184,7 +1248,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 <!-- ADD ZULIP TEMPLATE MODAL -->
 <div class="ov" id="add-zulip-modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="mh">
       <div><div class="mt"><i class="ti ti-message-2" style="font-size:14px;margin-right:5px"></i>Add Zulip Template</div></div>
       <div style="display:flex;gap:5px;align-items:center">
@@ -1323,10 +1387,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 <!-- TEMPLATE HISTORY LOG -->
 <div class="ov" id="history-modal">
-  <div class="modal" style="max-width:440px">
+  <div class="modal" style="max-width:560px">
     <div class="mh">
       <div><div class="mt" id="history-modal-title"><i class="ti ti-history" style="font-size:14px;margin-right:5px"></i>History</div></div>
-      <button class="xbtn" onclick="closeHistoryModal()" title="Close">✕</button>
+      <div style="display:flex;gap:5px;align-items:center">
+        <button class="xbtn" onclick="closeHistoryModal()" title="Close">✕</button>
+      </div>
     </div>
     <div class="mb">
       <div id="history-list"></div>
@@ -1396,7 +1462,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 <!-- TEMPLATE MODAL -->
 <div class="ov" id="modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="mh">
       <div><div class="mt" id="m-title"></div><div class="mm" id="m-meta"></div></div>
       <div style="display:flex;gap:5px;align-items:center">
@@ -1569,7 +1635,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.27.2'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.28.2'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -2504,22 +2570,22 @@ function snapshotDomainState(domain){
   };
 }
 function setActiveLibTab(domain){
-  const eb=document.getElementById('libtab-email'),zb=document.getElementById('libtab-zulip');
+  const eb=document.getElementById('libtab-email'),zb=document.getElementById('libtab-zulip'),pb=document.getElementById('libtab-popular');
   if(eb)eb.classList.toggle('active',domain==='email');
   if(zb)zb.classList.toggle('active',domain==='zulip');
+  if(pb)pb.classList.remove('active');
   const ea=document.getElementById('topbar-email-actions'),za=document.getElementById('topbar-zulip-actions');
   if(ea)ea.style.display=domain==='email'?'':'none';
   if(za)za.style.display=domain==='zulip'?'':'none';
-  // Context-aware side menu: only the active tab's sidebar session is shown —
-  // the other domain's category tree/nav items are hidden, not just collapsed.
-  const se=document.getElementById('sess-email'),sz=document.getElementById('sess-zulip');
-  if(se)se.style.display=domain==='email'?'':'none';
-  if(sz)sz.style.display=domain==='zulip'?'':'none';
+  // Email and Zulip sidebar sessions now stay visible together at all times
+  // (each collapsed to its own sub-groups by default) — the top tabs only
+  // switch which domain's grid/filters/Add-button show in the content area.
 }
 // Full restore (used by the top tab bar): brings back the destination domain's
 // last search text, chips, sidebar selection AND scroll position.
 function switchLibDomain(domain){
   showLib();
+  setActiveLibTab(domain);
   if(domain===sideState.domain)return;
   snapshotDomainState(sideState.domain);
   selectedIds.clear();
@@ -2527,7 +2593,6 @@ function switchLibDomain(domain){
   document.getElementById('q').value=s.q;
   chips=s.chips;
   sideState={mode:s.mode,val:s.val,domain};
-  setActiveLibTab(domain);
   const fallbackNav=document.getElementById(domain==='zulip'?'nav-zulip-all':'nav-email-all');
   setActiveNav(s.mode==='all'?fallbackNav:null);
   renderTypeChips();renderProcChips();renderCountryChips();
@@ -2568,12 +2633,25 @@ function defTpl(){return[
 function showLib(){
   document.getElementById('page-lib').classList.add('active');
   document.getElementById('page-cfg').classList.remove('active');
+  document.getElementById('page-popular').classList.remove('active');
   document.getElementById('nav-cfg').classList.remove('active');
+  const pt=document.getElementById('libtab-popular');if(pt)pt.classList.remove('active');
   render();
+}
+function showPopular(){
+  document.getElementById('page-lib').classList.remove('active');
+  document.getElementById('page-cfg').classList.remove('active');
+  document.getElementById('page-popular').classList.add('active');
+  document.getElementById('nav-cfg').classList.remove('active');
+  document.querySelectorAll('.lib-tab').forEach(b=>b.classList.remove('active'));
+  const pt=document.getElementById('libtab-popular');if(pt)pt.classList.add('active');
+  renderPopularPage();
 }
 function showCfg(navEl){
   document.getElementById('page-lib').classList.remove('active');
+  document.getElementById('page-popular').classList.remove('active');
   document.getElementById('page-cfg').classList.add('active');
+  const pt=document.getElementById('libtab-popular');if(pt)pt.classList.remove('active');
   if(navEl){setActiveNav(navEl);document.getElementById('nav-cfg').classList.add('active');}
   // Configuration always opens back on All Templates / Email, same as before.
   cfgTopTab='alltpl';cfgTplDomain='email';
@@ -2582,6 +2660,71 @@ function showCfg(navEl){
   applyCfgVisibility();
   renderCfgTable();renderTypeList();renderProcPills();renderCoordTypeList();renderFuTypeList();renderMaTypeList();renderFolderList();renderCountryList();renderCatList();
   updateCounts();updateCatOpts();
+}
+// ══════════════════════════════════════════════════
+// STAR / FAVORITE — a plain boolean on the template, toggled from the card
+// grid, the View modal, the List View reading pane, and the Configure table
+// viewers. Feeds the Popular Templates page below.
+// ══════════════════════════════════════════════════
+function toggleStarTemplate(id,ev){
+  if(ev){ev.stopPropagation();ev.preventDefault();}
+  const t=templates.find(x=>x.id===id);if(!t)return;
+  t.starred=!t.starred;
+  saveTpl();
+  document.querySelectorAll(`.star-btn[data-star-id="${id}"]`).forEach(btn=>{
+    btn.classList.toggle('starred',t.starred);
+    const icon=btn.querySelector('i');if(icon)icon.className='ti '+(t.starred?'ti-star-filled':'ti-star');
+    btn.title=t.starred?'Unstar':'Star this template';
+  });
+  if(libViewMode!=='list'||document.getElementById('page-lib').classList.contains('active'))render();
+  if(document.getElementById('page-popular').classList.contains('active'))renderPopularPage();
+}
+function starBtnHtml(t,extraStyle){
+  const starred=!!t.starred;
+  return `<button type="button" class="star-btn${starred?' starred':''}" data-star-id="${t.id}" title="${starred?'Unstar':'Star this template'}" style="${extraStyle||''}" onclick="toggleStarTemplate('${t.id}',event)"><i class="ti ${starred?'ti-star-filled':'ti-star'}"></i></button>`;
+}
+// ══════════════════════════════════════════════════
+// POPULAR TEMPLATES — starred templates only, split Email/Zulip, each
+// grouped by Data Type (same effDtype()/dtypeOrder() grouping the main grid
+// uses). This is the app's default landing page.
+// ══════════════════════════════════════════════════
+function renderPopularPage(){
+  const el=document.getElementById('pop-body');if(!el)return;
+  const starred=templates.filter(t=>t.starred);
+  if(!starred.length){
+    el.innerHTML=`<div class="empty" style="display:block"><i class="ti ti-star-off"></i><p>No starred templates yet. Open any template and click the ☆ star to pin it here.</p></div>`;
+    return;
+  }
+  // Two side-by-side columns (Email / Zulip), each with its own accent-tinted
+  // header — mirrors the app's own Email/Zulip color identity instead of a
+  // neutral shared section label, then groups that column's starred
+  // templates by Data Type same as the main grid.
+  const column=(domain,label,icon)=>{
+    const items=starred.filter(t=>(t.domain||'email')===domain);
+    let inner='';
+    if(!items.length){
+      inner=`<div style="padding:20px 4px;font-size:12px;color:var(--tx3)">No starred ${label.toLowerCase()} yet.</div>`;
+    }else{
+      const present=new Set(items.map(effDtype));
+      dtypeOrder().filter(dt=>present.has(dt)).forEach(dt=>{
+        const group=items.filter(t=>effDtype(t)===dt).sort((a,b)=>categoryRank(a)-categoryRank(b)||a.name.localeCompare(b.name));
+        inner+=`<div class="sh-sub" style="margin-top:10px"><i class="ti ti-chevron-down sh-sub-chevron" style="visibility:hidden"></i><span class="sh-sub-label">${esc(dt)}</span><span class="sh-sub-cnt">${group.length}</span><div class="sh-sub-line"></div></div>`;
+        inner+=`<div class="grid" id="pop-grid-${domain}-${catSlug(dt)}"></div>`;
+      });
+    }
+    return `<div class="pop-col pop-col-${domain}">
+      <div class="pop-col-hd pop-col-hd-${domain}">${icon} <span>${label}</span><span class="cpill">${items.length}</span></div>
+      <div class="pop-col-body">${inner}</div>
+    </div>`;
+  };
+  el.innerHTML=`<div class="pop-cols">${column('email','Email Templates','<i class="ti ti-mail"></i>')}${column('zulip','Zulip Templates','<i class="ti ti-message-2"></i>')}</div>`;
+  // Cards are appended after the innerHTML write above so makeCard's DOM
+  // nodes (with their live event handlers) don't get serialized/re-parsed.
+  starred.forEach(t=>{
+    const domain=t.domain||'email';
+    const host=document.getElementById(`pop-grid-${domain}-${catSlug(effDtype(t))}`);
+    if(host)host.appendChild(makeCard(t));
+  });
 }
 // Configuration is just 2 top-level tabs (All Templates / Settings). Within
 // All Templates, Email/Zulip is a lightweight pill-switch (each domain has
@@ -2744,7 +2887,7 @@ function applyDraftToAddForm(prefix,d){
   setVal(prefix+'-type',d.type);setVal(prefix+'-proc',d.proc);setVal(prefix+'-dtype',d.dtype);setVal(prefix+'-country',d.country);
   setVal(prefix+'-name',d.name);setVal(prefix+'-desc',d.desc);
   if(!isZulip)setVal(prefix+'-subj',d.subj);
-  if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill)ncQuill.root.innerHTML=d.body;
+  if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill){ncQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#nc-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addCRow(prefix+'-conds',isZulip?'zck':'nck',isZulip?'zcv':'ncv');fillLastCondRow(prefix+'-conds',c.k,c.v);});
   renderTodoList(prefix,d.todos||[]);
 }
@@ -3005,7 +3148,7 @@ function render(){
   const sec=(items,label,icon,extraStyle)=>{
     if(!items.length) return;
     const h=document.createElement('div'); h.className='sh'; h.style.gridColumn='1/-1';
-    h.innerHTML=`<div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--tx3)${extraStyle?';'+extraStyle:''}">${icon} <span>${label}</span><span class="sh-cnt">${items.length}</span></div><div class="sh-line"></div>`;
+    h.innerHTML=`<div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--tx3)${extraStyle?';'+extraStyle:''}">${icon} <span>${label}</span><span class="sh-cnt">${items.length}</span></div><div class="sh-line"></div>`;
     g.appendChild(h);
     items.forEach(t=>g.appendChild(makeCard(t)));
   };
@@ -3020,7 +3163,7 @@ function render(){
   const secByDtype=(items,label,icon,extraStyle,withinGroupSort)=>{
     if(!items.length) return;
     const h=document.createElement('div'); h.className='sh'; h.style.gridColumn='1/-1';
-    h.innerHTML=`<div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--tx3)${extraStyle?';'+extraStyle:''}">${icon} <span>${label}</span><span class="sh-cnt">${items.length}</span></div><div class="sh-line"></div>`;
+    h.innerHTML=`<div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--tx3)${extraStyle?';'+extraStyle:''}">${icon} <span>${label}</span><span class="sh-cnt">${items.length}</span></div><div class="sh-line"></div>`;
     g.appendChild(h);
     const present=new Set(items.map(effDtype));
     dtypeOrder().filter(dt=>present.has(dt)).forEach(dt=>{
@@ -3149,6 +3292,7 @@ function showLibTplViewer(id,trEl){
   const t=templates.find(x=>x.id===id); if(!t) return;
   const actionsEl=document.getElementById('ltv-actions');if(actionsEl)actionsEl.style.display='flex';
   document.getElementById('ltv-title').textContent=t.name;
+  const starHost=document.getElementById('ltv-star');if(starHost)starHost.innerHTML=starBtnHtml(t);
   const ts=styleForType(t),ps=styleForProc(t);
   const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${t.country}</span>`:'';
   document.getElementById('ltv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${t.type}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
@@ -3166,6 +3310,7 @@ function showLibTplViewer(id,trEl){
     ?`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Topic:</b> ${esc(t.topic)}</div>`:''}`
     :`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>`;
   document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
+  fixInvisibleBodyText(document.querySelector('#ltv-body .ql-editor'));
   document.getElementById('lib-tpl-viewer').classList.add('show');
   document.getElementById('lib-tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -3174,6 +3319,7 @@ function closeLibTplViewer(){
   libTvCurId=null;
   const titleEl=document.getElementById('ltv-title');if(titleEl)titleEl.textContent='';
   const metaEl=document.getElementById('ltv-meta');if(metaEl)metaEl.innerHTML='';
+  const starEl=document.getElementById('ltv-star');if(starEl)starEl.innerHTML='';
   const actionsEl=document.getElementById('ltv-actions');if(actionsEl)actionsEl.style.display='none';
   const bodyEl=document.getElementById('ltv-body');
   if(bodyEl)bodyEl.innerHTML='<div class="tpl-viewer-placeholder"><i class="ti ti-mail-opened" style="font-size:28px"></i><span>Select a template to preview</span></div>';
@@ -3208,7 +3354,7 @@ function makeCard(t){
     <div class="ctitle">${t.name}</div>
     <div class="cdesc">${t.desc}</div>
     ${conds.length?`<div class="cconds">${condHTML}</div>`:''}
-    <div class="cf"><span class="cid mono">${t.id}</span><span class="openbtn"><i class="ti ti-external-link" style="font-size:11px"></i></span></div>`;
+    <div class="cf"><span class="cid mono">${t.id}</span><span style="margin-left:auto;display:flex;align-items:center;gap:2px">${starBtnHtml(t)}<span class="openbtn"><i class="ti ti-external-link" style="font-size:11px"></i></span></span></div>`;
   div.onclick=(e)=>{
     if(e.shiftKey||e.ctrlKey||e.metaKey||e.target.closest('.card-sel')||e.target.closest('.ctag-more')) return;
     if(!e.target.closest('.card-sel')) toggleSelect(t.id,e);
@@ -3245,7 +3391,9 @@ function bulkDelete(){
 // MODAL — VIEW
 // ══════════════════════════════════════════════════
 let condState={};
-function openModal(id){curId=id;isEdit=false;editCC=0;condState={};viewModal(id);document.getElementById('modal').classList.add('open');}
+function openModal(id){curId=id;isEdit=false;editCC=0;viewZulipPreviewOn=false;viewModal(id);document.getElementById('modal').classList.add('open');}
+let viewZulipPreviewOn=false;
+function toggleViewZulipPreview(id){viewZulipPreviewOn=!viewZulipPreviewOn;viewModal(id);}
 function closeModal(){document.getElementById('modal').classList.remove('open');curId=null;isEdit=false;}
 
 function viewModal(id){
@@ -3256,7 +3404,7 @@ function viewModal(id){
   const secondBadgeV=showsDtypeV
     ?`<span class="pbadge" style="${typeStyle(tplDtype(t))};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${tplDtype(t)}</span>`
     :`<span class="pbadge" style="${styleForProc(t)};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
-  document.getElementById('m-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${styleForType(t)}">${t.type}</span>${secondBadgeV}`;
+  document.getElementById('m-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${styleForType(t)}">${t.type}</span>${secondBadgeV}${starBtnHtml(t,'margin-left:6px')}`;
   document.getElementById('m-edit-btn').innerHTML='<i class="ti ti-edit"></i> Edit';
   let ce='';
   if(t.conds&&t.conds.length){
@@ -3268,8 +3416,15 @@ function viewModal(id){
   }
   const isZulip=t.domain==='zulip';
   const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(t.body);
+  const zulipToolbar=isZulip
+    ?`<div class="edtoolbar" style="justify-content:flex-end;margin-bottom:6px">
+        <button type="button" class="tblbtn${viewZulipPreviewOn?' active':''}" onclick="toggleViewZulipPreview('${id}')"><i class="ti ${viewZulipPreviewOn?'ti-eye-off':'ti-eye'}"></i> ${viewZulipPreviewOn?'Raw':'Preview'}</button>
+      </div>`
+    :'';
   const bodyDisplay=isHtml
     ?`<div class="ql-editor" style="padding:14px;min-height:0;font-size:12px;line-height:1.75;color:var(--tx)">${stripTableWrappers(t.body)}</div>`
+    :isZulip&&viewZulipPreviewOn
+    ?`<div class="zmd-preview" style="border:none;padding:14px">${zulipMdToHtml(t.body)||'<span style="color:var(--tx3);font-style:italic">Nothing to preview.</span>'}</div>`
     :`<div class="ebody">${t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>')}</div>`;
   const headerRow=isZulip
     ?((t.channel||t.topic)?`${t.channel?`<div class="ef"><span class="efl">Channel:</span><span class="efv">${esc(t.channel)}</span></div>`:''}
@@ -3285,6 +3440,7 @@ function viewModal(id){
   document.getElementById('m-body').innerHTML=`
     <div class="eprev" style="margin-bottom:10px">
       ${headerRow?`<div class="eheadr">${headerRow}</div>`:''}
+      ${zulipToolbar}
       ${bodyDisplay}
     </div>
     ${ce}
@@ -3296,6 +3452,28 @@ function viewModal(id){
         <button class="btn ${isZulip?'btn-zulip':'btn-p'}" onclick="doCopy('${id}','b')"><i class="ti ti-copy"></i> Copy ${isZulip?'message':'body'}</button>
       </div>
     </div>`;
+  fixInvisibleBodyText(document.querySelector('#m-body .ql-editor'));
+  initConditionCheck(id);
+}
+// Condition Check starts pre-filled with exactly the Yes/No values recorded
+// when the template was created/last edited (t.conds), instead of opening
+// blank and asking the viewer to re-answer from scratch — the highlighted
+// Yes/No buttons already show that state, so no separate "matches" banner
+// is shown here. The buttons stay clickable so the viewer can still explore
+// a different real-world answer via setYN(), which surfaces alternatives
+// when that answer no longer matches.
+function initConditionCheck(id){
+  const t=templates.find(x=>x.id===id);
+  if(!t||!t.conds||!t.conds.length)return;
+  condState={};
+  t.conds.forEach((c,i)=>{
+    condState[c.k]=c.v;
+    const yBtn=document.getElementById('yn-y-'+i),nBtn=document.getElementById('yn-n-'+i);
+    if(yBtn)yBtn.classList.toggle('on',c.v==='yes');
+    if(nBtn)nBtn.classList.toggle('on',c.v==='no');
+  });
+  const res=document.getElementById('cr-'+id);
+  if(res)res.innerHTML='';
 }
 
 // ══════════════════════════════════════════════════
@@ -3433,6 +3611,10 @@ function editModal(id){
     </div>`).join('');
   document.getElementById('m-body').innerHTML=`
     <div class="er"><span class="el">Name</span><input class="ef2" id="e-name" value="${esc(t.name)}"></div>
+    <div class="er" style="background:var(--orl);border:1px solid var(--or);border-radius:var(--rs);padding:8px 10px;margin-bottom:11px">
+      <span class="el" style="color:var(--or);margin-bottom:3px">Reason to Edit <span title="Required">*</span></span>
+      <input class="ef2" id="e-edit-reason" placeholder="Why are you editing this template? (required)">
+    </div>
     <div style="display:flex;gap:8px;margin-bottom:11px;flex-wrap:wrap;">
       <div style="flex:0 0 130px"><span class="el">Category</span><select class="ef2" id="e-cat" onchange="onEditCatChange()">${catOpts}</select></div>
       <div style="flex:0 0 auto"><span class="el">Country</span><select class="ef2" style="width:auto" id="e-country">${ctrOpts}</select></div>
@@ -3577,7 +3759,7 @@ function applyDraftToEditForm(d){
   setVal('e-type',d.type);setVal('e-proc',d.proc);setVal('e-dtype',d.dtype);setVal('e-country',d.country);
   setVal('e-name',d.name);setVal('e-desc',d.desc);
   if(d.domain!=='zulip')setVal('e-subj',d.subj);
-  if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill)editQuill.root.innerHTML=d.body;
+  if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill){editQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#e-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addEditCRow(document.querySelectorAll('#ec-rows .cbi').length);fillLastCondRow('ec-rows',c.k,c.v);});
   renderTodoList('e',d.todos||[]);
 }
@@ -3637,6 +3819,14 @@ function addEditCRow(start){
 }
 function saveEdit(id){
   const t=templates.find(x=>x.id===id); if(!t) return;
+  const reason=(val('e-edit-reason')||'').trim();
+  if(!reason){toast('Please fill in "Reason to Edit" before saving.');const rf=document.getElementById('e-edit-reason');if(rf)rf.focus();return;}
+  // Snapshot the template exactly as it was before this edit, for the
+  // History Log's spoiler view — deep-cloned (not the shallow `before` below)
+  // and with its own `history` stripped so snapshots never nest each other's
+  // full history and balloon the shared sync payload over repeated edits.
+  const beforeSnapshot=JSON.parse(JSON.stringify(t));
+  delete beforeSnapshot.history;
   const before=Object.assign({},t);
   const v=currentEditFormValues();
   t.name=v.name;t.country=v.country;t.cat=v.cat;t.type=v.type;t.proc=v.proc;t.dtype=v.dtype;t.desc=v.desc;
@@ -3645,7 +3835,7 @@ function saveEdit(id){
   t.body=v.body;t.conds=v.conds;t.todos=v.todos;
   t.kw=[t.type.toLowerCase(),t.proc,...(t.dtype?[t.dtype.toLowerCase()]:[]),...t.name.toLowerCase().split(' '),...t.desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   t.updatedAt=new Date().toISOString();
-  logTemplateHistory(t,before);
+  logTemplateHistory(t,before,reason,beforeSnapshot);
   if(editingDraftId){drafts=drafts.filter(d=>d.id!==editingDraftId);saveDraftsLS();updateDraftBadges();editingDraftId=null;}
   saveTpl();isEdit=false;editQuill=null;
   updateCounts();renderSidebarTypes();renderSidebarSubs();renderTypeChips();render();
@@ -3665,13 +3855,27 @@ function diffTemplateFields(before,after){
   });
   return changed;
 }
-function logTemplateHistory(t,before){
+function logTemplateHistory(t,before,reason,snapshot){
   const changed=before?diffTemplateFields(before,t):['Created'];
   if(before&&!changed.length)return; // saved with no actual field changes — nothing worth logging
   if(!Array.isArray(t.history))t.history=[];
-  t.history.push({ts:new Date().toISOString(),changed});
+  const entry={ts:new Date().toISOString(),changed};
+  if(before){entry.reason=reason||'';entry.snapshot=snapshot||null;}
+  t.history.push(entry);
   if(t.history.length>50)t.history=t.history.slice(-50); // cap growth of the shared sync payload
 }
+// One-time reset of every template's edit-history log, baselined on
+// whatever each template's most recently saved content already is —
+// requested directly (not exposed as a user-facing button) when the History
+// Log's snapshot/spoiler format was introduced, so no template carries a
+// history entry recorded in the old pre-spoiler shape. Guarded so it only
+// ever runs once per device.
+(function resetAllEditLogsOnce(){
+  if(localStorage.getItem('etl_history_reset_v1')==='1')return;
+  templates.forEach(t=>{t.history=[];});
+  localStorage.setItem('etl_history_reset_v1','1');
+  saveTpl();
+})();
 function openHistoryModal(id){
   curHistoryId=id;
   renderHistoryList(id);
@@ -3703,15 +3907,51 @@ function renderHistoryList(id){
     el.innerHTML='<div style="padding:12px 15px;font-size:12px;color:var(--tx3)">No history recorded yet for this template (it was created before this feature, or hasn\'t been edited since).</div>';
     return;
   }
-  el.innerHTML=entries.map(e=>{
-    const label=(e.changed||[]).includes('Created')?'Created':'Edited — '+(e.changed||[]).join(', ');
+  el.innerHTML=entries.map((e,i)=>{
+    const isCreated=(e.changed||[]).includes('Created');
+    const changedLine=isCreated?'Created':'Changed: '+(e.changed||[]).join(', ');
+    const metaLine=`<div style="font-size:10.5px;color:var(--tx3);margin-top:2px">${new Date(e.ts).toLocaleString()} · ${relTime(e.ts)}</div>`;
+    if(!isCreated&&e.snapshot){
+      const spId='hist-sp-'+i;
+      return `<div class="tbrow" style="cursor:default;flex-direction:column;align-items:stretch;gap:6px">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--tx)">${esc(e.reason||'(no reason given)')}</div>
+          <div style="font-size:10.5px;color:var(--tx3);margin-top:1px">${esc(changedLine)}</div>
+          ${metaLine}
+        </div>
+        <button class="btn" style="font-size:11px;padding:3px 10px;align-self:flex-start" onclick="toggleHistorySpoiler('${spId}',this)"><i class="ti ti-eye"></i> View Spoiler</button>
+        <div id="${spId}" class="cond-box" style="display:none;font-size:11px">
+          <div style="font-size:10px;font-weight:600;color:var(--or);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Remark: Template before this edit</div>
+          ${renderHistorySnapshotBody(e.snapshot)}
+        </div>
+      </div>`;
+    }
     return `<div class="tbrow" style="cursor:default">
       <div style="flex:1">
-        <div style="font-size:12px;font-weight:600;color:var(--tx)">${esc(label)}</div>
-        <div style="font-size:10.5px;color:var(--tx3);margin-top:2px">${new Date(e.ts).toLocaleString()} · ${relTime(e.ts)}</div>
+        <div style="font-size:12px;font-weight:600;color:var(--tx)">${esc(changedLine)}</div>
+        ${metaLine}
       </div>
     </div>`;
   }).join('');
+}
+function toggleHistorySpoiler(spId,btn){
+  const el=document.getElementById(spId);if(!el)return;
+  const showing=el.style.display!=='none';
+  el.style.display=showing?'none':'block';
+  if(btn)btn.innerHTML=showing?'<i class="ti ti-eye"></i> View Spoiler':'<i class="ti ti-eye-off"></i> Hide Spoiler';
+}
+function renderHistorySnapshotBody(snap){
+  const isZulip=snap.domain==='zulip';
+  const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(snap.body||'');
+  const body=isHtml
+    ?stripTableWrappers(snap.body)
+    :String(snap.body||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const headRows=isZulip
+    ?`${snap.channel?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Channel:</b> ${esc(snap.channel)}</div>`:''}${snap.topic?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Topic:</b> ${esc(snap.topic)}</div>`:''}`
+    :`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Subject:</b> ${esc(snap.subj||'')}</div>`;
+  return `<div style="margin-bottom:4px;font-weight:600;color:var(--tx)">${esc(snap.name||'')}</div>
+    ${headRows}
+    <div class="${isHtml?'ql-editor':''}" style="padding:0;margin-top:4px;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
 }
 function nextTplId(domain,cat){
   const pfx=domain==='zulip'?'Z':cat==='followup'?'F':cat==='maintenance'?'M':cat==='integration'?'T':'C';
@@ -3942,7 +4182,7 @@ function setYN(tid,key,val,idx){
   const t=templates.find(x=>x.id===tid);const res=document.getElementById('cr-'+tid);if(!t||!res)return;
   if(!t.conds.every(c=>condState[c.k]!=null)){res.innerHTML='';return;}
   const ok=t.conds.every(c=>condState[c.k]===c.v);
-  if(ok){res.innerHTML=`<div class="rbox match"><i class="ti ti-circle-check"></i> This template matches.</div>`;}
+  if(ok){res.innerHTML='';}
   else{
     const alts=templates.filter(x=>x.id!==tid&&x.type===t.type&&x.proc===t.proc&&(x.conds||[]).length&&x.conds.every(c=>condState[c.k]===undefined||condState[c.k]===c.v));
     const links=alts.map(a=>`<a href="#" onclick="openModal('${a.id}');return false;" style="color:var(--bl);text-decoration:underline">${a.name}</a>`).join(', ')||'no alternative found';
@@ -4097,6 +4337,7 @@ function showTplViewer(id,trEl){
   const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   document.getElementById('tv-body').innerHTML=`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
+  fixInvisibleBodyText(document.querySelector('#tv-body .ql-editor'));
   document.getElementById('tpl-viewer').classList.add('show');
   document.getElementById('tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -4931,7 +5172,7 @@ function emailToolbar(){
   return [
     [{font:FONT_WHITELIST},{size:SIZE_WHITELIST}],
     ['bold','italic','underline','strike'],
-    [{color:[]},{background:[]}],
+    [{color:[]},{background:['','#ffff00','#90ee90','#ffb3b3','#a3d8ff','#d8b4fe','#ffffff']}],
     [{list:'ordered'},{list:'bullet'}],
     [{indent:'-1'},{indent:'+1'}],
     [{align:[]}],
@@ -5230,6 +5471,31 @@ function toggleTableDropdown(btn,e){
 document.addEventListener('click',function(e){
   if(!e.target.closest('.tbl-dd-wrap'))closeTableDropdowns();
 });
+// The body preview/editor is always a white "paper" background now (see the
+// .ql-editor rule) — so any run of text carrying an old inline WHITE/near-
+// white color (baked in from back when this app's dark mode inverted the
+// text color too) is now invisible white-on-white. Force any such text back
+// to a normal dark, readable color. Safe to apply to every matching element
+// regardless of nesting (unlike the old background-invert fix, this is a
+// flat override, not a compounding filter).
+// Checks the EFFECTIVE (computed) color, not just an inline style attribute
+// — real-world pasted email HTML can carry a too-light text color through
+// several different mechanisms (inline style, a legacy <font color="...">
+// attribute, an inherited ancestor color with no override lower down), and
+// only computed style resolves all of those the same way. Walks every
+// element so an inherited light color gets caught at each element that
+// actually has text, regardless of which ancestor originally set it.
+function fixInvisibleBodyText(container){
+  if(!container)return;
+  container.querySelectorAll('*').forEach(el=>{
+    if(!el.textContent||!el.textContent.trim())return;
+    const m=getComputedStyle(el).color.match(/\d+(\.\d+)?/g);
+    if(!m||m.length<3)return;
+    const [r,g,b]=m.map(Number);
+    const lum=(0.299*r+0.587*g+0.114*b)/255;
+    if(lum>0.7)el.style.setProperty('color','#1a1916','important');
+  });
+}
 // Measures this modal's sticky header so the Quill toolbar (also sticky, see
 // .ql-toolbar.ql-snow) can stick immediately below it instead of overlapping
 // it — lets the formatting toolbar stay visible while scrolling a long body.
@@ -5264,6 +5530,7 @@ function initEditQuill(htmlContent){
   editFocusedTable=null;editFocusedCell=null;
   trackTableFocus(editQuill,t=>editFocusedTable=t,c=>editFocusedCell=c,'e');
   syncModalHeaderHeight('#modal');
+  fixInvisibleBodyText(document.querySelector('#e-body-editor .ql-editor'));
 }
 
 // ══════════════════════════════════════════════════
@@ -5930,80 +6197,30 @@ const THEME_PRESETS=[
 function applyThemePreset(id){
   const preset=THEME_PRESETS.find(p=>p.id===id);if(!preset)return;
   const overrides=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
-  // Presets ship their LIGHT-mode hex values. In dark mode, applying them
-  // raw used to overwrite the dimmed palette with bright light colors while
-  // the dark-mode toggle stayed on — right data, wrong brightness. Route
-  // each token through the same dimVariant() conversion applyDarkNeutrals()
-  // uses, so the preset's hue carries over but stays dark; the light hex is
-  // still what's saved, so switching back to light mode later is correct.
+  // Presets are a Light Mode concept only — Dark Mode always uses the one
+  // fixed DARK_FIXED_PALETTE regardless of preset. Still save the preset's
+  // tokens so they're there waiting when the user switches back to light.
   const isDark=document.documentElement.getAttribute('data-theme')==='dark';
   Object.entries(preset.tokens).forEach(([k,v])=>{
-    document.documentElement.style.setProperty(k,isDark?dimVariant(v,k):v);
     overrides[k]=v;
+    if(!isDark)document.documentElement.style.setProperty(k,v);
   });
   localStorage.setItem('etl_theme_vars',JSON.stringify(overrides));
-  if(isDark)adaptAccentForDarkMode(true); // --surface just changed; re-mix the accent tint to match
   renderDesignPanel();
   scheduleSync();
-  toast('Applied "'+preset.name+'" theme.');
+  toast('Applied "'+preset.name+'" theme.'+(isDark?' (shows once you switch back to Light mode)':''));
 }
-// Dim Mode adapts whichever preset/custom theme is ACTIVE, instead of
-// replacing it with one fixed dark palette — it converts each of the 7 theme
-// tokens to HSL, keeps the hue (so Ocean stays blue-tinted dim, Forest stays
-// green-tinted dim, etc.), caps saturation to avoid neon dark-mode colors, and
-// remaps lightness to the same per-token dark/light target this app has
-// always used, so relative contrast (bg darkest → border lightest, text
-// lightest → muted text darkest) stays exactly as before.
-const DIM_TARGET_L={'--bg':10,'--surface':14,'--s2':18,'--bd':25,'--tx':92,'--tx2':70,'--tx3':48};
-const DIM_SAT_CAP={'--bg':30,'--surface':26,'--s2':26,'--bd':24,'--tx':18,'--tx2':16,'--tx3':14};
-function rgbToHsl(r,g,b){
-  r/=255;g/=255;b/=255;
-  const max=Math.max(r,g,b),min=Math.min(r,g,b);
-  let h=0,s=0;const l=(max+min)/2;
-  if(max!==min){
-    const d=max-min;
-    s=l>0.5?d/(2-max-min):d/(max+min);
-    if(max===r)h=(g-b)/d+(g<b?6:0);
-    else if(max===g)h=(b-r)/d+2;
-    else h=(r-g)/d+4;
-    h/=6;
-  }
-  return [h*360,s*100,l*100];
-}
-function hslToRgb(h,s,l){
-  h/=360;s/=100;l/=100;
-  let r,g,b;
-  if(s===0){r=g=b=l;}
-  else{
-    const hue2rgb=(p,q,t)=>{
-      if(t<0)t+=1;if(t>1)t-=1;
-      if(t<1/6)return p+(q-p)*6*t;
-      if(t<1/2)return q;
-      if(t<2/3)return p+(q-p)*(2/3-t)*6;
-      return p;
-    };
-    const q=l<0.5?l*(1+s):l+s-l*s;
-    const p=2*l-q;
-    r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3);
-  }
-  return [r*255,g*255,b*255];
-}
-function dimVariant(hex,key){
-  const [r,g,b]=hexToRgbArr(hex);
-  const [h,s]=rgbToHsl(r,g,b);
-  const satOut=Math.min(s,DIM_SAT_CAP[key]||25);
-  const [nr,ng,nb]=hslToRgb(h,satOut,DIM_TARGET_L[key]);
-  return rgbToHex(nr,ng,nb);
-}
+// Dark Mode uses one fixed palette (a Twitter-dark-style dark blue-gray),
+// regardless of which light-mode preset/custom theme is active — simpler
+// and more predictable than deriving a dim variant per-preset. The light-
+// mode override (if any) is untouched in storage and simply re-applies when
+// switching back to Light mode.
+const DARK_FIXED_PALETTE={'--bg':'#15202B','--surface':'#192734','--s2':'#22303C','--bd':'#38444D','--tx':'#FFFFFF','--tx2':'#8899A6','--tx3':'#66757F'};
 function applyDarkNeutrals(on){
   document.documentElement.setAttribute('data-theme',on?'dark':'light');
   THEME_VARS.forEach(v=>document.documentElement.style.removeProperty(v.key));
   if(on){
-    const overrides=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
-    THEME_VARS.forEach(v=>{
-      const sourceHex=overrides[v.key]||v.fallback;
-      document.documentElement.style.setProperty(v.key,dimVariant(sourceHex,v.key));
-    });
+    Object.entries(DARK_FIXED_PALETTE).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
   } else {
     loadThemeVarOverrides();
   }
@@ -6012,14 +6229,22 @@ function applyDarkNeutrals(on){
 // looks washed out on a dim background — re-mix them toward the dim surface
 // instead, and restore the white-mixed version on the way back to light mode.
 function adaptAccentForDarkMode(on){
-  const accent=localStorage.getItem('etl_accent'),zAccent=localStorage.getItem('etl_zulip_accent');
+  // Falls back to the built-in default accent (--ac/--pu's own :root hex)
+  // when the user never customized one — without this, an un-customized
+  // --acl/--pul just stays at its light-mode CSS default in dark mode too,
+  // showing as a bright, washed-out pink/lavender band. The fallback is
+  // used only to COMPUTE the dark-mixed tint here, never persisted to
+  // storage — an un-customized accent must stay un-customized.
+  const savedAccent=localStorage.getItem('etl_accent'),savedZAccent=localStorage.getItem('etl_zulip_accent');
   if(on){
-    const dimSurface=getComputedStyle(document.documentElement).getPropertyValue('--surface').trim()||'#212426';
-    if(accent)document.documentElement.style.setProperty('--acl',mixColor(accent,dimSurface,0.82));
-    if(zAccent)document.documentElement.style.setProperty('--pul',mixColor(zAccent,dimSurface,0.82));
+    const dimSurface=getComputedStyle(document.documentElement).getPropertyValue('--surface').trim()||'#192734';
+    document.documentElement.style.setProperty('--acl',mixColor(savedAccent||'#876F80',dimSurface,0.82));
+    document.documentElement.style.setProperty('--pul',mixColor(savedZAccent||'#3a1a7a',dimSurface,0.82));
   } else {
-    if(accent)applyAccent(accent);
-    if(zAccent)applyZulipAccent(zAccent);
+    if(savedAccent)applyAccent(savedAccent);
+    else document.documentElement.style.removeProperty('--acl');
+    if(savedZAccent)applyZulipAccent(savedZAccent);
+    else document.documentElement.style.removeProperty('--pul');
   }
 }
 function setDarkMode(on){
@@ -6267,7 +6492,14 @@ makeCsecsCollapsible(document.getElementById('cfg-panel-stg'));
   const savedZAccentBg=localStorage.getItem('etl_zulip_accent_bg');if(savedZAccentBg)document.documentElement.style.setProperty('--pul',savedZAccentBg);
   loadThemeVarOverrides();
   const savedFont=localStorage.getItem('etl_font_body');if(savedFont&&savedFont!=='Poppins'){loadFont(savedFont);document.documentElement.style.setProperty('--font-body',`'${savedFont}',sans-serif`);}
-  applyDarkNeutrals(localStorage.getItem('etl_dark_mode')==='1');
+  const startsDark=localStorage.getItem('etl_dark_mode')==='1';
+  applyDarkNeutrals(startsDark);
+  // Accent tints (--acl/--pul) need the same dark-mode re-mix on a fresh
+  // load as toggling does — without this, refreshing the page while dark
+  // mode was already on restores the LIGHT-mixed backgrounds set above
+  // (lines just above), leaving the Popular page's Email/Zulip column
+  // headers (and anything else keyed off --acl/--pul) bright again.
+  if(startsDark)adaptAccentForDarkMode(true);
   updateQuickDarkIcon();
   // .ql-font-* CSS classes are normally injected lazily, only when an
   // Add/Edit editor toolbar first initializes — a read-only preview (List
@@ -6302,6 +6534,10 @@ updateTrashBadge();
 updateDraftBadges();
 setInterval(function(){if(purgeExpiredTrash())updateTrashBadge();},60*60*1000);
 render();
+// Default landing page on every fresh load/refresh is Popular Templates —
+// called last so the Library grid above is already populated and ready the
+// instant the user navigates away from it.
+showPopular();
 </script>
 </body>
 </html>
