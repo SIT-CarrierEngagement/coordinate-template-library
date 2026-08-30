@@ -1220,6 +1220,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
         <div class="fg2"><label>Description</label><input type="text" id="nc-desc" placeholder="When to use this template"></div>
         <div class="fg2" style="max-width:200px"><label>Email Subject</label><input type="text" id="nc-subj" placeholder="[TYPE] Subject"></div>
       </div>
+      <div class="fr">
+        <div class="fg2"><label>To <span style="color:var(--tx3);font-weight:400;text-transform:none">(optional)</span></label><input type="text" id="nc-to" placeholder="e.g. [Partner Email]"></div>
+        <div class="fg2" style="max-width:260px"><label>CC <span style="color:var(--tx3);font-weight:400;text-transform:none">(optional)</span></label><input type="text" id="nc-cc" placeholder="e.g. team@example.com"></div>
+      </div>
       <div class="fg2" style="margin-bottom:10px"><label>Email Body</label>
         <div id="nc-body-editor"></div>
         <textarea id="nc-body" style="display:none"></textarea>
@@ -1638,7 +1642,7 @@ const SB_META_KEY='app_meta';
 // hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.28.4'; // bump before every deploy — announced to app_meta on connect
+const APP_VERSION='v2026.08.30.1'; // bump before every deploy — announced to app_meta on connect
 // ══════════════════════════════════════════════════
 // PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
 // Publish" feature. The GitHub token that can actually write to the repo
@@ -2813,13 +2817,13 @@ function openAddEmailModal(){
 }
 function closeAddEmailModal(){
   document.getElementById('add-email-modal').classList.remove('open');
-  ['nc-name','nc-desc','nc-subj'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+  ['nc-name','nc-desc','nc-subj','nc-to','nc-cc'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
   document.getElementById('nc-conds').innerHTML='';newCC=0;
   renderTodoList('nc',[]);
   if(ncQuill)ncQuill.root.innerHTML='';
 }
 function isAddEmailDirty(){
-  return !!(val('nc-name')||val('nc-desc')||val('nc-subj')
+  return !!(val('nc-name')||val('nc-desc')||val('nc-subj')||val('nc-to')||val('nc-cc')
     ||(ncQuill&&ncQuill.getText().trim())
     ||document.querySelectorAll('#nc-conds .cbi').length
     ||document.querySelectorAll('#nc-todo-list .todo-row').length);
@@ -2830,6 +2834,7 @@ function buildAddDraftPayload(prefix){
     domain:isZulip?'zulip':'email',sourceTemplateId:null,
     cat:val(prefix+'-cat'),country:val(prefix+'-country'),type:val(prefix+'-type'),proc:val(prefix+'-proc'),dtype:val(prefix+'-dtype'),
     name:val(prefix+'-name'),desc:val(prefix+'-desc'),subj:isZulip?'':val(prefix+'-subj'),
+    to:isZulip?'':val('nc-to'),cc:isZulip?'':val('nc-cc'),
     channel:isZulip?val('zc-channel'):'',topic:isZulip?val('zc-topic'):'',
     body:isZulip?val('zc-body'):(ncQuill?ncQuill.root.innerHTML:''),
     conds:[...document.querySelectorAll('#'+prefix+'-conds .cbi')].map(row=>({k:row.querySelector('input').value.trim(),v:row.querySelector('select').value})).filter(c=>c.k),
@@ -2889,7 +2894,7 @@ function applyDraftToAddForm(prefix,d){
   (isZulip?updateZCatOpts:updateCatOpts)();
   setVal(prefix+'-type',d.type);setVal(prefix+'-proc',d.proc);setVal(prefix+'-dtype',d.dtype);setVal(prefix+'-country',d.country);
   setVal(prefix+'-name',d.name);setVal(prefix+'-desc',d.desc);
-  if(!isZulip)setVal(prefix+'-subj',d.subj);
+  if(!isZulip){setVal(prefix+'-subj',d.subj);setVal('nc-to',d.to);setVal('nc-cc',d.cc);}
   if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill){ncQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#nc-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addCRow(prefix+'-conds',isZulip?'zck':'nck',isZulip?'zcv':'ncv');fillLastCondRow(prefix+'-conds',c.k,c.v);});
   renderTodoList(prefix,d.todos||[]);
@@ -3311,7 +3316,7 @@ function showLibTplViewer(id,trEl){
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   const subjRow=isZulip
     ?`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Topic:</b> ${esc(t.topic)}</div>`:''}`
-    :`<div style="margin-bottom:6px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Subject:</b> ${esc(t.subj)}</div>`;
+    :`${t.to?`<div style="margin-bottom:4px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">To:</b> ${esc(t.to)}</div>`:''}${t.cc?`<div style="margin-bottom:4px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">CC:</b> ${esc(t.cc)}</div>`:''}<div style="margin-bottom:6px;font-size:11px;color:#9c9a93"><b style="color:#5c5a54">Subject:</b> ${esc(t.subj)}</div>`;
   document.getElementById('ltv-body').innerHTML=`${subjRow}${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   fixInvisibleBodyText(document.querySelector('#ltv-body .ql-editor'));
   document.getElementById('lib-tpl-viewer').classList.add('show');
@@ -3432,7 +3437,8 @@ function viewModal(id){
   const headerRow=isZulip
     ?((t.channel||t.topic)?`${t.channel?`<div class="ef"><span class="efl">Channel:</span><span class="efv">${esc(t.channel)}</span></div>`:''}
       ${t.topic?`<div class="ef"><span class="efl">Topic:</span><span class="efv">${esc(t.topic)}</span></div>`:''}`:'')
-    :`<div class="ef"><span class="efl">To:</span><span class="efv"><span class="ph">[Partner Email]</span></span></div>
+    :`<div class="ef"><span class="efl">To:</span><span class="efv">${t.to?esc(t.to):'<span class="ph">[Partner Email]</span>'}</span></div>
+      ${t.cc?`<div class="ef"><span class="efl">CC:</span><span class="efv">${esc(t.cc)}</span></div>`:''}
       <div class="ef"><span class="efl">Subject:</span><span class="efv">${esc(t.subj)}</span></div>`;
   const todoDisplay=`<div class="cond-box" style="margin-bottom:10px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -3626,7 +3632,11 @@ function editModal(id){
       <div style="flex:1" id="e-dtype-row"><span class="el">Data Type</span><select class="ef2" id="e-dtype">${dtypeOpts}</select></div>
     </div>
     <div class="er"><span class="el">Description</span><input class="ef2" id="e-desc" value="${esc(t.desc)}"></div>
-    ${isZulip?'':`<div class="er"><span class="el">Subject</span><input class="ef2" id="e-subj" value="${esc(t.subj||'')}"></div>`}
+    ${isZulip?'':`<div class="er"><span class="el">Subject</span><input class="ef2" id="e-subj" value="${esc(t.subj||'')}"></div>
+    <div style="display:flex;gap:8px;margin-bottom:11px">
+      <div style="flex:1"><span class="el">To <span style="color:var(--tx3);font-weight:400;text-transform:none">(optional)</span></span><input class="ef2" id="e-to" value="${esc(t.to||'')}" placeholder="e.g. [Partner Email]"></div>
+      <div style="flex:0 0 260px"><span class="el">CC <span style="color:var(--tx3);font-weight:400;text-transform:none">(optional)</span></span><input class="ef2" id="e-cc" value="${esc(t.cc||'')}" placeholder="e.g. team@example.com"></div>
+    </div>`}
     ${isZulip?`<div style="display:flex;gap:8px;margin-bottom:11px">
       <div style="flex:0 0 220px"><span class="el">Channel</span><input class="ef2" id="e-channel" value="${esc(t.channel||'')}" placeholder="e.g. #carrier-integration"></div>
       <div style="flex:1"><span class="el">Topic</span><input class="ef2" id="e-topic" value="${esc(t.topic||'')}" placeholder="e.g. SFTP Cert — [Partner Name]"></div>
@@ -3734,6 +3744,7 @@ function currentEditFormValues(){
     proc:cat==='integration'?val('e-proc'):cat,
     dtype:(cat==='coordination'||cat==='followup'||cat==='maintenance')?val('e-dtype'):null,
     desc:val('e-desc'),subj:isZulip?'':val('e-subj'),
+    to:isZulip?'':val('e-to'),cc:isZulip?'':val('e-cc'),
     channel:isZulip?val('e-channel'):'',topic:isZulip?val('e-topic'):'',
     body,conds,todos:getTodos('e'),
   };
@@ -3761,7 +3772,7 @@ function applyDraftToEditForm(d){
   onEditCatChange();
   setVal('e-type',d.type);setVal('e-proc',d.proc);setVal('e-dtype',d.dtype);setVal('e-country',d.country);
   setVal('e-name',d.name);setVal('e-desc',d.desc);
-  if(d.domain!=='zulip')setVal('e-subj',d.subj);
+  if(d.domain!=='zulip'){setVal('e-subj',d.subj);setVal('e-to',d.to);setVal('e-cc',d.cc);}
   if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill){editQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#e-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addEditCRow(document.querySelectorAll('#ec-rows .cbi').length);fillLastCondRow('ec-rows',c.k,c.v);});
   renderTodoList('e',d.todos||[]);
@@ -3833,7 +3844,7 @@ function saveEdit(id){
   const before=Object.assign({},t);
   const v=currentEditFormValues();
   t.name=v.name;t.country=v.country;t.cat=v.cat;t.type=v.type;t.proc=v.proc;t.dtype=v.dtype;t.desc=v.desc;
-  if(t.domain!=='zulip')t.subj=v.subj;
+  if(t.domain!=='zulip'){t.subj=v.subj;t.to=v.to;t.cc=v.cc;}
   else{t.channel=v.channel;t.topic=v.topic;}
   t.body=v.body;t.conds=v.conds;t.todos=v.todos;
   t.kw=[t.type.toLowerCase(),t.proc,...(t.dtype?[t.dtype.toLowerCase()]:[]),...t.name.toLowerCase().split(' '),...t.desc.toLowerCase().split(' ')].filter(x=>x.length>2);
@@ -3850,7 +3861,7 @@ function saveEdit(id){
 // existed, same pattern as tplDtype()'s dtype fallback — no migration
 // write needed against the live shared database.
 // ══════════════════════════════════════════════════
-const HISTORY_FIELD_LABELS={name:'Name',desc:'Description',subj:'Subject',channel:'Channel',topic:'Topic',body:'Body',cat:'Category',type:'Type',proc:'Process',dtype:'Data Type',country:'Country',conds:'Conditions',todos:'Documents'};
+const HISTORY_FIELD_LABELS={name:'Name',desc:'Description',subj:'Subject',to:'To',cc:'CC',channel:'Channel',topic:'Topic',body:'Body',cat:'Category',type:'Type',proc:'Process',dtype:'Data Type',country:'Country',conds:'Conditions',todos:'Documents'};
 function diffTemplateFields(before,after){
   const changed=[];
   Object.keys(HISTORY_FIELD_LABELS).forEach(k=>{
@@ -3951,7 +3962,7 @@ function renderHistorySnapshotBody(snap){
     :String(snap.body||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
   const headRows=isZulip
     ?`${snap.channel?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Channel:</b> ${esc(snap.channel)}</div>`:''}${snap.topic?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Topic:</b> ${esc(snap.topic)}</div>`:''}`
-    :`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Subject:</b> ${esc(snap.subj||'')}</div>`;
+    :`${snap.to?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">To:</b> ${esc(snap.to)}</div>`:''}${snap.cc?`<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">CC:</b> ${esc(snap.cc)}</div>`:''}<div style="color:var(--tx3);margin-bottom:2px"><b style="color:var(--tx2)">Subject:</b> ${esc(snap.subj||'')}</div>`;
   return `<div style="margin-bottom:4px;font-weight:600;color:var(--tx)">${esc(snap.name||'')}</div>
     ${headRows}
     <div class="${isHtml?'ql-editor':''}" style="padding:0;margin-top:4px;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
@@ -4339,7 +4350,8 @@ function showTplViewer(id,trEl){
   const isHtml=/<[a-z][\s\S]*>/i.test(t.body);
   const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
-  document.getElementById('tv-body').innerHTML=`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
+  const toCcRows=`${t.to?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">To:</b> ${esc(t.to)}</div>`:''}${t.cc?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">CC:</b> ${esc(t.cc)}</div>`:''}`;
+  document.getElementById('tv-body').innerHTML=`${toCcRows}<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
   fixInvisibleBodyText(document.querySelector('#tv-body .ql-editor'));
   document.getElementById('tpl-viewer').classList.add('show');
   document.getElementById('tpl-viewer').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -4910,6 +4922,8 @@ function saveNewEmail(){
   const name=document.getElementById('nc-name').value.trim();
   const desc=document.getElementById('nc-desc').value.trim();
   const subj=document.getElementById('nc-subj').value.trim();
+  const to=document.getElementById('nc-to').value.trim();
+  const cc=document.getElementById('nc-cc').value.trim();
   const body=document.getElementById('nc-body').value.trim();
   const bodyText=(()=>{const d=document.createElement('div');d.innerHTML=body;return(d.textContent||d.innerText||'').trim();})();
   if(!name||!subj||!bodyText){toast('Fill Name, Subject and Body.');return;}
@@ -4925,12 +4939,12 @@ function saveNewEmail(){
   const id=pfx+String(same.length+1).padStart(3,'0');
   const kw=[type.toLowerCase(),proc,country,...(dtype?[dtype.toLowerCase()]:[]),...name.toLowerCase().split(' '),...desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   const todos=getTodos('nc');
-  const newTpl={id,domain:'email',cat,country,type,proc,dtype,name,desc,subj,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
+  const newTpl={id,domain:'email',cat,country,type,proc,dtype,name,desc,subj,to,cc,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
   logTemplateHistory(newTpl,null);
   templates.push(newTpl);
   saveTpl();
   if(editingDraftId){drafts=drafts.filter(d=>d.id!==editingDraftId);saveDraftsLS();updateDraftBadges();editingDraftId=null;}
-  ['nc-name','nc-desc','nc-subj'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+  ['nc-name','nc-desc','nc-subj','nc-to','nc-cc'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
   document.getElementById('nc-conds').innerHTML='';newCC=0;
   renderTodoList('nc',[]);
   if(ncQuill)ncQuill.root.innerHTML='';
