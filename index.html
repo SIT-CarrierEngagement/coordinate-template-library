@@ -1654,10 +1654,12 @@ const APP_VERSION='v2026.08.30.1'; // bump before every deploy — announced to 
 // client-side isn't the real security boundary.
 const DEFAULT_HTML_URL='https://SIT-CarrierEngagement.github.io/coordinate-template-library/';
 const PUBLISH_FUNCTION_URL=SB_DEFAULT_URL+'/functions/v1/publish-html';
+const GH_ADMIN_PASSWORD='CE2026';
 let ghAdminPasswordCache=null;
 function unlockGhPublish(){
   const pw=prompt('Enter Admin Password:');
   if(pw===null)return;
+  if(pw!==GH_ADMIN_PASSWORD){alert('Incorrect admin password.');return;}
   ghAdminPasswordCache=pw;
   document.getElementById('gh-publish-gate').style.display='none';
   document.getElementById('gh-publish-content').style.display='';
@@ -1674,7 +1676,9 @@ async function pushHtmlToGithub(){
   const file=fileInput&&fileInput.files[0];
   if(!file){toast('Choose the updated .html file first.');return;}
   let pw=ghAdminPasswordCache;
-  if(!pw){pw=prompt('Enter Admin Password to confirm:');if(pw===null)return;ghAdminPasswordCache=pw;}
+  if(!pw){pw=prompt('Enter Admin Password to confirm:');if(pw===null)return;}
+  if(pw!==GH_ADMIN_PASSWORD){alert('Incorrect admin password.');return;}
+  ghAdminPasswordCache=pw;
   try{
     const content=await file.text();
     // Read the version straight out of the FILE being uploaded, not the
@@ -2556,7 +2560,7 @@ let curId=null,isEdit=false,editCC=0,newCC=0,zNewCC=0,editOpenSnapshot=null;
 // suppressAutoRestore: set by resumeDraft() right before it opens a modal,
 // so that modal's own "offer to restore the most recent draft" prompt
 // doesn't fire on top of the specific draft resumeDraft() is already applying.
-let editingDraftId=null,suppressAutoRestore=false;
+let editingDraftId=null,suppressAutoRestore=false,skipEditReasonId=null;
 let sideState={mode:'all',val:null,domain:'email'};
 let chips={};
 // Per-domain UI state (search text, chips, sidebar selection, scroll position) so
@@ -3618,11 +3622,12 @@ function editModal(id){
       </select>
       <button style="background:var(--rdl);border:1px solid #f0b8b8;color:var(--rd);border-radius:var(--rs);cursor:pointer;font-size:12px;padding:3px 8px;font-family:var(--font-body);flex-shrink:0" onclick="this.closest('.cbi').remove()" title="Remove">✕</button>
     </div>`).join('');
+  const reasonOptional=skipEditReasonId===id;
   document.getElementById('m-body').innerHTML=`
     <div class="er"><span class="el">Name</span><input class="ef2" id="e-name" value="${esc(t.name)}"></div>
     <div class="er" style="background:var(--orl);border:1px solid var(--or);border-radius:var(--rs);padding:8px 10px;margin-bottom:11px">
-      <span class="el" style="color:var(--or);margin-bottom:3px">Reason to Edit <span title="Required">*</span></span>
-      <input class="ef2" id="e-edit-reason" placeholder="Why are you editing this template? (required)">
+      <span class="el" style="color:var(--or);margin-bottom:3px">Reason to Edit ${reasonOptional?'<span style="font-weight:400;text-transform:none">(optional)</span>':'<span title="Required">*</span>'}</span>
+      <input class="ef2" id="e-edit-reason" placeholder="${reasonOptional?'Why are you editing this template? (optional)':'Why are you editing this template? (required)'}">
     </div>
     <div style="display:flex;gap:8px;margin-bottom:11px;flex-wrap:wrap;">
       <div style="flex:0 0 130px"><span class="el">Category</span><select class="ef2" id="e-cat" onchange="onEditCatChange()">${catOpts}</select></div>
@@ -3763,6 +3768,7 @@ function handleModalClose(){
     toast('Draft saved.');
   }
   editingDraftId=null;
+  if(skipEditReasonId===curId)skipEditReasonId=null;
   closeModal();
 }
 // Applies a draft's fields onto the Edit form — used both by the
@@ -3816,6 +3822,7 @@ function toggleEdit(){
       toast('Draft saved.');
     }
     editingDraftId=null;
+    if(skipEditReasonId===curId)skipEditReasonId=null;
     isEdit=false;viewModal(curId);
   } else {
     isEdit=true;editModal(curId);
@@ -3833,8 +3840,10 @@ function addEditCRow(start){
 }
 function saveEdit(id){
   const t=templates.find(x=>x.id===id); if(!t) return;
+  const reasonOptional=skipEditReasonId===id;
   const reason=(val('e-edit-reason')||'').trim();
-  if(!reason){toast('Please fill in "Reason to Edit" before saving.');const rf=document.getElementById('e-edit-reason');if(rf)rf.focus();return;}
+  if(!reason&&!reasonOptional){toast('Please fill in "Reason to Edit" before saving.');const rf=document.getElementById('e-edit-reason');if(rf)rf.focus();return;}
+  if(skipEditReasonId===id)skipEditReasonId=null;
   // Snapshot the template exactly as it was before this edit, for the
   // History Log's spoiler view — deep-cloned (not the shallow `before` below)
   // and with its own `history` stripped so snapshots never nest each other's
@@ -4186,6 +4195,7 @@ function duplicateTemplate(id){
   updateCounts();renderSidebarTypes();renderSidebarSubs();render();
   if(document.getElementById('page-cfg').classList.contains('active')){renderCfgTable();renderZCfgTable();}
   toast('Duplicated as '+clone.id+' — edit it now.');
+  skipEditReasonId=clone.id;
   openModal(clone.id);
   toggleEdit();
 }
@@ -6018,8 +6028,16 @@ function zulipMdToHtml(raw){
   html=html.replace(/\*\*([^\n*]+)\*\*/g,'<b>$1</b>');
   html=html.replace(/(^|[^*])\*([^\n*]+)\*/g,'$1<i>$2</i>');
   html=html.replace(/~~([^\n~]+)~~/g,'<s>$1</s>');
-  // links
-  html=html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // Links: only allow navigable web/email schemes. Markdown content can come
+  // from shared templates, so reject executable or otherwise unsafe schemes.
+  html=html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,(match,label,href)=>{
+    try{
+      const url=new URL(href,document.baseURI);
+      if(['http:','https:','mailto:'].includes(url.protocol))
+        return `<a href="${url.href}" target="_blank" rel="noopener">${label}</a>`;
+    }catch(e){ /* invalid URL — retain the visible label without a link */ }
+    return label;
+  });
   // emoji — known shortcodes become the real glyph, unknown ones stay as a pill
   html=html.replace(/:([a-z0-9_+-]+):/gi,(m,code)=>{
     const g=ZULIP_EMOJI_MAP[code.toLowerCase()];
