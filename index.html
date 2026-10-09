@@ -530,10 +530,70 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .sb-country-group.col .sb-ctr-chev{transform:rotate(-90deg);}
 .sb-country-group.col .sb-country-items{display:none;}
 .sb-country-items{padding-left:8px;}
+
+/* ── Supabase gate + status pills ── */
+.cs-gate{position:fixed;inset:0;z-index:1000;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;}
+.cs-gate[data-gate="1"]{display:flex;}
+.cs-gate[hidden]{display:none;}
+.cs-card{width:min(420px,100%);background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);padding:26px 26px 22px;box-shadow:0 10px 40px rgba(0,0,0,.08);}
+.cs-card h2{font-size:16px;font-weight:600;margin-bottom:4px;}
+.cs-card p.cs-sub{font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:14px;}
+.cs-card label{display:block;font-size:11px;color:var(--tx2);margin:10px 0 4px;}
+.cs-card input{width:100%;box-sizing:border-box;padding:9px 11px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surface);color:var(--tx);font:inherit;font-size:13px;}
+.cs-card .cs-err{color:var(--rd);font-size:12px;min-height:16px;margin-top:8px;line-height:1.5;}
+.cs-card .cs-msg{font-size:12px;color:var(--tx2);line-height:1.6;margin:10px 0 14px;white-space:pre-wrap;}
+.cs-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.cs-actions .btn{justify-content:center;}
+.cs-gate .cs-only{display:none;}
+.cs-gate[data-state="login"] .cs-only-login,
+.cs-gate[data-state="connecting"] .cs-only-busy,.cs-gate[data-state="loading"] .cs-only-busy,
+.cs-gate[data-state="error"] .cs-only-error,
+.cs-gate[data-state="disconnected"] .cs-only-disconnected{display:block;}
+.cs-gate[data-state="login"] .cs-only-login.cs-actions,.cs-gate[data-state="connecting"] .cs-only-busy.cs-actions,.cs-gate[data-state="loading"] .cs-only-busy.cs-actions,
+.cs-gate[data-state="error"] .cs-only-error.cs-actions,.cs-gate[data-state="disconnected"] .cs-only-disconnected.cs-actions{display:flex;}
+.cs-gate .cs-statusrow{margin-bottom:12px;}
+/* stays above modal overlays so the status toggle / account menu are always reachable */
+.lib-tabs-right{position:relative;z-index:250;}
+.lib-tabs-right .cs-status-pill{flex:0 0 172px;width:172px;box-sizing:border-box;padding:4px 10px;font-size:11.5px;overflow:hidden;white-space:nowrap;}
+.lib-tabs-right .cs-status-text{overflow:hidden;text-overflow:ellipsis;}
+.cs-save-text{color:var(--tx3);overflow:hidden;text-overflow:ellipsis;}
+.lib-tabs-right .cs-status-pill{cursor:pointer;font-family:inherit;}
+.lib-tabs-right .cs-status-pill:hover{filter:brightness(.96);}
+.lib-tabs-right .cs-status-pill:focus-visible,.cs-user-btn:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+.lib-tabs-right{min-width:0;}
+.cs-user-btn{border:1px solid var(--bd);border-radius:var(--rs);background:var(--surface);flex-shrink:0;}
+.cs-user-btn:hover,.cs-user-btn[aria-expanded="true"]{color:var(--tx);border-color:var(--acm);}
+.cs-user-menu{position:fixed;z-index:2000;min-width:220px;max-width:min(320px,calc(100vw - 16px));box-sizing:border-box;background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.16);padding:6px;}
+.cs-user-menu[hidden]{display:none;}
+.cs-user-info{display:flex;flex-direction:column;gap:2px;padding:8px 10px 10px;border-bottom:1px solid var(--bd);margin-bottom:6px;font-size:12px;color:var(--tx);}
+.cs-user-lbl{font-size:10.5px;color:var(--tx3);}
+.cs-user-info .cs-account-email{overflow-wrap:anywhere;font-weight:600;}
+.cs-user-item{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:none;background:none;color:var(--tx);font:inherit;font-size:12.5px;cursor:pointer;border-radius:var(--rs);text-align:left;}
+.cs-user-item:hover,.cs-user-item:focus-visible{background:var(--s2);outline:none;}
+@media (max-width:1380px){.lib-tabs-right .cs-status-pill{flex-basis:130px;width:130px;}.lib-tabs-right .cs-save-text{display:none;}}
+@media (max-width:900px){.lib-tabs-right .cs-status-pill{flex-basis:112px;width:112px;}.lib-tab{padding:10px 10px;}}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="cs-gate" id="cs-gate" data-state="connecting" data-gate="1" role="dialog" aria-modal="true" aria-labelledby="cs-gate-title">
+  <div class="cs-card">
+    <h2 id="cs-gate-title"><i class="ti ti-cloud-lock"></i> Coordinate Template Library <span style="font-size:11px;font-weight:500;color:var(--tx3)">Supabase Auth</span></h2>
+    <div class="fs-status-pill cs-status-pill fs-status-connecting cs-statusrow" role="status"><span class="fs-status-dot"></span><span class="fs-status-text cs-status-text">Connecting…</span></div>
+    <p class="cs-sub">All templates live only in the shared Supabase workspace. Nothing is shown until you are signed in and the data has loaded from Supabase.</p>
+    <form id="cs-login-form" class="cs-only cs-only-login" onsubmit="return csLogin(event)" autocomplete="on" novalidate>
+      <label for="cs-email">Email</label>
+      <input type="email" id="cs-email" name="email" autocomplete="username" placeholder="you@example.com">
+      <label for="cs-password">Password</label>
+      <input type="password" id="cs-password" name="password" autocomplete="current-password">
+      <div class="cs-err" id="cs-login-err" role="alert"></div>
+      <div class="cs-actions"><button type="submit" class="btn btn-p" id="cs-login-btn" style="flex:1"><i class="ti ti-login"></i> Sign in</button></div>
+      <p class="cs-sub" style="margin:12px 0 0;font-size:11px;color:var(--tx3)">Accounts are created by a workspace admin in Supabase Auth. Self sign-up is not offered.</p>
+    </form>
+    <div class="cs-msg" id="cs-gate-msg" aria-live="polite"></div>
+    <div class="cs-actions cs-only cs-only-busy"><button type="button" class="btn btn-d" id="cs-gate-disconnect-btn" onclick="disconnectCloud()"><i class="ti ti-plug-connected-x"></i> Disconnect</button></div>
+  </div>
+</div>
+<div class="app" inert>
 
 <!-- ════ SIDEBAR ════ -->
 <aside class="sb">
@@ -689,11 +749,17 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
       <button class="lib-tab lib-tab-zulip" id="libtab-zulip" onclick="switchLibDomain('zulip')">Zulip Templates <span class="cpill" id="libtab-cnt-zulip">0</span></button>
     </div>
     <div class="lib-tabs-right">
+      <button type="button" class="fs-status-pill cs-status-pill fs-status-connecting" id="cs-status-btn" onclick="csStatusClick()" aria-live="polite" title="Supabase connection" aria-label="Supabase connection: Connecting"><span class="fs-status-dot"></span><span class="fs-status-text cs-status-text">Connecting…</span><span class="cs-save-text"></span></button>
       <div class="vtoggle">
         <button class="vtbtn" id="vt-grid" onclick="setLibView('grid')" title="Box view"><i class="ti ti-layout-grid"></i></button>
         <button class="vtbtn" id="vt-list" onclick="setLibView('list')" title="List view"><i class="ti ti-list"></i></button>
       </div>
       <button class="vtbtn" id="quick-dark-toggle" onclick="toggleDarkModeQuick()" title="Toggle dark mode"><i class="ti ti-moon" id="quick-dark-icon"></i></button>
+      <button type="button" class="vtbtn cs-user-btn" id="cs-user-btn" onclick="toggleUserMenu(event)" title="Account" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="cs-user-menu"><i class="ti ti-user"></i></button>
+      <div class="cs-user-menu" id="cs-user-menu" role="menu" aria-label="Account" hidden>
+        <div class="cs-user-info"><span class="cs-user-lbl">Signed in as</span><span class="cs-account-email" id="cs-user-email"></span></div>
+        <button type="button" class="cs-user-item" id="cs-logout-top" role="menuitem" onclick="closeUserMenu();logoutCloud()"><i class="ti ti-logout"></i> Log out</button>
+      </div>
     </div>
   </div>
   <!-- Popular Templates page — starred templates, split Email/Zulip, each
@@ -803,9 +869,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
       <button class="cfg-tab" onclick="switchCfgTab('stg',this)">Settings</button>
     </div>
     <!-- All Templates: Email/Zulip pill switcher -->
-    <div class="cfg-subpills" id="cfg-tpl-pillbar" style="padding:10px 20px 0">
+    <div class="cfg-subpills" id="cfg-tpl-pillbar" style="padding:10px 20px 0;align-items:center;flex-wrap:wrap;">
       <button class="cfg-pill active" data-domain="email" onclick="switchCfgTplDomain('email')">Email</button>
       <button class="cfg-pill" data-domain="zulip" onclick="switchCfgTplDomain('zulip')">Zulip</button>
+      <button class="btn" id="cfg-import-btn" style="margin-left:auto" onclick="closeTemplateExportMenu();document.getElementById('cfg-import-file').click()" title="Import templates from an exported JSON file"><i class="ti ti-upload"></i> Import JSON</button>
+      <input type="file" id="cfg-import-file" accept=".json,application/json" style="display:none" onchange="importTemplateJson(this)">
+      <button class="btn" id="cfg-export-btn" aria-expanded="false" aria-controls="cfg-export-menu" onclick="toggleTemplateExportMenu()" title="Export all Email and Zulip templates"><i class="ti ti-download"></i> Export <i class="ti ti-chevron-down"></i></button>
     </div>
     <!-- Templates panel -->
     <div id="cfg-panel-tpl" style="flex:1;overflow-y:auto;padding:16px 20px;">
@@ -1129,38 +1198,19 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
       <div class="csec">
         <div class="csh"><h3><i class="ti ti-cloud" style="font-size:14px"></i> Supabase Cloud Sync</h3></div>
         <div class="cbody">
-          <div class="fs-status-pill fs-status-offline" role="status" id="cs-status-pill" style="margin-bottom:4px">
-            <span class="fs-status-dot"></span>
-            <span class="fs-status-text" id="cs-status-text">Not connected</span>
-          </div>
+          <div class="fs-status-pill cs-status-pill fs-status-offline" role="status" style="margin-bottom:4px"><span class="fs-status-dot"></span><span class="fs-status-text cs-status-text">Connecting…</span></div>
           <p style="font-size:11px;color:var(--tx3);margin-bottom:12px" id="cs-app-version"></p>
-          <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.6">This app is a live, shared workspace — Email &amp; Zulip templates, Categories, Data/Process/Coordination/Follow-up/Maintenance labels, Countries, Folders, and Trash Bin all sync in real time across every connected device. (Appearance/theme colors are a personal, per-device preference and are not shared.) It connects automatically — the button below is only for checking status or manually disconnecting/reconnecting.</p>
-          <!-- The Project URL/anon key inputs and "Copy setup SQL" button are
-               intentionally hidden: credentials are baked into this file
-               (SB_DEFAULT_URL/SB_DEFAULT_KEY) so the app connects with zero
-               setup, and exposing them here only invited accidental edits
-               that could break the shared connection for everyone. -->
+          <p style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.6">Templates, categories, labels, countries, folders, drafts and the Trash Bin exist only in Supabase and are loaded after you sign in. Nothing is cached in this browser. Click the status pill in the header to <b>Disconnect</b>: it stops syncing and clears all of it from every open tab of this site (you stay signed in; click the red pill to reconnect and load a fresh copy). <b>Log out</b> (account icon in the header) also ends your Supabase session. Appearance settings stay on this device.</p>
           <div class="fr" style="align-items:center">
-            <button class="btn btn-p" id="cs-connect-btn" onclick="connectCloudSync()"><i class="ti ti-plug-connected"></i> Connect</button>
-            <button class="btn btn-d" id="cs-disconnect-btn" style="display:none" onclick="disconnectCloudSync()"><i class="ti ti-plug-connected-x"></i> Disconnect</button>
+            <button class="btn btn-d" onclick="disconnectCloud()"><i class="ti ti-plug-connected-x"></i> Disconnect</button>
+            <button class="btn" onclick="logoutCloud()"><i class="ti ti-logout"></i> Logout</button>
           </div>
         </div>
       </div>
       <div class="csec">
         <div class="csh"><h3><i class="ti ti-brand-github" style="font-size:14px"></i> Publish to GitHub Pages</h3></div>
         <div class="cbody">
-          <div id="gh-publish-gate">
-            <p style="font-size:12px;color:var(--tx2);margin-bottom:10px;line-height:1.6">Admin-only. This app currently only lives as a local file — pushing it to GitHub Pages gives everyone one shared URL that always has the latest version, instead of separate local copies. Enter the admin password to unlock.</p>
-            <button class="btn btn-p" onclick="unlockGhPublish()"><i class="ti ti-lock"></i> Enter Admin Password</button>
-          </div>
-          <div id="gh-publish-content" style="display:none">
-            <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Shared URL: <a id="gh-share-url" href="#" target="_blank" rel="noopener"></a></p>
-            <p style="font-size:12px;color:var(--tx2);margin-bottom:10px;line-height:1.6">Data (templates, categories, labels…) already syncs live through Supabase Cloud Sync above — but the app's HTML file itself doesn't update on its own. Push this local file whenever you've made changes so the shared link serves the latest version.</p>
-            <div class="el">Push an updated file</div>
-            <input type="file" id="gh-file-input" accept=".html" style="display:block;width:100%;font-size:12px;margin:4px 0 10px">
-            <button class="btn btn-p" onclick="pushHtmlToGithub()"><i class="ti ti-brand-github"></i> Push to GitHub &amp; Publish</button>
-            <button class="btn btn-d" style="margin-top:8px" onclick="lockGhPublish()"><i class="ti ti-lock"></i> Lock Admin Access</button>
-          </div>
+          <p style="font-size:12px;color:var(--tx2);line-height:1.6"><b>Publish through GitHub.</b> Upload the main <i>Coordinate Template Library.html</i> to the repository as <i>index.html</i>. Publishing from inside the app is disabled; deployment is managed separately from workspace data.</p>
         </div>
       </div>
       <div class="csec">
@@ -1487,40 +1537,6 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 
 <script>
 // ══════════════════════════════════════════════════
-// ONE-TIME MIGRATION — Categories/Types/Labels used to be fully separate
-// per domain (etl_z_* keys); this unions each pair into the shared key so no
-// existing user data is lost when the arrays merge into one. No-op for
-// fresh installs (neither key present) or once already migrated.
-// ══════════════════════════════════════════════════
-(function migrateSharedLabels(){
-  if(localStorage.getItem('etl_labels_merged_v1')==='1')return;
-  function mergeStrArr(key,zKey){
-    const a=JSON.parse(localStorage.getItem(key)||'null');
-    const b=JSON.parse(localStorage.getItem(zKey)||'null');
-    if(!a&&!b)return;
-    localStorage.setItem(key,JSON.stringify(Array.from(new Set([...(a||[]),...(b||[])]))));
-  }
-  function mergeObjArr(key,zKey){
-    const a=JSON.parse(localStorage.getItem(key)||'null');
-    const b=JSON.parse(localStorage.getItem(zKey)||'null');
-    if(!a&&!b)return;
-    const out=[...(a||[])];
-    const seen=new Set(out.map(x=>x.key));
-    (b||[]).forEach(x=>{if(!seen.has(x.key)){out.push(x);seen.add(x.key);}});
-    localStorage.setItem(key,JSON.stringify(out));
-  }
-  mergeStrArr('etl_itypes','etl_z_itypes');
-  mergeObjArr('etl_procs','etl_z_procs');
-  mergeObjArr('etl_coordtypes','etl_z_coordtypes');
-  mergeObjArr('etl_futypes','etl_z_futypes');
-  mergeObjArr('etl_matypes','etl_z_matypes');
-  mergeObjArr('etl_email_ccats','etl_zulip_ccats'); // merged into etl_email_ccats first, then read as etl_ccats below
-  const mergedCats=JSON.parse(localStorage.getItem('etl_email_ccats')||'null');
-  if(mergedCats)localStorage.setItem('etl_ccats',JSON.stringify(mergedCats));
-  localStorage.setItem('etl_labels_merged_v1','1');
-})();
-
-// ══════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════
 const PALETTES=[
@@ -1544,11 +1560,11 @@ function labelForProc(t){
   return f?f.label:t.proc;
 }
 
-let intTypes=JSON.parse(localStorage.getItem('etl_itypes')||'null')||['ALP','APP','iAPI','PNR','SFTP','TDAC'];
+let intTypes=[];
 function iTypes(){
   return [...intTypes];
 }
-function saveTypes(){localStorage.setItem('etl_itypes',JSON.stringify(intTypes));scheduleSync();}
+function saveTypes(){scheduleSync();}
 // Data Type on Coordination/Follow-up/Maintenance templates: read-time
 // default (never written back) so legacy templates saved before this field
 // existed group under "Others" without needing a migration write against the
@@ -1566,45 +1582,29 @@ function categoryRank(t){const i=BUILTIN_CATS.indexOf(t.cat);return i>=0?i:99;}
 
 // Countries
 const PINNED_COUNTRIES=['TH','LA'];
-let countries=JSON.parse(localStorage.getItem('etl_countries')||'null')||['TH','LA'];
+let countries=[];
 function getCountries(){
   return [...countries];
 }
-function saveCountries(){localStorage.setItem('etl_countries',JSON.stringify(countries));scheduleSync();}
+function saveCountries(){scheduleSync();}
 
 // Processes
 const BUILTIN_PROCS=['contact','development','certification','cutover'];
-let processes=JSON.parse(localStorage.getItem('etl_procs')||'null')||[
-  {key:'contact',    label:'Contact',     bg:'#fdf3e3',fg:'#7a4a0a',builtin:true},
-  {key:'development',label:'Development', bg:'#e8eef8',fg:'#1a3a6b',builtin:true},
-  {key:'certification',label:'Certification',bg:'#e3f6fb',fg:'#0a5a6b',builtin:true},
-  {key:'cutover',    label:'Cutover',     bg:'#fde8e8',fg:'#7a1a1a',builtin:true},
-  {key:'others',     label:'Others',      bg:'#f0eaff',fg:'#3a1a7a',builtin:false},
-];
-function saveProcs(){localStorage.setItem('etl_procs',JSON.stringify(processes));scheduleSync();}
+let processes=[];
+function saveProcs(){scheduleSync();}
 
 // Coordination labels — shared between Email and Zulip
-let coordTypes=JSON.parse(localStorage.getItem('etl_coordtypes')||'null')||[
-  {key:'General Coordination',label:'General Coordination',abbr:'GC',bg:'#e3f6fb',fg:'#0a5a6b'},
-];
-function saveCoordTypes(){localStorage.setItem('etl_coordtypes',JSON.stringify(coordTypes));scheduleSync();}
+let coordTypes=[];
+function saveCoordTypes(){scheduleSync();}
 function getCoordStyle(key){const f=coordTypes.find(x=>x.key===key);return f?{bg:f.bg,fg:f.fg}:{bg:'#e3f6fb',fg:'#0a5a6b'};}
 
 // Follow-up types — order matters: F1>F2>F3>Final Call
-let fuTypes=JSON.parse(localStorage.getItem('etl_futypes')||'null')||[
-  {key:'Follow-up 1',label:'Follow-up 1',abbr:'F1',bg:'#fdf3e3',fg:'#7a4a0a'},
-  {key:'Follow-up 2',label:'Follow-up 2',abbr:'F2',bg:'#fdeee8',fg:'#7a2a1a'},
-  {key:'Follow-up 3',label:'Follow-up 3',abbr:'F3',bg:'#fde8e8',fg:'#7a1a1a'},
-  {key:'Final Call', label:'Final Call', abbr:'FC',bg:'#fde8f5',fg:'#7a1a5a'},
-];
-function saveFuTypes(){localStorage.setItem('etl_futypes',JSON.stringify(fuTypes));scheduleSync();}
+let fuTypes=[];
+function saveFuTypes(){scheduleSync();}
 
 // Maintenance types — Maintenance + Switchover
-let maTypes=JSON.parse(localStorage.getItem('etl_matypes')||'null')||[
-  {key:'Maintenance', label:'Maintenance', abbr:'MN',bg:'#f0f0ee',fg:'#3a3a3a'},
-  {key:'Switchover',  label:'Switchover',  abbr:'SW',bg:'#e3f6fb',fg:'#0a5a6b'},
-];
-function saveMaTypes(){localStorage.setItem('etl_matypes',JSON.stringify(maTypes));scheduleSync();}
+let maTypes=[];
+function saveMaTypes(){scheduleSync();}
 
 function getMaAbbr(key){const m=maTypes.find(x=>x.key===key);return m?.abbr||key.slice(0,2).toUpperCase();}
 function getMaBg(key){const m=maTypes.find(x=>x.key===key);return m?{bg:m.bg,fg:m.fg}:{bg:'#f0f0ee',fg:'#3a3a3a'};}
@@ -1612,435 +1612,520 @@ function getFuAbbr(key){const f=fuTypes.find(x=>x.key===key);return f?.abbr||key
 function getFuStyle(key){const f=fuTypes.find(x=>x.key===key);return f?{bg:f.bg,fg:f.fg}:{bg:'#fde8d0',fg:'#7a3a0a'};}
 
 // Templates
-let templates=JSON.parse(localStorage.getItem('etl_tpl')||'null')||defTpl();
+let templates=[];
 function saveTpl(){
-  localStorage.setItem('etl_tpl',JSON.stringify(templates));
   scheduleSync();
 }
 
-// ══════════════════════════════════════════════════
-// CLOUD SYNC — whole-app-state sync, matching Assignment Log.html's exact
-// mechanism: the ENTIRE shared state (Email/Zulip templates, categories,
-// data-type/process/coordination/follow-up/maintenance labels for both
-// domains, countries, folders, trash, appearance/theme settings) is
-// collected into one JSON object and upserted as a SINGLE row
-// (id='default', data=jsonb) — not one row per item like the earlier
-// version of this feature. A Realtime subscription on that one row pushes
-// the whole blob to every other connected device; incoming pushes are
-// compared against our own last-sent JSON so we don't reapply the echo of
-// our own write. Local edits are debounced 500ms before pushing (see
-// collectState()/applyState()/scheduleSync()/pushStateToSupabase() in
-// Assignment Log.html for the reference implementation this mirrors).
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// SUPABASE-ONLY WORKSPACE — Auth (email/password) + whole-state row
+// ═══════════════════════════════════════
+// Business data (templates, trash, drafts, folders, categories, labels,
+// countries) lives ONLY in the Supabase `app_state` row id='default'. It is
+// held in memory after an authenticated read and is never written to, or read
+// from, any browser storage. Appearance (theme/font/dark mode), view mode and
+// AI settings stay device-local in localStorage.
+//
+// Contract:
+//   * Nothing is readable until: Supabase Auth session  ->  successful read.
+//   * Every save is a conditional UPDATE (id + updated_at match). Success is
+//     reported only after Supabase returns the updated row; otherwise memory
+//     is rolled back to the last acknowledged state.
+//   * No auto-created rows, no startup writes, no anonymous access.
+//   * Disconnect (!= Logout) bumps `cloud.epoch`, so any response still in
+//     flight is discarded, drops the realtime channel, wipes all business
+//     memory/views/editors and tells every other same-origin tab to do the same.
 const SB_TABLE='app_state';
 const SB_SYNC_KEY='default';
-const SB_META_KEY='app_meta';
-// Baked-in project credentials so any device that opens this file connects
-// to the shared workspace automatically — no manual Connect step needed.
-// The anon key is safe to expose client-side (Row Level Security is the
-// actual access boundary) — this holds regardless of where the file is
-// hosted, including the public GitHub Pages URL below.
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.08.30.1'; // bump before every deploy — announced to app_meta on connect
-// ══════════════════════════════════════════════════
-// PUBLISH TO GITHUB PAGES — mirrors Assignment Log.html's "Push to GitHub &
-// Publish" feature. The GitHub token that can actually write to the repo
-// lives ONLY as a server-side secret on the publish-html Supabase Edge
-// Function (see coordinate-template-library-supabase/functions/publish-html
-// alongside this file) — this app never holds it, so viewing this page's
-// source can't leak write access to the repo. The Edge Function re-checks
-// the admin password itself before touching GitHub, so this gate being
-// client-side isn't the real security boundary.
-const DEFAULT_HTML_URL='https://SIT-CarrierEngagement.github.io/coordinate-template-library/';
-const PUBLISH_FUNCTION_URL=SB_DEFAULT_URL+'/functions/v1/publish-html';
-const GH_ADMIN_PASSWORD='CE2026';
-let ghAdminPasswordCache=null;
-function unlockGhPublish(){
-  const pw=prompt('Enter Admin Password:');
-  if(pw===null)return;
-  if(pw!==GH_ADMIN_PASSWORD){alert('Incorrect admin password.');return;}
-  ghAdminPasswordCache=pw;
-  document.getElementById('gh-publish-gate').style.display='none';
-  document.getElementById('gh-publish-content').style.display='';
-  const urlEl=document.getElementById('gh-share-url');
-  if(urlEl){urlEl.textContent=DEFAULT_HTML_URL;urlEl.href=DEFAULT_HTML_URL;}
-}
-function lockGhPublish(){
-  ghAdminPasswordCache=null;
-  document.getElementById('gh-publish-gate').style.display='';
-  document.getElementById('gh-publish-content').style.display='none';
-}
-async function pushHtmlToGithub(){
-  const fileInput=document.getElementById('gh-file-input');
-  const file=fileInput&&fileInput.files[0];
-  if(!file){toast('Choose the updated .html file first.');return;}
-  let pw=ghAdminPasswordCache;
-  if(!pw){pw=prompt('Enter Admin Password to confirm:');if(pw===null)return;}
-  if(pw!==GH_ADMIN_PASSWORD){alert('Incorrect admin password.');return;}
-  ghAdminPasswordCache=pw;
-  try{
-    const content=await file.text();
-    // Read the version straight out of the FILE being uploaded, not the
-    // constant currently loaded in this tab's memory — if this tab has been
-    // sitting open a while (running an older build), trusting its own
-    // APP_VERSION would announce a stale number as "latest".
-    const versionMatch=content.match(/APP_VERSION\s*=\s*'([^']+)'/);
-    const publishedVersion=versionMatch?versionMatch[1]:APP_VERSION;
-    const res=await fetch(PUBLISH_FUNCTION_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_DEFAULT_KEY},
-      body:JSON.stringify({password:pw,content,message:'Publish '+publishedVersion+' via Configure ▸ Publish to GitHub Pages'})
-    });
-    const result=await res.json().catch(()=>({}));
-    if(!res.ok||result.error)throw new Error(result.error||('HTTP '+res.status));
-    fileInput.value='';
-    toast('Pushed to GitHub! Pages will rebuild in about a minute — everyone gets it on next refresh.');
-    // Announce immediately rather than waiting for the pusher's own tab to
-    // reconnect — same app_meta row the existing version gate already
-    // reads on every connect (see startCloudSync above).
-    if(sbClient){
-      await sbClient.from(SB_TABLE).upsert({id:SB_META_KEY,data:{version:publishedVersion,publishedAt:new Date().toISOString()},updated_at:new Date().toISOString()});
-    }
-  }catch(e){
-    console.error('[gh-publish] push to GitHub failed',e);
-    toast('Could not push to GitHub: '+e.message);
-  }
-}
-// Purely cosmetic — the version shown in the "What's New" changelog. NEVER
-// used for the cloud-sync version gate (that's APP_VERSION above); changing
-// this has zero effect on sync safety.
+const APP_VERSION='v2026.10.09.1'; // used only in export metadata
+// Purely cosmetic — the version shown in the "What's New" changelog.
 const CHANGELOG_VERSION='2026.08.00';
-let sbClient=null,sbChannel=null,syncTimer=null,lastPushedJSON=null,staleVersion=false;
-function compareVersions(a,b){
-  const pa=String(a||'').replace(/^v/i,'').split(/\D+/).map(Number);
-  const pb=String(b||'').replace(/^v/i,'').split(/\D+/).map(Number);
-  for(let i=0;i<Math.max(pa.length,pb.length);i++){
-    const x=pa[i]||0,y=pb[i]||0;
-    if(x!==y)return x<y?-1:1;
-  }
-  return 0;
-}
+const CS_AUTH_STORAGE_KEY='etl_sb_auth';   // Supabase Auth session (not business data)
+const CS_PREF_KEY='etl_cs_enabled';        // '0' = user chose Disconnect on this browser
+const CS_CHANNEL='etl_cs_cross_tab';
+const CS_SAVE_DEBOUNCE_MS=150;
+
+const cloud={
+  client:null,channel:null,bc:null,
+  state:'connecting',      // connecting | login | loading | connected | error | disconnected
+  connected:false,epoch:0,gateOn:true,
+  rowVersion:null,committedJSON:null,
+  dirty:false,saving:false,timer:null,
+  capture:false,toastQ:[],
+  email:'',msg:'',saveText:''
+};
+const CS_TAB_ID=Math.random().toString(36).slice(2);
+
+function toastNow(m){if(typeof __origToast==='function')__origToast(m);}
+function defaultCatLabels(){return {integration:'Integration',coordination:'Coordination',followup:'Follow-up',maintenance:'Maintenance'};}
+// Structural label defaults used ONLY when a remote row predates a field.
+function cfgDefaults(){return {
+  intTypes:['ALP','APP','iAPI','PNR','SFTP','TDAC'],
+  countries:['TH','LA'],
+  processes:[
+    {key:'contact',    label:'Contact',     bg:'#fdf3e3',fg:'#7a4a0a',builtin:true},
+    {key:'development',label:'Development', bg:'#e8eef8',fg:'#1a3a6b',builtin:true},
+    {key:'certification',label:'Certification',bg:'#e3f6fb',fg:'#0a5a6b',builtin:true},
+    {key:'cutover',    label:'Cutover',     bg:'#fde8e8',fg:'#7a1a1a',builtin:true},
+    {key:'others',     label:'Others',      bg:'#f0eaff',fg:'#3a1a7a',builtin:false}],
+  coordTypes:[{key:'General Coordination',label:'General Coordination',abbr:'GC',bg:'#e3f6fb',fg:'#0a5a6b'}],
+  fuTypes:[
+    {key:'Follow-up 1',label:'Follow-up 1',abbr:'F1',bg:'#fdf3e3',fg:'#7a4a0a'},
+    {key:'Follow-up 2',label:'Follow-up 2',abbr:'F2',bg:'#fdeee8',fg:'#7a2a1a'},
+    {key:'Follow-up 3',label:'Follow-up 3',abbr:'F3',bg:'#fde8e8',fg:'#7a1a1a'},
+    {key:'Final Call', label:'Final Call', abbr:'FC',bg:'#fde8f5',fg:'#7a1a5a'}],
+  maTypes:[
+    {key:'Maintenance', label:'Maintenance', abbr:'MN',bg:'#f0f0ee',fg:'#3a3a3a'},
+    {key:'Switchover',  label:'Switchover',  abbr:'SW',bg:'#e3f6fb',fg:'#0a5a6b'}]
+};}
 
 function collectAppState(){
   return {
     templates:templates,trash:trash,
     customCats:customCats,catLabelOverrides:CAT_LABELS,
-    intTypes:intTypes,
-    processes:processes,
-    coordTypes:coordTypes,
-    fuTypes:fuTypes,
-    maTypes:maTypes,
-    countries:countries,folders:folders,
-    drafts:drafts,
-    // Appearance (accent/theme colors, font, dark mode) is intentionally
-    // device-local only — never synced. It's a personal display preference,
-    // not shared workspace data, so it's excluded from collectAppState().
+    intTypes:intTypes,processes:processes,coordTypes:coordTypes,
+    fuTypes:fuTypes,maTypes:maTypes,countries:countries,folders:folders,
+    drafts:drafts
+    // Appearance is intentionally device-local only — never part of this row.
   };
 }
+function validateRemoteData(d){
+  if(!d||typeof d!=='object'||Array.isArray(d))throw new Error('Workspace data is not an object.');
+  if(!Array.isArray(d.templates))throw new Error('Workspace data has no templates list.');
+  ['trash','customCats','intTypes','processes','coordTypes','fuTypes','maTypes','countries','folders','drafts'].forEach(function(k){
+    if(d[k]!=null&&!Array.isArray(d[k]))throw new Error('Workspace field "'+k+'" is malformed.');
+  });
+  if(d.catLabelOverrides!=null&&(typeof d.catLabelOverrides!=='object'||Array.isArray(d.catLabelOverrides)))throw new Error('Workspace field "catLabelOverrides" is malformed.');
+  return d;
+}
+function rerenderAll(){
+  const safe=function(f){try{f();}catch(e){console.error('[render]',e);}};
+  [updateCounts,renderSidebarTypes,renderSidebarSubs,renderTypeChips,renderProcChips,renderCountryChips,
+   refreshCatSelect,updateCatOpts,updateCountryOpts,updateZCatOpts,updateZCountryOpts,
+   function(){renderCustomCatNav('email');renderCustomCatNav('zulip');},
+   render,updateTrashBadge,updateDraftBadges,renderDesignPanel,
+   function(){if(document.getElementById('page-popular').classList.contains('active'))renderPopularPage();},
+   function(){if(document.getElementById('page-cfg').classList.contains('active')){
+     renderCfgTable();renderZCfgTable();renderTypeList();renderProcPills();renderCoordTypeList();renderFuTypeList();
+     renderMaTypeList();renderFolderList();renderCountryList();renderCatList();}}
+  ].forEach(safe);
+}
+// Replaces ALL business memory with `data` (strict replace — never a merge).
 function applyAppState(data){
-  if(!data)return;
-  if(Array.isArray(data.templates))templates=data.templates;
-  if(Array.isArray(data.trash))trash=data.trash;
-  // customCats is a new shared field; gracefully union an older-schema
-  // payload's separate emailCustomCats/zulipCustomCats if that's all a stale
-  // cloud row still has, so a not-yet-updated device doesn't drop them.
-  if(Array.isArray(data.customCats))customCats=data.customCats;
-  else if(Array.isArray(data.emailCustomCats)||Array.isArray(data.zulipCustomCats)){
-    const out=[...(data.emailCustomCats||[])];
-    const seen=new Set(out.map(c=>c.key));
-    (data.zulipCustomCats||[]).forEach(c=>{if(!seen.has(c.key)){out.push(c);seen.add(c.key);}});
-    customCats=out;
-  }
-  if(data.catLabelOverrides)CAT_LABELS=Object.assign({integration:'Integration',coordination:'Coordination',followup:'Follow-up',maintenance:'Maintenance'},data.catLabelOverrides);
-  if(Array.isArray(data.intTypes))intTypes=data.intTypes;
-  if(Array.isArray(data.processes))processes=data.processes;
-  if(Array.isArray(data.coordTypes))coordTypes=data.coordTypes;
-  if(Array.isArray(data.fuTypes))fuTypes=data.fuTypes;
-  if(Array.isArray(data.maTypes))maTypes=data.maTypes;
-  if(Array.isArray(data.countries))countries=data.countries;
-  if(Array.isArray(data.folders))folders=data.folders;
-  if(Array.isArray(data.drafts))drafts=data.drafts;
-  // Appearance (accent/theme colors, font, dark mode) is intentionally never
-  // read from remote state — it's a device-local display preference, not
-  // shared workspace data. A remote payload's appearance (if an old cloud
-  // row still has one) is simply ignored.
-  // Persist everything locally — mirrors Assignment Log's applyState(), which
-  // re-saves every field to localStorage directly (not via the save*()
-  // wrappers) after a remote pull, so applying a pull never re-triggers a push.
-  localStorage.setItem('etl_tpl',JSON.stringify(templates));
-  localStorage.setItem('etl_trash',JSON.stringify(trash));
-  localStorage.setItem('etl_ccats',JSON.stringify(customCats));
-  localStorage.setItem('etl_cat_label_overrides',JSON.stringify(CAT_LABELS));
-  localStorage.setItem('etl_itypes',JSON.stringify(intTypes));
-  localStorage.setItem('etl_procs',JSON.stringify(processes));
-  localStorage.setItem('etl_coordtypes',JSON.stringify(coordTypes));
-  localStorage.setItem('etl_futypes',JSON.stringify(fuTypes));
-  localStorage.setItem('etl_matypes',JSON.stringify(maTypes));
-  localStorage.setItem('etl_countries',JSON.stringify(countries));
-  localStorage.setItem('etl_fol',JSON.stringify(folders));
-  localStorage.setItem('etl_drafts',JSON.stringify(drafts));
-  // Full re-render across the app.
-  updateCounts();renderSidebarTypes();renderSidebarSubs();renderTypeChips();renderProcChips();renderCountryChips();render();
-  updateTrashBadge();
-  updateDraftBadges();
-  renderDesignPanel();
-  const cfgPage=document.getElementById('page-cfg');
-  if(cfgPage&&cfgPage.classList.contains('active')){
-    renderCfgTable();renderZCfgTable();
-    renderTypeList();renderProcPills();renderCoordTypeList();renderFuTypeList();renderMaTypeList();renderFolderList();renderCountryList();renderCatList();
-  }
+  const d=cfgDefaults();
+  templates=data.templates;
+  trash=Array.isArray(data.trash)?data.trash:[];
+  customCats=Array.isArray(data.customCats)?data.customCats:[];
+  CAT_LABELS=Object.assign(defaultCatLabels(),data.catLabelOverrides||{});
+  intTypes=Array.isArray(data.intTypes)?data.intTypes:d.intTypes;
+  processes=Array.isArray(data.processes)?data.processes:d.processes;
+  coordTypes=Array.isArray(data.coordTypes)?data.coordTypes:d.coordTypes;
+  fuTypes=Array.isArray(data.fuTypes)?data.fuTypes:d.fuTypes;
+  maTypes=Array.isArray(data.maTypes)?data.maTypes:d.maTypes;
+  countries=Array.isArray(data.countries)?data.countries:d.countries;
+  folders=Array.isArray(data.folders)?data.folders:[];
+  drafts=Array.isArray(data.drafts)?data.drafts:[];
+  rerenderAll();
 }
-// Merges local + remote whole-app-state when local has unsynced ('dirty')
-// edits, instead of blindly picking one side and losing the other's changes.
-function mergeAppState(local,remote){
-  const EPOCH='1970-01-01T00:00:00.000Z';
-  // templates+trash merged TOGETHER (not as two independent lists): a plain
-  // per-list union can resurrect a template as a duplicate in both lists if
-  // one device trashed it while the other, dirty from an unrelated edit,
-  // still has the untouched record in its local `templates`. One pass over
-  // a combined id map, keyed by whichever side is more recent, avoids that.
-  const map=new Map();
-  (local.templates||[]).forEach(r=>map.set(r.id,{record:r,list:'templates',ts:r.updatedAt||EPOCH}));
-  (local.trash||[]).forEach(r=>map.set(r.id,{record:r,list:'trash',ts:r.deletedAt||EPOCH}));
-  (remote.templates||[]).forEach(r=>{
-    const ts=r.updatedAt||EPOCH,cur=map.get(r.id);
-    if(!cur||ts>cur.ts)map.set(r.id,{record:r,list:'templates',ts});
+// Wipes every piece of business data from memory AND from the visible UI.
+function clearBusinessState(){
+  templates=[];trash=[];customCats=[];CAT_LABELS=defaultCatLabels();
+  intTypes=[];processes=[];coordTypes=[];fuTypes=[];maTypes=[];countries=[];folders=[];drafts=[];
+  try{selectedIds.clear();cfgSelectedIds.clear();zCfgSelectedIds.clear();}catch(e){}
+  curId=null;isEdit=false;editCC=0;newCC=0;zNewCC=0;editOpenSnapshot=null;editingDraftId=null;
+  suppressAutoRestore=false;skipEditReasonId=null;tvCurId=null;zTvCurId=null;libTvCurId=null;curHistoryId=null;
+  chips={};condState={};viewZulipPreviewOn=false;
+  try{genHistory={email:[],zulip:[]};lastGenKw={email:null,zulip:null};}catch(e){}
+  try{closeTemplateExportMenu();}catch(e){}
+  // modals / viewers
+  document.querySelectorAll('.ov.open').forEach(function(o){o.classList.remove('open');});
+  document.querySelectorAll('.tpl-viewer.show').forEach(function(o){o.classList.remove('show');});
+  // every typed value anywhere in a modal, plus the search box
+  document.querySelectorAll('.ov input:not([type=checkbox]):not([type=radio]):not([type=file]),.ov textarea,#q,#gen-kw').forEach(function(el){el.value='';});
+  document.querySelectorAll('.ov input[type=checkbox],.ov input[type=radio]').forEach(function(el){el.checked=false;});
+  document.querySelectorAll('input[type=file]').forEach(function(el){try{el.value='';}catch(e){}});
+  // rich-text editors
+  [ncQuill,editQuill].forEach(function(q){if(q){try{q.setContents([]);q.root.innerHTML='';}catch(e){}}});
+  ['#nc-body-editor .ql-editor','#e-body-editor .ql-editor'].forEach(function(s){const el=document.querySelector(s);if(el)el.innerHTML='';});
+  editQuill=null;
+  ['m-body','m-title','m-meta','tv-body','tv-title','tv-meta','ztv-body','ztv-title','ztv-meta','ltv-body','ltv-title','ltv-meta','ltv-star',
+   'nc-conds','nc-todo-list','zc-conds','zc-todo-list','e-todo-list','history-list','drafts-list','trash-list','gen-result','pop-body'
+  ].forEach(function(id){const el=document.getElementById(id);if(el)el.innerHTML='';});
+  const ea=document.getElementById('ltv-actions');if(ea)ea.style.display='none';
+  rerenderAll();
+  // any text still left in editable regions (e.g. contenteditable table cells)
+  document.querySelectorAll('.ql-editor,[contenteditable="true"]').forEach(function(el){el.innerHTML='';});
+}
+
+// ─── gate / status UI ──────────────────────────────────────────────
+const CS_LABELS={connecting:'Connecting…',login:'Sign in required',loading:'Loading shared data…',connected:'Connected',error:'Connection error',disconnected:'Disconnected'};
+function csGateVisible(state){return state==='login'||state==='connecting'||(state==='loading'&&cloud.gateOn);}
+function lockUI(on){
+  Array.prototype.forEach.call(document.body.children,function(el){
+    if(el.id==='cs-gate'||el.id==='toast'||/^(SCRIPT|STYLE|LINK)$/.test(el.tagName))return;
+    if(on)el.setAttribute('inert','');else el.removeAttribute('inert');
   });
-  (remote.trash||[]).forEach(r=>{
-    const ts=r.deletedAt||EPOCH,cur=map.get(r.id);
-    if(!cur||ts>cur.ts)map.set(r.id,{record:r,list:'trash',ts});
+  if(on&&document.activeElement&&document.activeElement!==document.body&&!document.activeElement.closest('#cs-gate'))document.activeElement.blur();
+}
+function setCloudState(state,msg){
+  const prevState=cloud.state;
+  cloud.state=state;cloud.connected=(state==='connected');
+  if(state==='login'||state==='connecting')cloud.gateOn=true;
+  else if(state!=='loading')cloud.gateOn=false;
+  const gateOn=csGateVisible(state);
+  if(prevState!==state)closeUserMenu(false);
+  if(msg!==undefined)cloud.msg=msg;
+  const gate=document.getElementById('cs-gate');
+  if(gate){gate.dataset.state=state;if(gateOn)gate.dataset.gate='1';else delete gate.dataset.gate;}
+  const label=CS_LABELS[state]||state;
+  document.querySelectorAll('.cs-status-pill').forEach(function(p){
+    p.className='fs-status-pill cs-status-pill fs-status-'+(state==='connected'?'connected':state==='error'?'error':(state==='loading'||state==='connecting')?'connecting':state==='disconnected'?'error':'offline');
+    const t=p.querySelector('.cs-status-text');if(t)t.textContent=label;
   });
-  const mTemplates=[],mTrash=[];
-  map.forEach(v=>(v.list==='templates'?mTemplates:mTrash).push(v.record));
-  // Key/id-keyed config lists: union by key, local wins on same-key collision
-  // (no recency tracked for these — this is the sole rule, not a tiebreak).
-  function mergeByKey(localArr,remoteArr,keyFn){
-    const out=[...(localArr||[])];
-    const seen=new Set(out.map(keyFn));
-    (remoteArr||[]).forEach(r=>{if(!seen.has(keyFn(r))){out.push(r);seen.add(keyFn(r));}});
-    return out;
-  }
-  // Bare-string arrays: plain value union.
-  function unionValues(localArr,remoteArr){return [...new Set([...(localArr||[]),...(remoteArr||[])])];}
-  // Drafts: id-keyed, newer savedAt wins per id (same shape as the
-  // templates/trash merge above, just a single list instead of two).
-  const draftMap=new Map();
-  (local.drafts||[]).forEach(d=>draftMap.set(d.id,d));
-  (remote.drafts||[]).forEach(d=>{
-    const cur=draftMap.get(d.id);
-    if(!cur||(d.savedAt||EPOCH)>(cur.savedAt||EPOCH))draftMap.set(d.id,d);
-  });
-  return {
-    templates:mTemplates,
-    trash:mTrash,
-    drafts:[...draftMap.values()],
-    customCats:mergeByKey(local.customCats,remote.customCats,c=>c.key),
-    catLabelOverrides:Object.assign({},remote.catLabelOverrides,local.catLabelOverrides),
-    intTypes:unionValues(local.intTypes,remote.intTypes),
-    processes:mergeByKey(local.processes,remote.processes,p=>p.key),
-    coordTypes:mergeByKey(local.coordTypes,remote.coordTypes,c=>c.key),
-    fuTypes:mergeByKey(local.fuTypes,remote.fuTypes,f=>f.key),
-    maTypes:mergeByKey(local.maTypes,remote.maTypes,m=>m.key),
-    countries:unionValues(local.countries,remote.countries),
-    folders:mergeByKey(local.folders,remote.folders,f=>f.id),
-    // appearance is intentionally excluded — device-local only, never merged.
-  };
+  const m=document.getElementById('cs-gate-msg');
+  if(m)m.textContent=cloud.msg||'';
+  document.querySelectorAll('.cs-account-email').forEach(function(el){el.textContent=cloud.email||'';});
+  if(state!=='login'){const e=document.getElementById('cs-login-err');if(e&&state!=='error')e.textContent='';}
+  lockUI(gateOn);
+  renderStatusBtn(label);
+  renderSaveText();
 }
-// Single entry point for applying any state that came from Supabase (initial
-// connect fetch or a live realtime push). If we have unsynced local edits
-// (dirty flag survived a refresh, or just haven't been pushed yet), merge
-// instead of overwriting so neither side's changes are lost; otherwise it's
-// safe to just apply the remote state as-is.
-function reconcileIncoming(remoteData){
-  if(localStorage.getItem('etl_cs_dirty')==='1'){
-    const merged=mergeAppState(collectAppState(),remoteData);
-    applyAppState(merged);
-    pushAppState(); // push merged result back so all devices converge
-  } else {
-    applyAppState(remoteData);
-  }
+function renderStatusBtn(label){
+  const b=document.getElementById('cs-status-btn');if(!b)return;
+  const st=cloud.state;
+  let tip;
+  if(st==='connected')tip='Connected to Supabase. Click to disconnect (clears all shared data from every open tab).';
+  else if(st==='disconnected')tip='Disconnected. Click to reconnect with your signed-in account.';
+  else if(st==='error')tip=(cloud.msg?cloud.msg+' ':'')+'Click to retry.';
+  else if(st==='loading')tip='Loading from Supabase. Click to cancel and disconnect.';
+  else tip='Supabase connection: '+label;
+  b.title=tip;
+  b.setAttribute('aria-label','Supabase: '+label+'. '+(st==='connected'?'Click to disconnect.':st==='disconnected'?'Click to reconnect.':st==='error'?'Click to retry.':st==='loading'?'Click to cancel.':''));
 }
-function scheduleSync(){
-  // Synchronous, survives a refresh even if the debounced write below never
-  // lands — this is what lets a reconnect later recover an edit that was
-  // made right before the page closed/refreshed.
-  localStorage.setItem('etl_cs_dirty','1');
-  // Writing only needs the client, not a confirmed realtime subscription —
-  // gating on a "connected" flag would silently drop edits made in the brief
-  // window right after connecting, before the channel finishes subscribing.
-  // staleVersion means a newer build is live elsewhere; don't write with
-  // possibly-outdated logic — the dirty flag stays set for a future reload.
-  if(!sbClient||staleVersion)return;
-  clearTimeout(syncTimer);
-  syncTimer=setTimeout(pushAppState,500);
+function csStatusClick(){
+  const st=cloud.state;
+  if(st==='connected'||st==='loading')disconnectCloud();
+  else if(st==='disconnected'||st==='error')csReconnect();
 }
-async function pushAppState(){
-  // Re-check staleVersion here too, not just in scheduleSync() — it can flip
-  // true (via the live app_meta subscription) during the 500ms debounce
-  // window between scheduleSync() firing the timer and this actually running.
-  if(!sbClient||staleVersion)return;
-  const payload=collectAppState();
-  lastPushedJSON=JSON.stringify(payload);
-  try{
-    await sbClient.from(SB_TABLE).upsert({id:SB_SYNC_KEY,data:payload,updated_at:new Date().toISOString()});
-    localStorage.removeItem('etl_cs_dirty'); // only clear on confirmed success
-  }catch(e){
-    console.error('[cloud-sync] push failed',e);
-    csSetStatus('error');
-  }
+// ─── account dropdown (fixed-positioned so no scroller/overflow can clip it) ───
+function placeUserMenu(){
+  const b=document.getElementById('cs-user-btn'),m=document.getElementById('cs-user-menu');if(!b||!m)return;
+  const r=b.getBoundingClientRect(),w=m.offsetWidth,h=m.offsetHeight;
+  m.style.left=Math.max(8,Math.min(r.right-w,innerWidth-w-8))+'px';
+  m.style.top=Math.max(8,Math.min(r.bottom+6,innerHeight-h-8))+'px';
 }
-function csSetStatus(status,detail){
-  const pill=document.getElementById('cs-status-pill'),text=document.getElementById('cs-status-text');
-  const label={connecting:'Connecting…',connected:'Connected — shared workspace live',warning:'Connected — realtime updates degraded',error:'Connection error',offline:'Not connected',stale:'Update available — please refresh'};
-  const known=label.hasOwnProperty(status)?status:'offline';
-  if(pill)pill.className='fs-status-pill fs-status-'+(known==='warning'?'connecting':known==='stale'?'error':known);
-  if(text)text.textContent=detail||label[known];
-  const btnC=document.getElementById('cs-connect-btn'),btnD=document.getElementById('cs-disconnect-btn');
-  const on=known==='connected'||known==='connecting'||known==='warning'||known==='stale';
-  if(btnC)btnC.style.display=on?'none':'';
-  if(btnD)btnD.style.display=on?'':'none';
+function openUserMenu(viaKeyboard){
+  const b=document.getElementById('cs-user-btn'),m=document.getElementById('cs-user-menu');if(!b||!m)return;
+  m.hidden=false;placeUserMenu();b.setAttribute('aria-expanded','true');
+  if(viaKeyboard){const i=document.getElementById('cs-logout-top');if(i)i.focus();}
 }
-// Turns a raw Supabase/PostgREST error (or a bad-URL guess) into a specific,
-// actionable message instead of the generic "Connection Error" that used to
-// mask real causes like "you haven't run the setup SQL yet".
-function describeCloudSyncError(e){
+function closeUserMenu(restoreFocus){
+  const b=document.getElementById('cs-user-btn'),m=document.getElementById('cs-user-menu');
+  if(!m||m.hidden)return;
+  m.hidden=true;if(b){b.setAttribute('aria-expanded','false');if(restoreFocus)b.focus();}
+}
+function toggleUserMenu(ev){
+  const m=document.getElementById('cs-user-menu');if(!m)return;
+  if(m.hidden)openUserMenu(!!(ev&&ev.detail===0));else closeUserMenu(false);
+}
+document.addEventListener('keydown',function(ev){
+  const m=document.getElementById('cs-user-menu');
+  if(ev.key==='Escape'&&m&&!m.hidden){ev.preventDefault();closeUserMenu(true);}
+});
+document.addEventListener('mousedown',function(ev){
+  const m=document.getElementById('cs-user-menu');
+  if(m&&!m.hidden&&!ev.target.closest('#cs-user-menu,#cs-user-btn'))closeUserMenu(false);
+},true);
+window.addEventListener('resize',function(){const m=document.getElementById('cs-user-menu');if(m&&!m.hidden)placeUserMenu();});
+function renderSaveText(){
+  document.querySelectorAll('.cs-save-text').forEach(function(el){el.textContent=cloud.connected&&cloud.saveText?'· '+cloud.saveText:'';});
+}
+function setSaveText(t){cloud.saveText=t;renderSaveText();}
+function renderCloudSyncPanel(){
+  const verEl=document.getElementById('cs-app-version');
+  if(verEl)verEl.textContent='App version: '+APP_VERSION;
+  setCloudState(cloud.state);
+  loadAiSettings();
+}
+function csDescribeError(e){
   const msg=(e&&(e.message||e.error_description||e.error))||'';
-  const code=e&&e.code;
-  if(code==='PGRST205'||code==='42P01'||/could not find the table/i.test(msg)){
-    return `Table "${SB_TABLE}" not found — copy the setup SQL below and run it in your Supabase project's SQL editor (it ends with a schema-cache reload, so it's safe even if you already ran an older version of it), then click Connect again.`;
-  }
-  if(code==='PGRST301'||/JWT|invalid api key|invalid_grant/i.test(msg)){
-    return 'Rejected by Supabase — double-check the anon public key (Project Settings → API).';
-  }
-  if(/failed to fetch|networkerror|load failed/i.test(msg)){
-    return 'Could not reach that Project URL — check it\'s correct and that this device has network access.';
-  }
-  return 'Could not connect: '+(msg||'unknown error');
+  const code=e&&(e.code||e.status);
+  if(code==='PGRST205'||code==='42P01'||/could not find the table/i.test(msg))return 'The app_state table is missing — run the Beta setup SQL (supabase/beta-setup.sql) in the Supabase SQL editor.';
+  if(code==='42501'||code===401||code===403||/row-level security|permission denied/i.test(msg))return 'Access denied — this account is not on the workspace allow-list.';
+  if(code==='PGRST301'||/jwt|invalid api key/i.test(msg))return 'Session rejected by Supabase — sign in again.';
+  if(/failed to fetch|networkerror|load failed/i.test(msg))return 'Could not reach Supabase — check the network and retry.';
+  return msg||'Unknown error.';
 }
-async function connectCloudSync(){
-  // The URL/key form fields were removed from the UI (credentials are baked
-  // in) — this button is now just "reconnect using whatever this device is
-  // configured to use", same source initCloudSync() uses on page load.
-  const url=localStorage.getItem('etl_cs_url')||SB_DEFAULT_URL;
-  const key=localStorage.getItem('etl_cs_key')||SB_DEFAULT_KEY;
-  await startCloudSync(url,key);
+
+// ─── client + session ──────────────────────────────────────────────
+function csClient(){
+  if(cloud.client)return cloud.client;
+  if(typeof window.supabase==='undefined'||!window.supabase.createClient)throw new Error('Supabase JS SDK not loaded — check your network connection.');
+  cloud.client=window.supabase.createClient(SB_DEFAULT_URL,SB_DEFAULT_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:CS_AUTH_STORAGE_KEY},
+    realtime:{params:{eventsPerSecond:5}}
+  });
+  cloud.client.auth.onAuthStateChange(function(ev,session){
+    // Never await Supabase calls inside this callback (deadlocks the auth lock).
+    setTimeout(function(){
+      if(ev==='SIGNED_OUT'&&cloud.state!=='login'&&cloud.state!=='connecting'){hardLockToLogin('Signed out.');}
+      else if(ev==='SIGNED_IN'&&session&&cloud.state==='login'&&localStorage.getItem(CS_PREF_KEY)!=='0'){cloud.email=session.user&&session.user.email||'';connectAndLoad();}
+    },0);
+  });
+  return cloud.client;
 }
-async function startCloudSync(url,key){
-  if(sbChannel){sbChannel.unsubscribe();sbChannel=null;}
-  sbClient=null;
-  staleVersion=false;
-  csSetStatus('connecting');
+function csBroadcast(type){
+  try{if(cloud.bc)cloud.bc.postMessage({type:type,from:CS_TAB_ID});}catch(e){}
+}
+function stopSyncing(){
+  cloud.epoch++;
+  clearTimeout(cloud.timer);cloud.timer=null;
+  cloud.dirty=false;cloud.saving=false;cloud.toastQ=[];cloud.capture=false;
+  cloud.rowVersion=null;cloud.committedJSON=null;cloud.saveText='';
+  if(cloud.channel&&cloud.client){try{cloud.client.removeChannel(cloud.channel);}catch(e){}}
+  cloud.channel=null;
+  if(cloud.client){try{cloud.client.auth.stopAutoRefresh();}catch(e){}}
+  cloud.connected=false;
+}
+function hardLockToLogin(msg){
+  stopSyncing();clearBusinessState();cloud.email='';
+  setCloudState('login',msg||'Sign in with your Supabase Auth account.');
+}
+// Disconnect: stop syncing + wipe everything; the Auth session is kept.
+function disconnectCloud(fromBroadcast){
+  stopSyncing();
+  try{localStorage.setItem(CS_PREF_KEY,'0');}catch(e){}
+  clearBusinessState();
+  setCloudState('disconnected','Disconnected. All shared data was cleared from this tab. Click the status pill to reconnect.');
+  if(!fromBroadcast)csBroadcast('disconnect');
+}
+async function logoutCloud(fromBroadcast){
+  const client=cloud.client;
+  stopSyncing();clearBusinessState();cloud.email='';
+  try{localStorage.setItem(CS_PREF_KEY,'1');}catch(e){}
+  setCloudState('login','Signed out.');
+  if(!fromBroadcast){
+    csBroadcast('logout');
+    try{if(client)await client.auth.signOut({scope:'local'});}catch(e){console.warn('[auth] signOut',e);}
+  }
+}
+async function csLogin(ev){
+  if(ev)ev.preventDefault();
+  const email=(document.getElementById('cs-email').value||'').trim();
+  const pw=document.getElementById('cs-password').value||'';
+  const err=document.getElementById('cs-login-err');err.textContent='';
+  if(!email||!pw){err.textContent='Enter your email and password.';return false;}
+  const epoch=++cloud.epoch;
+  setCloudState('loading','Signing in…');
   try{
-    if(typeof window.supabase==='undefined'||!window.supabase.createClient)throw new Error('Supabase JS SDK not loaded — check your network connection.');
-    const client=window.supabase.createClient(url,key);
-    const res=await client.from(SB_TABLE).select('*').in('id',[SB_SYNC_KEY,SB_META_KEY]);
+    const client=csClient();
+    try{client.auth.startAutoRefresh();}catch(e){}
+    const r=await client.auth.signInWithPassword({email:email,password:pw});
+    if(epoch!==cloud.epoch)return false;
+    if(r.error||!r.data||!r.data.session)throw (r.error||new Error('No session returned.'));
+    document.getElementById('cs-password').value='';
+    cloud.email=r.data.session.user&&r.data.session.user.email||email;
+    try{localStorage.setItem(CS_PREF_KEY,'1');}catch(e){}
+    await connectAndLoad();
+  }catch(e){
+    if(epoch!==cloud.epoch)return false;
+    setCloudState('login','Sign in with your Supabase Auth account.');
+    err.textContent=/invalid login|invalid_credentials|invalid_grant/i.test((e&&(e.message||e.code))||'')?'Incorrect email or password.':csDescribeError(e);
+  }
+  return false;
+}
+// Fresh authenticated read -> strict replace -> unlock. Never merges.
+async function connectAndLoad(){
+  const epoch=++cloud.epoch;
+  try{
+    const client=csClient();
+    try{client.auth.startAutoRefresh();}catch(e){}
+    setCloudState('loading','Loading shared data from Supabase…');
+    const s=await client.auth.getSession();
+    if(epoch!==cloud.epoch)return;
+    const session=s&&s.data&&s.data.session;
+    if(!session){setCloudState('login','Sign in with your Supabase Auth account.');return;}
+    cloud.email=session.user&&session.user.email||'';
+    let q=client.from(SB_TABLE).select('id,data,updated_at').eq('id',SB_SYNC_KEY).limit(1);
+    if(typeof q.retry==='function')q=q.retry(false);
+    const res=await q;
+    if(epoch!==cloud.epoch)return;   // disconnected / re-requested while in flight -> discard
     if(res.error)throw res.error;
-    sbClient=client;
-    const stateRow=res.data.find(r=>r.id===SB_SYNC_KEY);
-    const metaRow=res.data.find(r=>r.id===SB_META_KEY);
-    // Version gate — always a fresh read at connect time, never cached, so a
-    // tab that missed a live app_meta push still can't announce a stale
-    // version once it re-checks. Forward-only: never regress a newer remote
-    // version, and never overwrite one with an older local build.
-    if(metaRow&&metaRow.data&&compareVersions(metaRow.data.version,APP_VERSION)>0){
-      staleVersion=true;
-      csSetStatus('stale','A newer version is available — please refresh.');
-    } else {
-      await client.from(SB_TABLE).upsert({id:SB_META_KEY,data:{version:APP_VERSION,publishedAt:new Date().toISOString()},updated_at:new Date().toISOString()});
+    const row=Array.isArray(res.data)?res.data[0]:null;
+    if(!row)throw new Error('No workspace row is visible to this account. Ask an admin to add you to the workspace allow-list (the app never creates it automatically).');
+    validateRemoteData(row.data);
+    applyAppState(row.data);
+    cloud.rowVersion=row.updated_at;
+    cloud.committedJSON=JSON.stringify(collectAppState());
+    cloud.dirty=false;cloud.saving=false;cloud.saveText='';
+    subscribeRealtime(epoch);
+    setCloudState('connected','');
+    toastNow('Connected to the shared workspace.');
+  }catch(e){
+    if(epoch!==cloud.epoch)return;
+    console.error('[cloud] connect failed',e);
+    const m=csDescribeError(e);
+    if(e&&(e.code==='PGRST301'||e.status===401||/jwt/i.test(e.message||''))){
+      hardLockToLogin('Your session expired — sign in again.');return;
     }
-    if(stateRow&&stateRow.data){
-      reconcileIncoming(stateRow.data);
-    } else {
-      const hasLocalData=templates.length>0;
-      const upload=!hasLocalData||confirm(`No shared data found yet on this Supabase project.\n\nUpload your current local data (templates, categories, labels, appearance settings) to start the shared workspace?\n\nOK = upload local data.\nCancel = start with an empty shared workspace (your local data stays on this device only, unless you upload it later).`);
-      if(upload)await client.from(SB_TABLE).upsert({id:SB_SYNC_KEY,data:collectAppState(),updated_at:new Date().toISOString()});
-      else applyAppState({templates:[],trash:[],customCats:[]});
-    }
-    sbChannel=client.channel('etl_sync_'+SB_SYNC_KEY)
+    stopSyncing();clearBusinessState();
+    setCloudState('error',m);
+    toastNow(m);
+    const el=document.getElementById('cs-login-err');if(el)el.textContent='';
+  }
+}
+function subscribeRealtime(epoch){
+  try{
+    const client=cloud.client;
+    cloud.channel=client.channel('etl_sync_'+SB_SYNC_KEY)
       .on('postgres_changes',{event:'*',schema:'public',table:SB_TABLE,filter:'id=eq.'+SB_SYNC_KEY},function(payload){
-        const incoming=payload.new&&payload.new.data;
-        if(!incoming)return;
-        const incomingJSON=JSON.stringify(incoming);
-        if(incomingJSON===lastPushedJSON)return; // ignore the echo of our own write
-        reconcileIncoming(incoming);
-      })
-      .on('postgres_changes',{event:'*',schema:'public',table:SB_TABLE,filter:'id=eq.'+SB_META_KEY},function(payload){
-        const incomingMeta=payload.new&&payload.new.data;
-        if(!incomingMeta)return;
-        if(compareVersions(incomingMeta.version,APP_VERSION)>0){
-          staleVersion=true;
-          csSetStatus('stale','A newer version is available — please refresh.');
-        }
+        if(epoch!==cloud.epoch||!cloud.connected)return;
+        const rec=payload&&payload.new;
+        if(!rec||!rec.data||rec.updated_at===cloud.rowVersion)return;     // our own echo / empty
+        if(cloud.saving||cloud.dirty)return;       // our pending save will detect the conflict and reload
+        try{validateRemoteData(rec.data);}catch(e){return;}
+        applyAppState(rec.data);
+        cloud.rowVersion=rec.updated_at;
+        cloud.committedJSON=JSON.stringify(collectAppState());
+        setSaveText('Updated from another device');
       })
       .subscribe(function(status){
-        if(status==='SUBSCRIBED')csSetStatus(staleVersion?'stale':'connected');
-        // The initial read/write above already succeeded — sbClient is set
-        // and scheduleSync()/pushAppState() work fine even if the realtime
-        // channel itself hiccups, so a CHANNEL_ERROR/TIMED_OUT here should
-        // NOT be reported as a hard connection failure (that used to hide a
-        // working sync behind a scary red "Connection error").
-        else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){
-          csSetStatus('warning');
-          toast('Realtime live-updates degraded — sync still works, but other devices\' changes may take a manual reconnect to appear.');
-        }
+        if(epoch!==cloud.epoch)return;
+        if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')toastNow('Realtime updates degraded — saves still work; reload to see other devices\' changes.');
       });
-    localStorage.setItem('etl_cs_url',url);
-    localStorage.setItem('etl_cs_key',key);
-    localStorage.setItem('etl_cs_enabled','1');
-    toast(staleVersion?'Connected — a newer version is available, please refresh.':'Cloud sync connected.');
-  }catch(e){
-    console.error('[cloud-sync] connect failed',e);
-    sbClient=null;
-    const msg=describeCloudSyncError(e);
-    csSetStatus('error',msg);
-    toast(msg);
+  }catch(e){console.warn('[cloud] realtime unavailable',e);}
+}
+
+// ─── saving: acknowledged, conditional, rollback on failure ────────
+function scheduleSync(){
+  if(!cloud.connected){
+    // Service-level backstop: a mutation slipped through while not connected.
+    clearBusinessState();return;
   }
+  cloud.dirty=true;
+  cloud.capture=true;                       // hold success toasts raised by this mutator
+  Promise.resolve().then(function(){cloud.capture=false;});
+  setSaveText('Saving…');
+  clearTimeout(cloud.timer);
+  cloud.timer=setTimeout(flushSave,CS_SAVE_DEBOUNCE_MS);
 }
-function disconnectCloudSync(){
-  if(sbChannel){sbChannel.unsubscribe();sbChannel=null;}
-  sbClient=null;
-  localStorage.setItem('etl_cs_enabled','0');
-  csSetStatus('offline');
-  toast('Cloud sync disconnected — working from local data only.');
+function rollbackToCommitted(){
+  if(!cloud.committedJSON)return;
+  try{applyAppState(JSON.parse(cloud.committedJSON));}catch(e){console.error('[cloud] rollback failed',e);}
 }
-// Safe to run more than once (DROP POLICY IF EXISTS / guarded publication
-// add), and ends with a schema-cache reload — without that NOTIFY, Supabase's
-// PostgREST layer can keep reporting "Could not find the table" for a while
-// after the table is created (a known Supabase gotcha, especially when the
-// SQL is run via the SQL editor rather than the Table editor), which is the
-// single most common cause of a "table not found" error right after setup.
-const CS_SETUP_SQL=`create table if not exists app_state (
-  id text primary key,
-  data jsonb not null,
-  updated_at timestamptz not null default now()
-);
-
-alter table app_state enable row level security;
-
--- Open policy so any device with the anon key can read/write — fine for an
--- internal team tool; tighten with auth-based policies before exposing this
--- publicly.
-drop policy if exists "allow all" on app_state;
-create policy "allow all" on app_state
-  for all using (true) with check (true);
-
-do $$
-begin
-  if not exists (
-    select 1 from pg_publication_tables
-    where pubname = 'supabase_realtime' and tablename = 'app_state'
-  ) then
-    alter publication supabase_realtime add table app_state;
-  end if;
-end $$;
-
--- Force PostgREST to pick up the new table immediately instead of waiting
--- for its own cache refresh cycle.
-notify pgrst, 'reload schema';`;
-function copySetupSql(){
-  copyPlainText(CS_SETUP_SQL).then(function(ok){toast(ok?'Setup SQL copied — paste it into the Supabase SQL editor.':'Copy failed, please try again.');});
+async function flushSave(){
+  if(!cloud.connected||!cloud.dirty)return;
+  if(cloud.saving)return;                   // finishing save re-checks `dirty`
+  const epoch=cloud.epoch,client=cloud.client;
+  cloud.saving=true;cloud.dirty=false;
+  const payload=collectAppState(),json=JSON.stringify(payload);
+  const batch=cloud.toastQ.splice(0);
+  setSaveText('Saving…');
+  let res;
+  try{
+    res=await client.from(SB_TABLE).update({data:payload}).eq('id',SB_SYNC_KEY).eq('updated_at',cloud.rowVersion).select('updated_at');
+  }catch(e){res={error:e};}
+  if(epoch!==cloud.epoch)return;            // disconnected / signed out mid-flight: ignore the late result
+  cloud.saving=false;
+  const row=!res.error&&Array.isArray(res.data)?res.data[0]:null;
+  if(row){
+    cloud.rowVersion=row.updated_at;cloud.committedJSON=json;
+    if(cloud.dirty){flushSave();}else{setSaveText('Saved');}
+    batch.forEach(function(m){toastNow(m);});
+    return;
+  }
+  // Not acknowledged -> nothing was saved. Roll back to the last acknowledged state.
+  cloud.dirty=false;cloud.toastQ=[];
+  if(res.error){
+    rollbackToCommitted();setSaveText('Not saved');
+    toastNow('Not saved: '+csDescribeError(res.error));
+    return;
+  }
+  // 0 rows: either someone else changed the row (our version is stale) or RLS hides it.
+  try{
+    let q=client.from(SB_TABLE).select('id,data,updated_at').eq('id',SB_SYNC_KEY).limit(1);
+    if(typeof q.retry==='function')q=q.retry(false);
+    const fresh=await q;
+    if(epoch!==cloud.epoch)return;
+    const fr=!fresh.error&&Array.isArray(fresh.data)?fresh.data[0]:null;
+    if(fr&&fr.updated_at!==cloud.rowVersion){
+      validateRemoteData(fr.data);
+      applyAppState(fr.data);cloud.rowVersion=fr.updated_at;cloud.committedJSON=JSON.stringify(collectAppState());
+      setSaveText('Not saved');
+      toastNow('Not saved: the workspace was changed elsewhere. The latest shared data was loaded — please redo your edit.');
+      return;
+    }
+  }catch(e){if(epoch!==cloud.epoch)return;}
+  rollbackToCommitted();setSaveText('Not saved');
+  toastNow('Not saved: Supabase did not accept the update (no access, or the workspace row is missing).');
 }
+
+// ─── service-level guards ──────────────────────────────────────────
+function csGuard(fn,fallback,throwIt){
+  return function(){
+    if(!cloud.connected){
+      if(throwIt)throw new Error('Not connected to Supabase.');
+      if(typeof fallback==='function')return fallback.apply(this,arguments);
+      return fallback;
+    }
+    return fn.apply(this,arguments);
+  };
+}
+function installCloudGuards(){
+  const block=function(){toastNow('Not connected — connect to the shared workspace first.');};
+  const mutators=('toggleStarTemplate addCategory renameCategory deleteCategory saveEdit logTemplateHistory upsertDraft deleteDraftEntry '+
+    'moveToTrash moveToTrashBulk restoreTrashItem permanentlyDeleteTrashItem purgeExpiredTrash duplicateTemplate addType renameType deleteType '+
+    'renameCountry addCountry deleteCountry addCoordType renameCoordType deleteCoordType addProc removeProc addFuType renameFuType deleteFuType '+
+    'addMaType renameMaType deleteMaType saveNewEmail saveNewZulip addCustomFolder addSubFolder renameFolder deleteFolder bulkDelete').split(' ');
+  const reads=('openModal openAddEmailModal openAddZulipModal openGenModal runGenerate showLibTplViewer openDraftsPanel openTrashPanel '+
+    'openHistoryModal doCopy toggleTemplateExportMenu exportAllTemplates').split(' ');
+  mutators.concat(reads).forEach(function(n){if(typeof window[n]==='function')window[n]=csGuard(window[n],block);});
+  ['buildTemplateExportJson','buildTemplateExportXlsx'].forEach(function(n){window[n]=csGuard(window[n],null,true);});
+  window.getFilteredList=csGuard(window.getFilteredList,function(){return [];});
+  const imp=window.importTemplateJson;
+  window.importTemplateJson=function(input){
+    if(!cloud.connected){try{input.value='';}catch(e){}block();return Promise.resolve();}
+    return imp.apply(this,arguments);
+  };
+  // Success toasts raised by a mutator are held until Supabase acknowledges the save.
+  window.__origToast=window.toast;
+  window.toast=function(msg){if(cloud.capture)cloud.toastQ.push(msg);else toastNow(msg);};
+}
+
+// ─── boot ──────────────────────────────────────────────────────────
+function cloudInit(){
+  installCloudGuards();
+  try{
+    cloud.bc=new BroadcastChannel(CS_CHANNEL);
+    cloud.bc.onmessage=function(ev){
+      const m=ev.data||{};if(m.from===CS_TAB_ID)return;
+      if(m.type==='disconnect')disconnectCloud(true);
+      else if(m.type==='logout')logoutCloud(true);
+    };
+  }catch(e){}
+  // Fallback for browsers without BroadcastChannel (same-origin storage event).
+  window.addEventListener('storage',function(ev){
+    if(ev.key===CS_PREF_KEY&&ev.newValue==='0'&&cloud.state!=='disconnected')disconnectCloud(true);
+  });
+  setCloudState('connecting','');
+  try{csClient();}catch(e){stopSyncing();setCloudState('error',csDescribeError(e));return;}
+  if(localStorage.getItem(CS_PREF_KEY)==='0'){
+    stopSyncing();setCloudState('disconnected','Disconnected on this browser. Reconnect to load a fresh copy from Supabase.');return;
+  }
+  cloud.client.auth.getSession().then(function(s){
+    const session=s&&s.data&&s.data.session;
+    if(!session){setCloudState('login','Sign in with your Supabase Auth account.');return;}
+    cloud.email=session.user&&session.user.email||'';
+    connectAndLoad();
+  }).catch(function(e){setCloudState('error',csDescribeError(e));});
+}
+async function csReconnect(){
+  try{localStorage.setItem(CS_PREF_KEY,'1');}catch(e){}
+  await connectAndLoad();
+}
+async function csRetry(){await connectAndLoad();}
 
 // ══════════════════════════════════════════════════
 // AI SETTINGS — bring-your-own OpenAI-compatible endpoint (mirrors the
@@ -2549,8 +2634,8 @@ document.getElementById('gen-modal').addEventListener('click',function(e){if(e.t
 document.getElementById('trash-modal').addEventListener('click',function(e){if(e.target===this)closeTrashPanel();});
 
 // Folders
-let folders=JSON.parse(localStorage.getItem('etl_fol')||'[]');
-function saveFol(){localStorage.setItem('etl_fol',JSON.stringify(folders));scheduleSync();}
+let folders=[];
+function saveFol(){scheduleSync();}
 
 // State
 let curId=null,isEdit=false,editCC=0,newCC=0,zNewCC=0,editOpenSnapshot=null;
@@ -2615,28 +2700,7 @@ let cfgSelectedIds=new Set();
 let cfgSortCol='id',cfgSortDir=1;
 let tvCurId=null;
 
-function defTpl(){return[
-  {id:'T001',domain:'email',cat:'integration',country:'TH',type:'SFTP',proc:'certification',name:'SFTP Cert — Production User Created',desc:'Use when production user has already been created.',subj:'[SFTP] Certification Ready — Production User Confirmed',body:`Dear [Partner Name],\n\nThank you for completing the production user setup. Your production account is now active.\n\nNext steps:\n1. Connect to: [SFTP Host]\n2. Authenticate with production credentials\n3. Upload a test file to /outbox\n4. Confirm receipt with [Team Email]\n\nPlease complete by [Due Date].\n\nBest regards,\n[Your Name]`,conds:[{k:'User on Production created',v:'yes'},{k:'Firewall rules approved',v:'yes'},{k:'SSH key fingerprint verified',v:'yes'},{k:'Test file upload confirmed',v:'no'}],kw:['sftp','certification','production'],folder:null},
-  {id:'T002',domain:'email',cat:'integration',country:'TH',type:'SFTP',proc:'certification',name:'SFTP Cert — Production User Pending',desc:'Use when production user has NOT been created yet.',subj:'[SFTP] Action Required — Production User Setup Needed',body:`Dear [Partner Name],\n\nWe are initiating the SFTP certification phase. Before proceeding, your production user account must be created.\n\nRequired action:\n- Submit the production user request to [Admin Team]\n- Reference: [Ref Number]\n- Expected completion: [Date]\n\nReply once the user is created.\n\nBest regards,\n[Your Name]`,conds:[{k:'User on Production created',v:'no'}],kw:['sftp','certification','production','pending'],folder:null},
-  {id:'T003',domain:'email',cat:'integration',country:'TH',type:'iAPI',proc:'contact',name:'iAPI Initial Contact',desc:'First outreach for iAPI integration.',subj:'[iAPI] Integration Kickoff — Welcome',body:`Dear [Partner Name],\n\nWelcome to the iAPI integration program.\n\nProcess:\n1. Contact & Requirements\n2. Development\n3. Certification\n4. Cutover\n\nIntegration manager: [Manager Name] ([Manager Email])\n\nBest regards,\n[Your Name]`,conds:[],kw:['iapi','contact','kickoff'],folder:null},
-  {id:'T004',domain:'email',cat:'integration',country:'TH',type:'iAPI',proc:'development',name:'iAPI Dev Credentials Ready',desc:'Sent when dev credentials are ready.',subj:'[iAPI] Development Credentials Ready',body:`Dear [Partner Name],\n\nYour development environment is ready.\n\n- Base URL: [Dev API URL]\n- API Key: [API Key]\n- Sandbox expires: [Expiry Date]\n\nDocs: [Docs Link]\n\nBest regards,\n[Your Name]`,conds:[],kw:['iapi','development','credentials'],folder:null},
-  {id:'T005',domain:'email',cat:'integration',country:'TH',type:'APP',proc:'certification',name:'APP Cert — All Test Cases Passed',desc:'Confirmation when all test cases pass.',subj:'[APP] Certification — All Test Cases Passed',body:`Dear [Partner Name],\n\nAll APP certification test cases have passed.\n\nTotal: [N] | Passed: [N] | Failed: 0\n\nNext: Cutover approval by [Date].\n\nBest regards,\n[Your Name]`,conds:[{k:'All test cases passed',v:'yes'}],kw:['app','certification','test','passed'],folder:null},
-  {id:'T006',domain:'email',cat:'integration',country:'TH',type:'APP',proc:'certification',name:'APP Cert — Test Cases Failed',desc:'When test cases have failures.',subj:'[APP] Certification — Test Failures',body:`Dear [Partner Name],\n\nDuring APP certification we encountered failures.\n\nFailed: [List IDs]\n\nPlease provide a remediation plan within [N] business days.\n\nBest regards,\n[Your Name]`,conds:[{k:'All test cases passed',v:'no'}],kw:['app','certification','test','failed'],folder:null},
-  {id:'T007',domain:'email',cat:'integration',country:'TH',type:'PNR',proc:'contact',name:'PNR Integration Introduction',desc:'First contact for PNR partners.',subj:'[PNR] Integration Program — Getting Started',body:`Dear [Partner Name],\n\nThank you for joining the PNR integration program.\n\nWe need:\n- Technical contact details\n- Estimated go-live date\n- Monthly PNR volume\n\nBest regards,\n[Your Name]`,conds:[],kw:['pnr','contact'],folder:null},
-  {id:'T008',domain:'email',cat:'integration',country:'TH',type:'PNR',proc:'cutover',name:'PNR Cutover — Go Live Confirmation',desc:'Sent on the day of production cutover.',subj:'[PNR] GO LIVE Today',body:`Dear [Partner Name],\n\nPNR cutover is today, [Date], at [Time] [TZ].\n\nChecklist:\n☐ Production credentials activated\n☐ Monitoring configured\n☐ Rollback plan confirmed\n☐ On-call: [Name] at [Phone]\n\nBest regards,\n[Your Name]`,conds:[{k:'Rollback plan confirmed',v:'yes'},{k:'Production credentials active',v:'yes'}],kw:['pnr','cutover','go live'],folder:null},
-  {id:'T009',domain:'email',cat:'integration',country:'TH',type:'ALP',proc:'development',name:'ALP Dev Checklist',desc:'Development phase checklist for ALP.',subj:'[ALP] Development Checklist — Phase 2',body:`Dear [Partner Name],\n\nFor ALP development please complete:\n\n[ ] API authentication\n[ ] Error handling per spec\n[ ] Rate limiting (max [N] req/min)\n[ ] Test payloads validated\n\nBest regards,\n[Your Name]`,conds:[],kw:['alp','development','checklist'],folder:null},
-  {id:'T010',domain:'email',cat:'integration',country:'TH',type:'TDAC',proc:'contact',name:'TDAC Onboarding Welcome',desc:'Welcome email for new TDAC partners.',subj:'[TDAC] Welcome to TDAC Integration',body:`Dear [Partner Name],\n\nWelcome to the TDAC integration program.\n\n- ID: [TDAC-XXXX]\n- Team: [Team Name]\n- Timeline: [Start] — [End]\n\nNext: Form [Link] | Kickoff [Calendar Link]\n\nBest regards,\n[Your Name]`,conds:[],kw:['tdac','onboarding'],folder:null},
-  {id:'F001',domain:'email',cat:'followup',country:'TH',type:'Follow-up 1',proc:'followup',name:'Follow-up 1 — No Response',desc:'First follow-up when partner has not responded.',subj:'Follow-up: [Previous subject]',body:`Dear [Partner Name],\n\nI am following up on my email dated [Date] regarding [Topic].\n\nCould you please confirm receipt and advise on next steps?\n\nBest regards,\n[Your Name]`,conds:[],kw:['follow-up','first'],folder:null},
-  {id:'F002',domain:'email',cat:'followup',country:'TH',type:'Follow-up 2',proc:'followup',name:'Follow-up 2 — Second Reminder',desc:'Second follow-up, more urgent.',subj:'2nd Follow-up: Action Required — [Topic]',body:`Dear [Partner Name],\n\nThis is my second follow-up regarding [Topic].\n\nPlease respond by [Deadline] to avoid delays.\n\nBest regards,\n[Your Name]`,conds:[],kw:['follow-up','second','urgent'],folder:null},
-  {id:'F003',domain:'email',cat:'followup',country:'TH',type:'Follow-up 3',proc:'followup',name:'Follow-up 3 — Escalation Notice',desc:'Third follow-up with escalation warning.',subj:'3rd Follow-up: Urgent — [Topic]',body:`Dear [Partner Name],\n\nThis is our third attempt regarding [Topic].\n\nWithout a response by [Deadline] this will be escalated to [Escalation Contact].\n\nBest regards,\n[Your Name]`,conds:[],kw:['follow-up','third','escalation'],folder:null},
-  {id:'F004',domain:'email',cat:'followup',country:'TH',type:'Final Call',proc:'followup',name:'Final Call — Last Attempt',desc:'Final contact before closing.',subj:'FINAL NOTICE: [Topic]',body:`Dear [Partner Name],\n\nThis is our final attempt regarding [Topic].\n\nIf we do not hear back by [Final Deadline] we will close this request.\n\nBest regards,\n[Your Name]`,conds:[],kw:['final call','closing'],folder:null},
-  {id:'M001',domain:'email',cat:'maintenance',country:'TH',type:'Maintenance',proc:'maintenance',name:'Scheduled Maintenance Notice',desc:'Inform partners of upcoming maintenance.',subj:'[Maintenance] Scheduled Downtime — [Service]',body:`Dear [Partner Name],\n\nScheduled maintenance for [Service Name].\n\nWindow: [Date] [Start]–[End] [TZ] (~[N] hrs)\nAffected: [List services]\n\nFor urgent issues: [Emergency Contact]\n\nBest regards,\n[Your Name]`,conds:[],kw:['maintenance','scheduled'],folder:null},
-  {id:'M002',domain:'email',cat:'maintenance',country:'TH',type:'Maintenance',proc:'maintenance',name:'Emergency Maintenance Alert',desc:'Urgent unplanned maintenance notification.',subj:'URGENT: Emergency Maintenance — [Service]',body:`Dear [Partner Name],\n\nEmergency maintenance on [Service] due to [Reason].\n\nStart: [Time] [TZ] | Est. duration: [N] hrs\n\nUpdates every [N] minutes.\n\nBest regards,\n[Your Name]`,conds:[],kw:['emergency','maintenance'],folder:null},
-  {id:'M003',domain:'email',cat:'maintenance',country:'TH',type:'Maintenance',proc:'maintenance',name:'Maintenance Completion Notice',desc:'Service restored notification.',subj:'[Maintenance] Complete — [Service] Restored',body:`Dear [Partner Name],\n\nMaintenance on [Service] is complete.\n\nRestored: [Time] [TZ] — All systems normal.\n\nIf you experience issues contact [Support Email].\n\nBest regards,\n[Your Name]`,conds:[],kw:['maintenance','complete'],folder:null},
-  {id:'M004',domain:'email',cat:'maintenance',country:'TH',type:'Switchover',proc:'maintenance',name:'Switchover — Pre-Event Notice',desc:'Notify partners before a planned switchover.',subj:'[Switchover] Planned Switchover — [Service]',body:`Dear [Partner Name],\n\nWe will be performing a planned switchover for [Service].\n\nDate: [Date] | Time: [Start]–[End] [TZ]\nImpact: Temporary traffic re-routing (~[N] min)\n\nNo action required unless you experience issues after [End Time].\n\nContact: [Support Email]\n\nBest regards,\n[Your Name]`,conds:[],kw:['switchover','planned','traffic'],folder:null},
-  {id:'Z001',domain:'zulip',cat:'integration',country:'TH',type:'SFTP',proc:'certification',name:'Zulip — Certification Kickoff',desc:'Internal team notification when SFTP certification starts.',body:`**Certification started** for [Partner Name] :rocket:\n\n- Country: [Country]\n- Integration: [Data]\n- Owner: @**[Owner Name]**\n\nTracking ticket: [Ticket Link]`,conds:[],kw:['zulip','sftp','certification'],folder:null},
-  {id:'Z002',domain:'zulip',cat:'integration',country:'TH',type:'iAPI',proc:'cutover',name:'Zulip — Go-Live Alert',desc:'Internal alert posted to the team stream on cutover day.',body:`:warning: **Go-live today** for [Partner Name]\n\nWindow: [Start]–[End] [TZ]\nOn-call: @**[Name]**\n\nPlease watch #alerts during the window.`,conds:[],kw:['zulip','iapi','cutover','go live'],folder:null},
-];}
+
 
 // ══════════════════════════════════════════════════
 // PAGE SWITCHING
@@ -2801,12 +2865,6 @@ function switchCfgTplDomain(domain){
   document.querySelectorAll('#cfg-tpl-pillbar .cfg-pill').forEach(b=>b.classList.toggle('active',b.dataset.domain===domain));
   applyCfgVisibility();
   domain==='email'?renderCfgTable():renderZCfgTable();
-}
-function renderCloudSyncPanel(){
-  csSetStatus(sbClient?(staleVersion?'stale':'connected'):'offline');
-  const verEl=document.getElementById('cs-app-version');
-  if(verEl)verEl.textContent='App version: '+APP_VERSION;
-  loadAiSettings();
 }
 function openAddEmailModal(){
   document.getElementById('add-email-modal').classList.add('open');
@@ -3498,15 +3556,15 @@ function initConditionCheck(id){
 // also gets its own fully independent list of custom categories that can
 // be added/renamed/deleted freely (delete blocked while in use).
 // ══════════════════════════════════════════════════
-let CAT_LABELS=Object.assign({integration:'Integration',coordination:'Coordination',followup:'Follow-up',maintenance:'Maintenance'},JSON.parse(localStorage.getItem('etl_cat_label_overrides')||'null')||{});
-function saveCatLabels(){localStorage.setItem('etl_cat_label_overrides',JSON.stringify(CAT_LABELS));scheduleSync();}
+let CAT_LABELS=defaultCatLabels();
+function saveCatLabels(){scheduleSync();}
 // Categories, like Integration Data Types/Process/Coordination/Follow-up/
 // Maintenance Labels, are shared between Email and Zulip — one list, one
 // source of truth. Domain still matters for which sidebar tree/count a given
 // item shows under, but not for the underlying data.
 const BUILTIN_CATS=['integration','coordination','followup','maintenance'];
-let customCats=JSON.parse(localStorage.getItem('etl_ccats')||'null')||[];
-function saveCustomCats(){localStorage.setItem('etl_ccats',JSON.stringify(customCats));scheduleSync();}
+let customCats=[];
+function saveCustomCats(){scheduleSync();}
 function isBuiltinCat(cat){return BUILTIN_CATS.includes(cat);}
 function catLabel(cat){
   if(CAT_LABELS[cat])return CAT_LABELS[cat];
@@ -3893,12 +3951,7 @@ function logTemplateHistory(t,before,reason,snapshot){
 // Log's snapshot/spoiler format was introduced, so no template carries a
 // history entry recorded in the old pre-spoiler shape. Guarded so it only
 // ever runs once per device.
-(function resetAllEditLogsOnce(){
-  if(localStorage.getItem('etl_history_reset_v1')==='1')return;
-  templates.forEach(t=>{t.history=[];});
-  localStorage.setItem('etl_history_reset_v1','1');
-  saveTpl();
-})();
+
 function openHistoryModal(id){
   curHistoryId=id;
   renderHistoryList(id);
@@ -3990,36 +4043,8 @@ function nextTplId(domain,cat){
 // Edit (points at the template being edited) from one born from an Add
 // modal (null).
 // ══════════════════════════════════════════════════
-let drafts=JSON.parse(localStorage.getItem('etl_drafts')||'null')||[];
-function saveDraftsLS(){localStorage.setItem('etl_drafts',JSON.stringify(drafts));scheduleSync();}
-// One-time migration from last round's single-slot draft keys into the new
-// drafts[] array, guarded so it only ever runs once.
-(function migrateSingleSlotDrafts(){
-  if(localStorage.getItem('etl_drafts_migrated_v1')==='1')return;
-  localStorage.setItem('etl_drafts_migrated_v1','1');
-  const slots=[['etl_draft_nc','email',null],['etl_draft_zc','zulip',null]];
-  let changed=false;
-  slots.forEach(([key,domain])=>{
-    const raw=localStorage.getItem(key); if(!raw)return;
-    try{
-      const d=JSON.parse(raw);
-      drafts.push(Object.assign({id:'d'+Date.now()+Math.random().toString(36).slice(2,7),sourceTemplateId:null,domain},d));
-      changed=true;
-    }catch(e){}
-    localStorage.removeItem(key);
-  });
-  const editRaw=localStorage.getItem('etl_draft_edit');
-  if(editRaw){
-    try{
-      const d=JSON.parse(editRaw);
-      const t=templates.find(x=>x.id===d.id);
-      drafts.push(Object.assign({id:'d'+Date.now()+Math.random().toString(36).slice(2,7),sourceTemplateId:d.id,domain:t?t.domain:'email'},d));
-      changed=true;
-    }catch(e){}
-    localStorage.removeItem('etl_draft_edit');
-  }
-  if(changed)saveDraftsLS();
-})();
+let drafts=[];
+function saveDraftsLS(){scheduleSync();}
 // Updates or creates a draft. If editingDraftId names an existing entry,
 // that entry is updated in place (refreshing savedAt) — otherwise a new
 // draft is created and editingDraftId is set to it, so this same
@@ -4096,8 +4121,8 @@ function resumeDraft(draftId){
 // deleted; trash is part of the same whole-state sync blob (see Cloud Sync).
 // ══════════════════════════════════════════════════
 const TRASH_RETENTION_MS=7*24*60*60*1000;
-let trash=JSON.parse(localStorage.getItem('etl_trash')||'null')||[];
-function saveTrashLS(){localStorage.setItem('etl_trash',JSON.stringify(trash));scheduleSync();}
+let trash=[];
+function saveTrashLS(){scheduleSync();}
 function moveToTrash(id){
   const idx=templates.findIndex(t=>t.id===id); if(idx===-1)return;
   const removed=templates.splice(idx,1)[0];
@@ -5043,6 +5068,146 @@ function renderFolderList(){
 // ══════════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════════
+// TEMPLATE IMPORT START
+function parseTemplateImport(text){
+  let data;try{data=JSON.parse(text.replace(/^\uFEFF/,''));}catch(e){throw new Error('Invalid JSON file.');}
+  if(!data||data.app!=='Coordinate Template Library'||data.schemaVersion!==1||!Array.isArray(data.templates))throw new Error('Choose a JSON file exported from Coordinate Template Library (schema version 1).');
+  if(data.templateCount!==data.templates.length)throw new Error('Template count does not match the file contents.');
+  const ids=new Set(),stringFields=['country','cat','type','proc','dtype','desc','subj','to','cc','channel','topic','updatedAt'];
+  for(const t of data.templates){
+    if(!t||typeof t!=='object'||Array.isArray(t)||typeof t.id!=='string'||! /^[A-Za-z0-9_-]+$/.test(t.id)||ids.has(t.id))throw new Error('Invalid or duplicate template ID.');
+    ids.add(t.id);
+    if(!['email','zulip'].includes(t.domain)||typeof t.name!=='string'||!t.name.trim()||typeof t.body!=='string')throw new Error('Invalid Name, Domain or Body in '+t.id+'.');
+    for(const key of stringFields)if(t[key]!=null&&typeof t[key]!=='string')throw new Error('Invalid '+key+' in '+t.id+'.');
+    if(t.folder!=null&&(typeof t.folder!=='string'||!/^[A-Za-z0-9_-]+$/.test(t.folder)))throw new Error('Invalid folder in '+t.id+'.');
+    if(t.starred!=null&&typeof t.starred!=='boolean')throw new Error('Invalid starred flag in '+t.id+'.');
+    if(t.conds!=null&&(!Array.isArray(t.conds)||t.conds.some(c=>!c||typeof c.k!=='string'||!['yes','no'].includes(c.v))))throw new Error('Invalid conditions in '+t.id+'.');
+    if(t.todos!=null&&(!Array.isArray(t.todos)||t.todos.some(c=>!c||typeof c.text!=='string'||typeof c.done!=='boolean')))throw new Error('Invalid documents in '+t.id+'.');
+    if(t.kw!=null&&(!Array.isArray(t.kw)||t.kw.some(k=>typeof k!=='string')))throw new Error('Invalid keywords in '+t.id+'.');
+    if(t.history!=null&&(!Array.isArray(t.history)||t.history.some(h=>!h||typeof h!=='object'||Array.isArray(h))))throw new Error('Invalid history in '+t.id+'.');
+  }
+  return data.templates;
+}
+function planTemplateImport(current,incoming,deleted){
+  const deletedIds=new Set(deleted.map(t=>t.id));
+  if(incoming.some(t=>deletedIds.has(t.id)))throw new Error('Some imported IDs already exist in Trash. Restore or resolve those records before importing.');
+  const rows=JSON.parse(JSON.stringify(current)),positions=new Map(rows.map((t,i)=>[t.id,i]));let added=0,updated=0;
+  if(positions.size!==rows.length)throw new Error('Existing templates contain duplicate IDs. Resolve them before importing.');
+  for(const raw of incoming){const t=JSON.parse(JSON.stringify(raw));if(positions.has(t.id)){rows[positions.get(t.id)]=t;updated++;}else{positions.set(t.id,rows.length);rows.push(t);added++;}}
+  return {templates:rows,added,updated};
+}
+function validateTemplateImportMarkup(rows){
+  // Reject executable markup rather than silently rewriting exported rich text.
+  const doc=document.implementation.createHTMLDocument('');
+  const inspect=value=>{
+    if(typeof value==='string'){
+      const host=doc.createElement('div');host.innerHTML=value;
+      for(const el of host.querySelectorAll('*')){
+        if(['SCRIPT','IFRAME','OBJECT','EMBED','SVG','MATH','FORM','INPUT','BUTTON','LINK','META','BASE','STYLE','TEMPLATE'].includes(el.tagName))throw new Error('The file contains unsupported active HTML.');
+        for(const attr of el.attributes){
+          if(/^on/i.test(attr.name)||attr.name==='srcdoc'||(attr.name==='style'&&/url\s*\(|expression\s*\(|@import/i.test(attr.value)))throw new Error('The file contains unsafe HTML attributes.');
+          if(['href','src','action','xlink:href'].includes(attr.name)){
+            const url=attr.value.replace(/[\s\u0000-\u001f]/g,'');
+            if(/^[a-z][a-z0-9+.-]*:/i.test(url)&&! /^(https?:|mailto:|tel:|blob:)/i.test(url)&&!(el.tagName==='IMG'&&attr.name==='src'&&/^data:image\/(png|jpeg|gif|webp);base64,/i.test(url)))throw new Error('The file contains an unsafe URL.');
+          }
+        }
+      }
+    }else if(Array.isArray(value))value.forEach(inspect);
+    else if(value&&typeof value==='object')Object.values(value).forEach(inspect);
+  };
+  rows.forEach(inspect);
+}
+async function importTemplateJson(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  const btn=document.getElementById('cfg-import-btn');btn.disabled=true;
+  try{
+    if(!/\.json$/i.test(file.name))throw new Error('Choose a .json file.');
+    const incoming=parseTemplateImport(await file.text());validateTemplateImportMarkup(incoming);
+    if(!incoming.length){toast('The file contains no templates.');return;}
+    const preview=planTemplateImport(templates,incoming,trash);
+    if(!confirm('Import '+incoming.length+' templates (Email + Zulip)?\n\nAdd: '+preview.added+'\nUpdate existing IDs: '+preview.updated+'\n\nOther templates will not be deleted. Imported records replace all fields of matching IDs. The change is saved to the shared Supabase workspace for everyone and is only confirmed after Supabase acknowledges it.'))return;
+    // Re-evaluate after confirmation in case shared state changed while reading the file.
+    const plan=planTemplateImport(templates,incoming,trash),now=new Date().toISOString();
+    const importedIds=new Set(incoming.map(t=>t.id));
+    plan.templates.forEach(t=>{if(importedIds.has(t.id)){t.updatedAt=now;if(t.folder&&!folders.some(f=>f.id===t.folder))t.folder=null;}});
+    // Memory is replaced optimistically; if Supabase does not acknowledge the save it is rolled back.
+    templates=plan.templates;scheduleSync();
+    cfgSelectedIds.clear();zCfgSelectedIds.clear();selectedIds.clear();closeTplViewer();closeZTplViewer();
+    updateCounts();renderSidebarTypes();renderSidebarSubs();renderSidebarCountries();renderTypeChips();renderProcChips();renderCountryChips();updateCatOpts();render();renderCfgTable();renderZCfgTable();
+    toast('Imported: '+plan.added+' added, '+plan.updated+' updated (saved to Supabase).');
+  }catch(e){toast('Import failed: '+e.message);}
+  finally{input.value='';btn.disabled=false;}
+}
+// TEMPLATE IMPORT END
+// TEMPLATE EXPORT START
+function buildTemplateExportJson(){
+  return JSON.stringify({schemaVersion:1,app:'Coordinate Template Library',appVersion:APP_VERSION,exportedAt:new Date().toISOString(),templateCount:templates.length,templates:templates},null,2);
+}
+// Minimal UTF-8, uncompressed ZIP writer: keeps XLSX export offline and dependency-free.
+function templateExportZip(files){
+  const enc=new TextEncoder(),parts=[],central=[];let offset=0;
+  const crcTable=new Uint32Array(256);
+  for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;crcTable[n]=c;}
+  const header=size=>{const bytes=new Uint8Array(size);return {bytes,view:new DataView(bytes.buffer)};};
+  for(const [path,text] of Object.entries(files)){
+    const name=enc.encode(path),data=enc.encode(text);let crc=0xffffffff;
+    for(const b of data)crc=crcTable[(crc^b)&255]^(crc>>>8);crc=(crc^0xffffffff)>>>0;
+    const h=header(30);h.view.setUint32(0,0x04034b50,true);h.view.setUint16(4,20,true);h.view.setUint16(6,0x800,true);h.view.setUint16(12,33,true);h.view.setUint32(14,crc,true);h.view.setUint32(18,data.length,true);h.view.setUint32(22,data.length,true);h.view.setUint16(26,name.length,true);
+    parts.push(h.bytes,name,data);
+    const c=header(46);c.view.setUint32(0,0x02014b50,true);c.view.setUint16(4,20,true);c.view.setUint16(6,20,true);c.view.setUint16(8,0x800,true);c.view.setUint16(14,33,true);c.view.setUint32(16,crc,true);c.view.setUint32(20,data.length,true);c.view.setUint32(24,data.length,true);c.view.setUint16(28,name.length,true);c.view.setUint32(42,offset,true);
+    central.push(c.bytes,name);offset+=30+name.length+data.length;
+  }
+  const centralSize=central.reduce((n,b)=>n+b.length,0),end=header(22),count=Object.keys(files).length;
+  end.view.setUint32(0,0x06054b50,true);end.view.setUint16(8,count,true);end.view.setUint16(10,count,true);end.view.setUint32(12,centralSize,true);end.view.setUint32(16,offset,true);
+  const out=new Uint8Array(offset+centralSize+22);let pos=0;
+  for(const b of [...parts,...central,end.bytes]){out.set(b,pos);pos+=b.length;}return out;
+}
+function buildTemplateExportXlsx(){
+  const xml=s=>String(s??'').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const standard=['id','domain','name','country','cat','type','proc','dtype','desc','subj','to','cc','channel','topic','body','conds','todos','kw','folder','starred','updatedAt','history'];
+  const fields=[...new Set([...standard,...templates.flatMap(t=>Object.keys(t))])];
+  const value=v=>v==null?'':typeof v==='object'?JSON.stringify(v):String(v);
+  const column=n=>{let s='';for(n++;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;};
+  // Split long values into adjacent continuation columns; Excel limits cells to 32767 characters.
+  const columns=fields.flatMap(key=>{const count=Math.max(1,...templates.map(t=>Math.ceil(value(t[key]).length/30000)));return Array.from({length:count},(_,part)=>({key,part,label:part?key+' (part '+(part+1)+')':key}));});
+  if(templates.length>1048575||columns.length>16384)throw new Error('Template export exceeds Excel worksheet limits. Please export JSON instead.');
+  const rows=[columns.map(c=>c.label),...templates.map(t=>columns.map(c=>value(t[c.key]).slice(c.part*30000,(c.part+1)*30000)))];
+  const sheet='<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>'+columns.map((c,i)=>'<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+(c.key==='body'?60:24)+'" customWidth="1"/>').join('')+'</cols><sheetData>'+rows.map((row,r)=>'<row r="'+(r+1)+'">'+row.map((v,c)=>'<c r="'+column(c)+(r+1)+'" t="inlineStr"><is><t xml:space="preserve">'+xml(v)+'</t></is></c>').join('')+'</row>').join('')+'</sheetData><autoFilter ref="A1:'+column(columns.length-1)+rows.length+'"/></worksheet>';
+  return templateExportZip({
+    '[Content_Types].xml':'<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>',
+    '_rels/.rels':'<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
+    'xl/workbook.xml':'<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheets><sheet name="All Templates" sheetId="1" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId1"/></sheets></workbook>',
+    'xl/_rels/workbook.xml.rels':'<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>',
+    'xl/worksheets/sheet1.xml':sheet
+  });
+}
+function closeTemplateExportMenu(){
+  const menu=document.getElementById('cfg-export-menu');if(menu)menu.remove();
+  const btn=document.getElementById('cfg-export-btn');if(btn)btn.setAttribute('aria-expanded','false');
+  document.removeEventListener('mousedown',templateExportOutside);document.removeEventListener('keydown',templateExportEscape);window.removeEventListener('resize',closeTemplateExportMenu);
+}
+function templateExportOutside(e){if(!e.target.closest('#cfg-export-menu')&&!e.target.closest('#cfg-export-btn'))closeTemplateExportMenu();}
+function templateExportEscape(e){if(e.key==='Escape'){closeTemplateExportMenu();document.getElementById('cfg-export-btn').focus();}}
+function toggleTemplateExportMenu(){
+  if(document.getElementById('cfg-export-menu')){closeTemplateExportMenu();return;}
+  const btn=document.getElementById('cfg-export-btn'),rect=btn.getBoundingClientRect(),menu=document.createElement('div');menu.id='cfg-export-menu';
+  menu.style.cssText='position:fixed;z-index:150;width:210px;padding:8px;background:var(--surface);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:var(--shm);display:flex;flex-direction:column;gap:6px';
+  menu.innerHTML='<span style="font-size:10px;color:var(--tx2);padding:2px 4px">All Email + Zulip templates</span><button class="btn" onclick="exportAllTemplates(\'json\')"><i class="ti ti-file-code"></i> JSON (.json)</button><button class="btn" onclick="exportAllTemplates(\'xlsx\')"><i class="ti ti-table"></i> Excel (.xlsx)</button>';
+  document.body.appendChild(menu);menu.style.left=Math.max(8,Math.min(rect.right-210,window.innerWidth-218))+'px';menu.style.top=Math.max(8,Math.min(rect.bottom+6,window.innerHeight-menu.offsetHeight-8))+'px';btn.setAttribute('aria-expanded','true');menu.querySelector('button').focus();
+  document.addEventListener('mousedown',templateExportOutside);document.addEventListener('keydown',templateExportEscape);window.addEventListener('resize',closeTemplateExportMenu);
+}
+function exportAllTemplates(format){
+  closeTemplateExportMenu();
+  try{
+    if(format!=='json'&&format!=='xlsx')throw new Error('Unsupported export format.');
+    const data=format==='json'?buildTemplateExportJson():buildTemplateExportXlsx();
+    const blob=new Blob([data],{type:format==='json'?'application/json;charset=utf-8':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='coordinate-templates-'+new Date().toISOString().replace(/[:.]/g,'-')+'.'+format;
+    document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+    toast('Exported '+templates.length+' templates ('+format.toUpperCase()+').');
+  }catch(e){toast('Export failed: '+e.message);}
+}
+// TEMPLATE EXPORT END
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 function toast(msg){
   const el=document.getElementById('toast');document.getElementById('tmsg').textContent=msg;
@@ -6141,7 +6306,6 @@ function applyAccent(hex){
   const bgHexInp=document.getElementById('design-accent-bg-hex');if(bgHexInp)bgHexInp.value=light;
   document.querySelectorAll('#accent-presets .accent-swatch').forEach(s=>s.classList.toggle('on',s.dataset.hex.toLowerCase()===hex.toLowerCase()));
   updateAccentPreviewChip('email');
-  scheduleSync();
 }
 function applyAccentBg(hex){
   if(!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex))return;
@@ -6150,7 +6314,6 @@ function applyAccentBg(hex){
   const inp=document.getElementById('design-accent-bg');if(inp)inp.value=hex;
   const hexInp=document.getElementById('design-accent-bg-hex');if(hexInp)hexInp.value=hex;
   updateAccentPreviewChip('email');
-  scheduleSync();
 }
 // Independent accent for the Zulip session — drives --pu/--pul, which every
 // Zulip-specific element (session header, Add button, badges) is styled from.
@@ -6167,7 +6330,6 @@ function applyZulipAccent(hex){
   const bgHexInp=document.getElementById('design-zulip-accent-bg-hex');if(bgHexInp)bgHexInp.value=light;
   document.querySelectorAll('#zaccent-presets .accent-swatch').forEach(s=>s.classList.toggle('on',s.dataset.hex.toLowerCase()===hex.toLowerCase()));
   updateAccentPreviewChip('zulip');
-  scheduleSync();
 }
 function applyZulipAccentBg(hex){
   if(!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex))return;
@@ -6176,7 +6338,6 @@ function applyZulipAccentBg(hex){
   const inp=document.getElementById('design-zulip-accent-bg');if(inp)inp.value=hex;
   const hexInp=document.getElementById('design-zulip-accent-bg-hex');if(hexInp)hexInp.value=hex;
   updateAccentPreviewChip('zulip');
-  scheduleSync();
 }
 // The 4 accent tokens are kept OUT of THEME_VARS deliberately — THEME_VARS
 // also drives resetThemeVars()/THEME_PRESETS/Dim Mode, none of which should
@@ -6205,7 +6366,6 @@ function applyThemeVar(key,hex){
   const overrides=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
   overrides[key]=hex;
   localStorage.setItem('etl_theme_vars',JSON.stringify(overrides));
-  scheduleSync();
 }
 function loadThemeVarOverrides(){
   const overrides=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
@@ -6215,7 +6375,6 @@ function resetThemeVars(){
   localStorage.removeItem('etl_theme_vars');
   THEME_VARS.forEach(v=>document.documentElement.style.removeProperty(v.key));
   renderDesignPanel();
-  scheduleSync();
   toast('Theme colors reset to default.');
 }
 // One-click neutral-palette presets — each supplies the same 7 tokens the
@@ -6242,7 +6401,6 @@ function applyThemePreset(id){
   });
   localStorage.setItem('etl_theme_vars',JSON.stringify(overrides));
   renderDesignPanel();
-  scheduleSync();
   toast('Applied "'+preset.name+'" theme.'+(isDark?' (shows once you switch back to Light mode)':''));
 }
 // Dark Mode uses one fixed palette (a Twitter-dark-style dark blue-gray),
@@ -6288,7 +6446,6 @@ function setDarkMode(on){
   localStorage.setItem('etl_dark_mode',on?'1':'0');
   const cb=document.getElementById('dark-mode-toggle');if(cb)cb.checked=on;
   updateQuickDarkIcon();
-  scheduleSync();
 }
 // Quick toggle in the Library topbar — same state as the Configure ▸
 // Appearance checkbox, just reachable without opening Settings.
@@ -6374,7 +6531,6 @@ function applyMyTheme(id){
   if(t.tokens['--ac'])document.documentElement.style.setProperty('--acm',mixColor(t.tokens['--ac'],'#000000',0.24));
   renderDesignPanel();
   updateAccentPreviewChip('email');updateAccentPreviewChip('zulip');
-  scheduleSync();
   toast('Applied "'+t.name+'".');
 }
 function updateMyTheme(id){
@@ -6416,7 +6572,7 @@ function renderMyThemesList(){
 }
 const DEFAULT_FONTS=['Sora','Inter','Roboto','Poppins','Nunito','Work Sans','Manrope','Lato'];
 let customFonts=JSON.parse(localStorage.getItem('etl_fonts')||'[]');
-function saveCustomFonts(){localStorage.setItem('etl_fonts',JSON.stringify(customFonts));scheduleSync();}
+function saveCustomFonts(){localStorage.setItem('etl_fonts',JSON.stringify(customFonts));}
 function allFonts(){return[...DEFAULT_FONTS,...customFonts.filter(f=>!DEFAULT_FONTS.includes(f))].sort((a,b)=>a.localeCompare(b));}
 function loadFont(name){
   if(name==='Poppins')return;
@@ -6433,7 +6589,6 @@ function applyFont(name){
   localStorage.setItem('etl_font_body',name);
   const sel=document.getElementById('design-font');if(sel)sel.value=name;
   const prev=document.getElementById('font-preview');if(prev)prev.style.fontFamily=`'${name}',sans-serif`;
-  scheduleSync();
 }
 function addCustomFont(){
   const inp=document.getElementById('new-font-name');
@@ -6552,19 +6707,8 @@ makeCsecsCollapsible(document.getElementById('cfg-panel-stg'));
   ['design-accent','design-accent-bg','design-zulip-accent','design-zulip-accent-bg'].forEach(attachEyedropper);
   THEME_VARS.forEach(v=>attachEyedropper(v.id));
 })();
-(function initCloudSync(){
-  // Auto-connect on every load, using a per-device override if one was ever
-  // saved (e.g. pointed at a different project) and otherwise falling back
-  // to the baked-in shared-project credentials — this is what makes a brand
-  // new device see the same templates with zero setup. The only way to opt
-  // out is an explicit Disconnect click, which sets etl_cs_enabled='0'.
-  if(localStorage.getItem('etl_cs_enabled')==='0')return;
-  const url=localStorage.getItem('etl_cs_url')||SB_DEFAULT_URL;
-  const key=localStorage.getItem('etl_cs_key')||SB_DEFAULT_KEY;
-  if(url&&key)startCloudSync(url,key);
-})();
+cloudInit();
 (function(){const el=document.getElementById('changelog-trigger-ver');if(el)el.textContent=CHANGELOG_VERSION;})();
-purgeExpiredTrash();
 updateTrashBadge();
 updateDraftBadges();
 setInterval(function(){if(purgeExpiredTrash())updateTrashBadge();},60*60*1000);
