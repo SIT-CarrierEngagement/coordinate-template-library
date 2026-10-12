@@ -1970,6 +1970,7 @@ async function connectAndLoad(){
     etlWarnDuplicates();
     subscribeRealtime(epoch);
     setCloudState('connected','');
+    rerenderAll(); // Repaint after read guards are unlocked.
     toastNow('Connected to the shared workspace.');
   }catch(e){
     if(epoch!==cloud.epoch)return;
