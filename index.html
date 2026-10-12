@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://cdn.jsdelivr.net https://fonts.gstatic.com data:; img-src data: https: blob:; connect-src https: wss: http://localhost:* http://127.0.0.1:*; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coordinate Template Library</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet" integrity="sha384-cPa8kzsYWhqpAfWOLWYIw3V0BhPi/m3lrd8tBTPxr2NrYCHRVZ7xy1cEoRGOM/03" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js" integrity="sha384-QUJ+ckWz1M+a7w0UfG1sEn4pPrbQwSxGm/1TIPyioqXBrwuT9l4f9gdHWLDLbVWI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" integrity="sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R" crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#f5f4f0;--surface:#fff;--s2:#f0efe9;--bd:#e2e0d8;--bd2:#ccc9be;
@@ -162,8 +163,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .bulkbar.hidden{display:none;}
 
 /* MODAL */
-.ov{position:fixed;inset:0;background:rgba(10,10,8,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
-.ov.open{opacity:1;pointer-events:all;}
+.ov{position:fixed;inset:0;background:rgba(10,10,8,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .2s,visibility 0s linear .2s;}
+.ov.open{opacity:1;pointer-events:all;visibility:visible;transition-delay:0s;}
+.card:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+#etl-warn{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:300;max-width:min(760px,94vw);background:#fff4d6;color:#5a3b00;border:1px solid #e0b84c;border-top:0;border-radius:0 0 10px 10px;padding:8px 36px 8px 14px;font-size:12px;line-height:1.5;box-shadow:var(--shm);}
+#etl-warn[hidden]{display:none;}
+#etl-warn button{position:absolute;right:8px;top:6px;background:none;border:0;cursor:pointer;font-size:13px;color:inherit;}
 /* Drafts/History/Insert-Table open FROM WITHIN the Add/Edit/View modal
    (#modal, #add-email-modal, #add-zulip-modal) — same z-index as those
    plus DOM order (all three are declared earlier in the document) meant
@@ -552,8 +557,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
 .cs-gate[data-state="login"] .cs-only-login.cs-actions,.cs-gate[data-state="connecting"] .cs-only-busy.cs-actions,.cs-gate[data-state="loading"] .cs-only-busy.cs-actions,
 .cs-gate[data-state="error"] .cs-only-error.cs-actions,.cs-gate[data-state="disconnected"] .cs-only-disconnected.cs-actions{display:flex;}
 .cs-gate .cs-statusrow{margin-bottom:12px;}
-/* stays above modal overlays so the status toggle / account menu are always reachable */
-.lib-tabs-right{position:relative;z-index:250;}
+/* Header controls remain below modal overlays. */
+.lib-tabs-right{position:relative;z-index:1;}
 .lib-tabs-right .cs-status-pill{flex:0 0 172px;width:172px;box-sizing:border-box;padding:4px 10px;font-size:11.5px;overflow:hidden;white-space:nowrap;}
 .lib-tabs-right .cs-status-text{overflow:hidden;text-overflow:ellipsis;}
 .cs-save-text{color:var(--tx3);overflow:hidden;text-overflow:ellipsis;}
@@ -1533,6 +1538,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--tx);min-heigh
   </div>
 </div>
 
+<div id="etl-warn" role="alert" hidden><span id="etl-warn-text"></span><button type="button" id="etl-warn-x" aria-label="Dismiss notice" onclick="etlWarnClear()">✕</button></div>
 <div class="toast" id="toast"><i class="ti ti-check"></i><span id="tmsg"></span></div>
 
 <script>
@@ -1547,13 +1553,13 @@ const PALETTES=[
 ];
 function getPalette(name,list){const idx=[...list].sort().indexOf(name);return PALETTES[idx>=0?idx%PALETTES.length:0];}
 function typeStyle(type){const p=getPalette(type,iTypes());return `background:${p.bg};color:${p.fg}`;}
-function procStyle(proc){const f=processes.find(p=>p.key===proc);return f?`background:${f.bg};color:${f.fg}`:'background:#f0f0ee;color:#3a3a3a';}
+function procStyle(proc){const f=processes.find(p=>p.key===proc);return f?`background:${cssColor(f.bg,'#f0f0ee')};color:${cssColor(f.fg,'#3a3a3a')}`:'background:#f0f0ee;color:#3a3a3a';}
 // Categories/Types/Labels are shared between Email and Zulip — both domains
 // resolve against the same lists, so these no longer branch on t.domain.
 function styleForType(t){return typeStyle(t.type);}
 function styleForProc(t){
   const f=processes.find(p=>p.key===t.proc);
-  return f?`background:${f.bg};color:${f.fg}`:'background:#f0f0ee;color:#3a3a3a';
+  return f?`background:${cssColor(f.bg,'#f0f0ee')};color:${cssColor(f.fg,'#3a3a3a')}`:'background:#f0f0ee;color:#3a3a3a';
 }
 function labelForProc(t){
   const f=processes.find(p=>p.key===t.proc);
@@ -1639,7 +1645,7 @@ const SB_TABLE='app_state';
 const SB_SYNC_KEY='default';
 const SB_DEFAULT_URL='https://rjqxkjrsagrzabughrin.supabase.co';
 const SB_DEFAULT_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqcXhranJzYWdyemFidWdocmluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODE2MzcsImV4cCI6MjEwMTY1NzYzN30.DnOBwmIEgDayYzFLydCADFANvaqCbFysJl63W404Lxk';
-const APP_VERSION='v2026.10.09.1'; // used only in export metadata
+const APP_VERSION='v2026.10.12.1'; // used only in export metadata
 // Purely cosmetic — the version shown in the "What's New" changelog.
 const CHANGELOG_VERSION='2026.08.00';
 const CS_AUTH_STORAGE_KEY='etl_sb_auth';   // Supabase Auth session (not business data)
@@ -1734,6 +1740,7 @@ function clearBusinessState(){
   templates=[];trash=[];customCats=[];CAT_LABELS=defaultCatLabels();
   intTypes=[];processes=[];coordTypes=[];fuTypes=[];maTypes=[];countries=[];folders=[];drafts=[];
   try{selectedIds.clear();cfgSelectedIds.clear();zCfgSelectedIds.clear();}catch(e){}
+  try{etlWarnClear();}catch(e){}
   curId=null;isEdit=false;editCC=0;newCC=0;zNewCC=0;editOpenSnapshot=null;editingDraftId=null;
   suppressAutoRestore=false;skipEditReasonId=null;tvCurId=null;zTvCurId=null;libTvCurId=null;curHistoryId=null;
   chips={};condState={};viewZulipPreviewOn=false;
@@ -1852,7 +1859,7 @@ function renderCloudSyncPanel(){
 function csDescribeError(e){
   const msg=(e&&(e.message||e.error_description||e.error))||'';
   const code=e&&(e.code||e.status);
-  if(code==='PGRST205'||code==='42P01'||/could not find the table/i.test(msg))return 'The app_state table is missing — run the Beta setup SQL (supabase/beta-setup.sql) in the Supabase SQL editor.';
+  if(code==='PGRST205'||code==='42P01'||/could not find the table/i.test(msg))return 'The app_state table is missing — run the workspace setup SQL (supabase/beta-setup.sql) in the Supabase SQL editor.';
   if(code==='42501'||code===401||code===403||/row-level security|permission denied/i.test(msg))return 'Access denied — this account is not on the workspace allow-list.';
   if(code==='PGRST301'||/jwt|invalid api key/i.test(msg))return 'Session rejected by Supabase — sign in again.';
   if(/failed to fetch|networkerror|load failed/i.test(msg))return 'Could not reach Supabase — check the network and retry.';
@@ -1883,7 +1890,7 @@ function stopSyncing(){
   cloud.epoch++;
   clearTimeout(cloud.timer);cloud.timer=null;
   cloud.dirty=false;cloud.saving=false;cloud.toastQ=[];cloud.capture=false;
-  cloud.rowVersion=null;cloud.committedJSON=null;cloud.saveText='';
+  cloud.rowVersion=null;cloud.committedJSON=null;cloud.saveText='';cloud.largeWarned=0;
   if(cloud.channel&&cloud.client){try{cloud.client.removeChannel(cloud.channel);}catch(e){}}
   cloud.channel=null;
   if(cloud.client){try{cloud.client.auth.stopAutoRefresh();}catch(e){}}
@@ -1908,7 +1915,7 @@ async function logoutCloud(fromBroadcast){
   setCloudState('login','Signed out.');
   if(!fromBroadcast){
     csBroadcast('logout');
-    try{if(client)await client.auth.signOut({scope:'local'});}catch(e){console.warn('[auth] signOut',e);}
+    try{if(client){const r=await client.auth.signOut({scope:'global'});if(r&&r.error)await client.auth.signOut({scope:'local'});}}catch(e){console.warn('[auth] signOut',e);try{await client.auth.signOut({scope:'local'});}catch(e2){}}
   }
 }
 async function csLogin(ev){
@@ -1960,6 +1967,7 @@ async function connectAndLoad(){
     cloud.rowVersion=row.updated_at;
     cloud.committedJSON=JSON.stringify(collectAppState());
     cloud.dirty=false;cloud.saving=false;cloud.saveText='';
+    etlWarnDuplicates();
     subscribeRealtime(epoch);
     setCloudState('connected','');
     toastNow('Connected to the shared workspace.');
@@ -1986,10 +1994,12 @@ function subscribeRealtime(epoch){
         if(!rec||!rec.data||rec.updated_at===cloud.rowVersion)return;     // our own echo / empty
         if(cloud.saving||cloud.dirty)return;       // our pending save will detect the conflict and reload
         try{validateRemoteData(rec.data);}catch(e){return;}
+        const snap=csSnapshotView();               // what the user has open, before the state is replaced
         applyAppState(rec.data);
         cloud.rowVersion=rec.updated_at;
         cloud.committedJSON=JSON.stringify(collectAppState());
         setSaveText('Updated from another device');
+        csReconcileView(snap,[]);
       })
       .subscribe(function(status){
         if(epoch!==cloud.epoch)return;
@@ -2021,6 +2031,15 @@ async function flushSave(){
   const epoch=cloud.epoch,client=cloud.client;
   cloud.saving=true;cloud.dirty=false;
   const payload=collectAppState(),json=JSON.stringify(payload);
+  const blocked=csPreSaveGuard(payload,json);
+  if(blocked){
+    cloud.saving=false;cloud.toastQ=[];
+    const snap=csSnapshotView();
+    rollbackToCommitted();setSaveText('Not saved');
+    csReconcileView(snap,[]);
+    etlWarn(blocked);
+    return;
+  }
   const batch=cloud.toastQ.splice(0);
   setSaveText('Saving…');
   let res;
@@ -2039,8 +2058,11 @@ async function flushSave(){
   // Not acknowledged -> nothing was saved. Roll back to the last acknowledged state.
   cloud.dirty=false;cloud.toastQ=[];
   if(res.error){
+    if(csIsAuthError(res)){hardLockToLogin('Your session expired — sign in again. The last change was not saved.');return;}
+    const snap=csSnapshotView(),locals=csLocalChangesAsDrafts();
     rollbackToCommitted();setSaveText('Not saved');
     toastNow('Not saved: '+csDescribeError(res.error));
+    csReconcileView(snap,locals);
     return;
   }
   // 0 rows: either someone else changed the row (our version is stale) or RLS hides it.
@@ -2052,14 +2074,18 @@ async function flushSave(){
     const fr=!fresh.error&&Array.isArray(fresh.data)?fresh.data[0]:null;
     if(fr&&fr.updated_at!==cloud.rowVersion){
       validateRemoteData(fr.data);
+      const snap=csSnapshotView(),locals=csLocalChangesAsDrafts();
       applyAppState(fr.data);cloud.rowVersion=fr.updated_at;cloud.committedJSON=JSON.stringify(collectAppState());
       setSaveText('Not saved');
       toastNow('Not saved: the workspace was changed elsewhere. The latest shared data was loaded — please redo your edit.');
+      csReconcileView(snap,locals);
       return;
     }
   }catch(e){if(epoch!==cloud.epoch)return;}
+  const snap2=csSnapshotView(),locals2=csLocalChangesAsDrafts();
   rollbackToCommitted();setSaveText('Not saved');
   toastNow('Not saved: Supabase did not accept the update (no access, or the workspace row is missing).');
+  csReconcileView(snap2,locals2);
 }
 
 // ─── service-level guards ──────────────────────────────────────────
@@ -2624,7 +2650,7 @@ function saveGeneratedAsTemplate(){
       const htmlBody=[greet,body,closing].filter(Boolean).map(function(p){
         return '<p>'+p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>')+'</p>';
       }).join('');
-      if(ncQuill)ncQuill.root.innerHTML=htmlBody;
+      if(ncQuill)ncQuill.root.innerHTML=sanitizeHtml(htmlBody);
       const hidden=document.getElementById('nc-body');if(hidden)hidden.value=htmlBody;
       toast('Now choose Category/Data/Process and Save Template to finish.');
     },150);
@@ -2746,7 +2772,7 @@ function toggleStarTemplate(id,ev){
   const t=templates.find(x=>x.id===id);if(!t)return;
   t.starred=!t.starred;
   saveTpl();
-  document.querySelectorAll(`.star-btn[data-star-id="${id}"]`).forEach(btn=>{
+  document.querySelectorAll(`.star-btn[data-star-id="${CSS.escape(String(id))}"]`).forEach(btn=>{
     btn.classList.toggle('starred',t.starred);
     const icon=btn.querySelector('i');if(icon)icon.className='ti '+(t.starred?'ti-star-filled':'ti-star');
     btn.title=t.starred?'Unstar':'Star this template';
@@ -2756,7 +2782,7 @@ function toggleStarTemplate(id,ev){
 }
 function starBtnHtml(t,extraStyle){
   const starred=!!t.starred;
-  return `<button type="button" class="star-btn${starred?' starred':''}" data-star-id="${t.id}" title="${starred?'Unstar':'Star this template'}" style="${extraStyle||''}" onclick="toggleStarTemplate('${t.id}',event)"><i class="ti ${starred?'ti-star-filled':'ti-star'}"></i></button>`;
+  return `<button type="button" class="star-btn${starred?' starred':''}" data-star-id="${esc(t.id)}" title="${starred?'Unstar':'Star this template'}" style="${extraStyle||''}" onclick="toggleStarTemplate('${ja(t.id)}',event)"><i class="ti ${starred?'ti-star-filled':'ti-star'}"></i></button>`;
 }
 // ══════════════════════════════════════════════════
 // POPULAR TEMPLATES — starred templates only, split Email/Zulip, each
@@ -2957,7 +2983,7 @@ function applyDraftToAddForm(prefix,d){
   setVal(prefix+'-type',d.type);setVal(prefix+'-proc',d.proc);setVal(prefix+'-dtype',d.dtype);setVal(prefix+'-country',d.country);
   setVal(prefix+'-name',d.name);setVal(prefix+'-desc',d.desc);
   if(!isZulip){setVal(prefix+'-subj',d.subj);setVal('nc-to',d.to);setVal('nc-cc',d.cc);}
-  if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill){ncQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#nc-body-editor .ql-editor'));}
+  if(isZulip){setVal('zc-channel',d.channel);setVal('zc-topic',d.topic);setVal('zc-body',d.body);} else if(ncQuill){ncQuill.root.innerHTML=sanitizeHtml(d.body);fixInvisibleBodyText(document.querySelector('#nc-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addCRow(prefix+'-conds',isZulip?'zck':'nck',isZulip?'zcv':'ncv');fillLastCondRow(prefix+'-conds',c.k,c.v);});
   renderTodoList(prefix,d.todos||[]);
 }
@@ -3016,12 +3042,12 @@ function renderIntTree(){
       const cnt=templates.filter(x=>x.domain==='email'&&x.cat==='integration'&&x.country===c&&x.type===t).length;
       if(!cnt) return '';
       const p=getPalette(t,iTypes());
-      return `<button class="ni" style="padding:4px 6px;font-size:11px" onclick="sideNav('ctype','${c}|${t}',this,'email')"><span class="sb-abbr" style="background:${p.bg};color:${p.fg};width:18px;height:18px;font-size:8px">${t.slice(0,2).toUpperCase()}</span><span style="flex:1">${t}</span><span class="nbadge">${cnt}</span></button>`;
+      return `<button class="ni" style="padding:4px 6px;font-size:11px" onclick="sideNav('ctype','${ja(c)}|${ja(t)}',this,'email')"><span class="sb-abbr" style="background:${p.bg};color:${p.fg};width:18px;height:18px;font-size:8px">${esc(t.slice(0,2).toUpperCase())}</span><span style="flex:1">${esc(t)}</span><span class="nbadge">${cnt}</span></button>`;
     }).join('');
-    return `<div class="sb-country-group" id="sbcg-${c}">
-      <div class="sb-country-hd" onclick="toggleCtrGroup('${c}')">
+    return `<div class="sb-country-group" id="sbcg-${esc(c)}">
+      <div class="sb-country-hd" onclick="toggleCtrGroup('${ja(c)}')">
         <i class="ti ti-chevron-down sb-ctr-chev"></i>
-        <span class="sb-ctr-lbl">${c}</span>
+        <span class="sb-ctr-lbl">${esc(c)}</span>
         <span class="nbadge" style="margin-left:auto">${allCnt}</span>
       </div>
       <div class="sb-country-items">${typesHTML||'<div style="font-size:11px;color:var(--tx3);padding:2px 8px 4px">No types</div>'}</div>
@@ -3037,12 +3063,12 @@ function renderZIntTree(){
       const cnt=templates.filter(x=>x.domain==='zulip'&&x.cat==='integration'&&x.country===c&&x.type===t).length;
       if(!cnt) return '';
       const p=getPalette(t,iTypes());
-      return `<button class="ni" style="padding:4px 6px;font-size:11px" onclick="sideNav('ctype','${c}|${t}',this,'zulip')"><span class="sb-abbr" style="background:${p.bg};color:${p.fg};width:18px;height:18px;font-size:8px">${t.slice(0,2).toUpperCase()}</span><span style="flex:1">${t}</span><span class="nbadge">${cnt}</span></button>`;
+      return `<button class="ni" style="padding:4px 6px;font-size:11px" onclick="sideNav('ctype','${ja(c)}|${ja(t)}',this,'zulip')"><span class="sb-abbr" style="background:${p.bg};color:${p.fg};width:18px;height:18px;font-size:8px">${esc(t.slice(0,2).toUpperCase())}</span><span style="flex:1">${esc(t)}</span><span class="nbadge">${cnt}</span></button>`;
     }).join('');
-    return `<div class="sb-country-group" id="sbzcg-${c}">
-      <div class="sb-country-hd" onclick="toggleZCtrGroup('${c}')">
+    return `<div class="sb-country-group" id="sbzcg-${esc(c)}">
+      <div class="sb-country-hd" onclick="toggleZCtrGroup('${ja(c)}')">
         <i class="ti ti-chevron-down sb-ctr-chev"></i>
-        <span class="sb-ctr-lbl">${c}</span>
+        <span class="sb-ctr-lbl">${esc(c)}</span>
         <span class="nbadge" style="margin-left:auto">${allCnt}</span>
       </div>
       <div class="sb-country-items">${typesHTML||'<div style="font-size:11px;color:var(--tx3);padding:2px 8px 4px">No data types</div>'}</div>
@@ -3064,20 +3090,20 @@ function renderSidebarSubs(){/* no-op */}
 function renderTypeChips(){
   document.getElementById('type-chips').innerHTML=iTypes().map(t=>{
     const on=(chips.type||new Set()).has(t);
-    return `<button class="chip${on?' on':''}" data-f="type" data-v="${t}" onclick="toggleChip(this)" style="margin-right:4px">${t}</button>`;
+    return `<button class="chip${on?' on':''}" data-f="type" data-v="${esc(t)}" onclick="toggleChip(this)" style="margin-right:4px">${esc(t)}</button>`;
   }).join('');
 }
 function renderProcChips(){
   document.getElementById('proc-chips').innerHTML=processes.map(p=>{
     const on=(chips.proc||new Set()).has(p.key);
-    return `<button class="chip${on?' on':''}" data-f="proc" data-v="${p.key}" onclick="toggleChip(this)">${p.label}</button>`;
+    return `<button class="chip${on?' on':''}" data-f="proc" data-v="${esc(p.key)}" onclick="toggleChip(this)">${esc(p.label)}</button>`;
   }).join(' ');
 }
 function renderCountryChips(){
   const el=document.getElementById('country-chips'); if(!el) return;
   el.innerHTML=getCountries().map(c=>{
     const on=(chips.country||new Set()).has(c);
-    return `<button class="chip${on?' on':''}" data-f="country" data-v="${c}" onclick="toggleChip(this)" style="margin-right:4px">${c}</button>`;
+    return `<button class="chip${on?' on':''}" data-f="country" data-v="${esc(c)}" onclick="toggleChip(this)" style="margin-right:4px">${esc(c)}</button>`;
   }).join('');
 }
 
@@ -3317,7 +3343,7 @@ function renderLibFolders(){
   const total=Object.values(counts).reduce((a,b)=>a+b,0);
   const tabs=[`<button class="lib-folder-tab${ts.size===0?' on':''}" onclick="clearLibFolder()"><i class="ti ti-folder"></i> All<span class="nbadge">${total}</span></button>`];
   dtypeOrder().filter(dt=>counts[dt]).forEach(dt=>{
-    tabs.push(`<button class="lib-folder-tab${ts.has(dt)?' on':''}" onclick="toggleLibFolder('${dt}')"><i class="ti ti-folder"></i> ${esc(dt)}<span class="nbadge">${counts[dt]}</span></button>`);
+    tabs.push(`<button class="lib-folder-tab${ts.has(dt)?' on':''}" onclick="toggleLibFolder('${ja(dt)}')"><i class="ti ti-folder"></i> ${esc(dt)}<span class="nbadge">${counts[dt]}</span></button>`);
   });
   el.innerHTML=tabs.join('');
 }
@@ -3345,12 +3371,12 @@ function renderLibTable(list){
   });
   document.getElementById('lib-tb').innerHTML=sorted.map(t=>{
     const ts=styleForType(t),ps=styleForProc(t);
-    return `<tr id="librow-${t.id}" onclick="showLibTplViewer('${t.id}',this)">
-      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${t.id}</span></td>
-      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${t.country}</span>`:'-'}</td>
-      <td><span class="tbadge" style="${ts};font-size:10px">${t.type}</span></td>
-      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${labelForProc(t)}</span></td>
-      <td style="font-weight:500;max-width:260px;cursor:pointer;color:var(--ac)">${t.name}</td>
+    return `<tr id="librow-${esc(t.id)}" onclick="showLibTplViewer('${ja(t.id)}',this)">
+      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${esc(t.id)}</span></td>
+      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${esc(t.country)}</span>`:'-'}</td>
+      <td><span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span></td>
+      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${esc(labelForProc(t))}</span></td>
+      <td style="font-weight:500;max-width:260px;cursor:pointer;color:var(--ac)">${esc(t.name)}</td>
     </tr>`;
   }).join('');
   if(libTvCurId && !sorted.some(t=>t.id===libTvCurId)) closeLibTplViewer();
@@ -3364,11 +3390,11 @@ function showLibTplViewer(id,trEl){
   document.getElementById('ltv-title').textContent=t.name;
   const starHost=document.getElementById('ltv-star');if(starHost)starHost.innerHTML=starBtnHtml(t);
   const ts=styleForType(t),ps=styleForProc(t);
-  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${t.country}</span>`:'';
-  document.getElementById('ltv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${t.type}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
+  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${esc(t.country)}</span>`:'';
+  document.getElementById('ltv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${esc(labelForProc(t))}</span>`;
   const isZulip=t.domain==='zulip';
   const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(t.body);
-  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
+  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${ctagCls(c.v)}" style="font-size:10px">${esc(c.k)}: <b>${esc(c.v)}</b></span>`).join('')}</div>`:'';
   // Wrapped in .ql-editor so list bullets, font-class runs, headings etc.
   // render through Quill's own CSS — the exact same rules that apply while
   // actually editing this content in the Add/Edit modal — instead of
@@ -3410,21 +3436,21 @@ function makeCard(t){
   const hidden=conds.slice(MAX_CONDS_VISIBLE);
   let condHTML='';
   if(conds.length){
-    condHTML=visible.map(c=>`<span class="ctag ${c.v}">${c.k}: <b>${c.v}</b></span>`).join('');
-    if(hidden.length) condHTML+=`<span class="ctag-more" onclick="event.stopPropagation();openModal('${t.id}')" title="${hidden.map(c=>c.k+': '+c.v).join(', ')}">+${hidden.length} more…</span>`;
+    condHTML=visible.map(c=>`<span class="ctag ${ctagCls(c.v)}">${esc(c.k)}: <b>${esc(c.v)}</b></span>`).join('');
+    if(hidden.length) condHTML+=`<span class="ctag-more" onclick="event.stopPropagation();openModal('${ja(t.id)}')" title="${esc(hidden.map(c=>c.k+': '+c.v).join(', '))}">+${hidden.length} more…</span>`;
   }
-  const ctrBadge=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${t.country}</span>`:'';
+  const ctrBadge=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${esc(t.country)}</span>`:'';
   const showsDtype=(t.cat==='coordination'||t.cat==='followup'||t.cat==='maintenance');
   const secondBadge=showsDtype
-    ?`<span class="pbadge" style="${typeStyle(tplDtype(t))};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500">${tplDtype(t)}</span>`
-    :`<span class="pbadge" style="${ps};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500">${labelForProc(t)}</span>`;
+    ?`<span class="pbadge" style="${typeStyle(tplDtype(t))};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500">${esc(tplDtype(t))}</span>`
+    :`<span class="pbadge" style="${ps};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500">${esc(labelForProc(t))}</span>`;
   div.innerHTML=`
     <div class="card-sel">${selectedIds.has(t.id)?'<i class="ti ti-check" style="font-size:10px"></i>':''}</div>
-    <div class="ch">${ctrBadge}<span class="tbadge" style="${ts}">${t.type}</span>${secondBadge}</div>
-    <div class="ctitle">${t.name}</div>
-    <div class="cdesc">${t.desc}</div>
+    <div class="ch">${ctrBadge}<span class="tbadge" style="${ts}">${esc(t.type)}</span>${secondBadge}</div>
+    <div class="ctitle">${esc(t.name)}</div>
+    <div class="cdesc">${esc(t.desc)}</div>
     ${conds.length?`<div class="cconds">${condHTML}</div>`:''}
-    <div class="cf"><span class="cid mono">${t.id}</span><span style="margin-left:auto;display:flex;align-items:center;gap:2px">${starBtnHtml(t)}<span class="openbtn"><i class="ti ti-external-link" style="font-size:11px"></i></span></span></div>`;
+    <div class="cf"><span class="cid mono">${esc(t.id)}</span><span style="margin-left:auto;display:flex;align-items:center;gap:2px">${starBtnHtml(t)}<span class="openbtn"><i class="ti ti-external-link" style="font-size:11px"></i></span></span></div>`;
   div.onclick=(e)=>{
     if(e.shiftKey||e.ctrlKey||e.metaKey||e.target.closest('.card-sel')||e.target.closest('.ctag-more')) return;
     if(!e.target.closest('.card-sel')) toggleSelect(t.id,e);
@@ -3436,6 +3462,13 @@ function makeCard(t){
     if(e.shiftKey||e.ctrlKey||e.metaKey||e.target.closest('.card-sel')){toggleSelect(t.id);return;}
     openModal(t.id);
   };
+  div.tabIndex=0;div.setAttribute('role','button');
+  div.addEventListener('keydown',(e)=>{
+    if(e.target!==div||e.repeat)return;
+    if(e.key==='Enter'){e.preventDefault();openModal(t.id);}
+    else if(e.key===' '){e.preventDefault();}       // Space activates on keyup (native button behaviour)
+  });
+  div.addEventListener('keyup',(e)=>{if(e.target===div&&e.key===' '){e.preventDefault();openModal(t.id);}});
   return div;
 }
 function procLabel(key){const p=processes.find(x=>x.key===key);return p?p.label:key;}
@@ -3469,26 +3502,26 @@ function closeModal(){document.getElementById('modal').classList.remove('open');
 function viewModal(id){
   const t=templates.find(x=>x.id===id); if(!t) return;
   document.getElementById('m-title').textContent=t.name;
-  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${t.country}</span> `:'';
+  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${esc(t.country)}</span> `:'';
   const showsDtypeV=(t.cat==='coordination'||t.cat==='followup'||t.cat==='maintenance');
   const secondBadgeV=showsDtypeV
-    ?`<span class="pbadge" style="${typeStyle(tplDtype(t))};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${tplDtype(t)}</span>`
-    :`<span class="pbadge" style="${styleForProc(t)};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
-  document.getElementById('m-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${styleForType(t)}">${t.type}</span>${secondBadgeV}${starBtnHtml(t,'margin-left:6px')}`;
+    ?`<span class="pbadge" style="${typeStyle(tplDtype(t))};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${esc(tplDtype(t))}</span>`
+    :`<span class="pbadge" style="${styleForProc(t)};padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500;margin-left:4px">${esc(labelForProc(t))}</span>`;
+  document.getElementById('m-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${styleForType(t)}">${esc(t.type)}</span>${secondBadgeV}${starBtnHtml(t,'margin-left:6px')}`;
   document.getElementById('m-edit-btn').innerHTML='<i class="ti ti-edit"></i> Edit';
   let ce='';
   if(t.conds&&t.conds.length){
     ce=`<div class="ceval" style="margin-bottom:10px"><h3><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i> Condition Check</h3>
-      ${t.conds.map((c,i)=>`<div class="crow"><label>${c.k}</label>
-        <div class="ynt"><button class="ynb yes" id="yn-y-${i}" onclick="setYN('${id}','${c.k}','yes',${i})">Yes</button>
-        <button class="ynb no" id="yn-n-${i}" onclick="setYN('${id}','${c.k}','no',${i})">No</button></div></div>`).join('')}
-      <div id="cr-${id}"></div></div>`;
+      ${t.conds.map((c,i)=>`<div class="crow"><label>${esc(c.k)}</label>
+        <div class="ynt"><button class="ynb yes" id="yn-y-${i}" onclick="setYN('${ja(id)}','${ja(c.k)}','yes',${i})">Yes</button>
+        <button class="ynb no" id="yn-n-${i}" onclick="setYN('${ja(id)}','${ja(c.k)}','no',${i})">No</button></div></div>`).join('')}
+      <div id="cr-${esc(id)}"></div></div>`;
   }
   const isZulip=t.domain==='zulip';
   const isHtml=!isZulip&&/<[a-z][\s\S]*>/i.test(t.body);
   const zulipToolbar=isZulip
     ?`<div class="edtoolbar" style="justify-content:flex-end;margin-bottom:6px">
-        <button type="button" class="tblbtn${viewZulipPreviewOn?' active':''}" onclick="toggleViewZulipPreview('${id}')"><i class="ti ${viewZulipPreviewOn?'ti-eye-off':'ti-eye'}"></i> ${viewZulipPreviewOn?'Raw':'Preview'}</button>
+        <button type="button" class="tblbtn${viewZulipPreviewOn?' active':''}" onclick="toggleViewZulipPreview('${ja(id)}')"><i class="ti ${viewZulipPreviewOn?'ti-eye-off':'ti-eye'}"></i> ${viewZulipPreviewOn?'Raw':'Preview'}</button>
       </div>`
     :'';
   const bodyDisplay=isHtml
@@ -3517,10 +3550,10 @@ function viewModal(id){
     ${ce}
     ${todoDisplay}
     <div class="cbar" style="justify-content:space-between">
-      <button class="btn" onclick="duplicateTemplate('${id}')"><i class="ti ti-copy"></i> Duplicate</button>
+      <button class="btn" onclick="duplicateTemplate('${ja(id)}')"><i class="ti ti-copy"></i> Duplicate</button>
       <div style="display:flex;gap:7px">
-        ${isZulip?'':`<button class="btn" onclick="doCopy('${id}','s')"><i class="ti ti-copy"></i> Copy subject</button>`}
-        <button class="btn ${isZulip?'btn-zulip':'btn-p'}" onclick="doCopy('${id}','b')"><i class="ti ti-copy"></i> Copy ${isZulip?'message':'body'}</button>
+        ${isZulip?'':`<button class="btn" onclick="doCopy('${ja(id)}','s')"><i class="ti ti-copy"></i> Copy subject</button>`}
+        <button class="btn ${isZulip?'btn-zulip':'btn-p'}" onclick="doCopy('${ja(id)}','b')"><i class="ti ti-copy"></i> Copy ${isZulip?'message':'body'}</button>
       </div>
     </div>`;
   fixInvisibleBodyText(document.querySelector('#m-body .ql-editor'));
@@ -3629,8 +3662,8 @@ function renderCatList(){
       <span style="flex:1;font-size:12px;font-weight:500">${esc(c.label)}${c.builtin?' <span class="cpill" style="margin-left:4px">Built-in</span>':''}</span>
       <span style="font-size:11px;color:var(--tx3);margin-right:8px">${cnt} tpl</span>
       <div class="row-actions">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameCategory('${c.key}',${c.builtin})"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
-        ${c.builtin?'':`<button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteCategory('${c.key}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>`}
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameCategory('${ja(c.key)}',${c.builtin})"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
+        ${c.builtin?'':`<button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteCategory('${ja(c.key)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>`}
       </div>
     </div>`;
   }).join('');
@@ -3644,7 +3677,7 @@ function renderCustomCatNav(domain){
   el.innerHTML=customCats.map((c,i)=>{
     const p=PALETTES[i%PALETTES.length];
     const cnt=templates.filter(t=>(t.domain||'email')===domain&&t.cat===c.key).length;
-    return `<button class="ni" onclick="sideNav('cat','${c.key}',this,'${domain}')">
+    return `<button class="ni" onclick="sideNav('cat','${ja(c.key)}',this,'${ja(domain)}')">
       <span class="sb-abbr" style="background:${p.bg};color:${p.fg}">${esc(c.label.slice(0,2).toUpperCase())}</span>
       ${esc(c.label)} <span class="nbadge">${cnt}</span>
     </button>`;
@@ -3657,20 +3690,20 @@ function typeOptsForCat(cat,curType){
   else if(cat==='followup') opts=fuTypes.map(f=>f.key);
   else if(cat==='maintenance') opts=maTypes.map(m=>m.key);
   else opts=[];
-  return opts.map(o=>`<option value="${o}" ${curType===o?'selected':''}>${o}</option>`).join('');
+  return opts.map(o=>`<option value="${esc(o)}" ${curType===o?'selected':''}>${esc(o)}</option>`).join('');
 }
 function editModal(id){
   const t=templates.find(x=>x.id===id); if(!t) return;
   document.getElementById('m-edit-btn').innerHTML='<i class="ti ti-x"></i> Cancel';
   const isZulip=t.domain==='zulip';
   const catList=[...BUILTIN_CATS,...customCats.map(c=>c.key)];
-  const catOpts=catList.map(c=>`<option value="${c}" ${t.cat===c?'selected':''}>${esc(catLabel(c))}</option>`).join('');
+  const catOpts=catList.map(c=>`<option value="${esc(c)}" ${t.cat===c?'selected':''}>${esc(catLabel(c))}</option>`).join('');
   const typeFieldHtml=isBuiltinCat(t.cat)
     ?`<select class="ef2" id="e-type">${typeOptsForCat(t.cat,t.type)}</select>`
     :`<input type="text" class="ef2" id="e-type" value="${esc(t.type||'')}">`;
-  const procOpts=processes.map(p=>`<option value="${p.key}" ${t.proc===p.key?'selected':''}>${p.label}</option>`).join('');
-  const dtypeOpts=iTypes().map(dt=>`<option ${t.dtype===dt?'selected':''}>${dt}</option>`).join('');
-  const ctrOpts=getCountries().map(c=>`<option value="${c}" ${t.country===c?'selected':''}>${c}</option>`).join('');
+  const procOpts=processes.map(p=>`<option value="${esc(p.key)}" ${t.proc===p.key?'selected':''}>${esc(p.label)}</option>`).join('');
+  const dtypeOpts=iTypes().map(dt=>`<option ${t.dtype===dt?'selected':''}>${esc(dt)}</option>`).join('');
+  const ctrOpts=getCountries().map(c=>`<option value="${esc(c)}" ${t.country===c?'selected':''}>${esc(c)}</option>`).join('');
   const condRows=(t.conds||[]).map((c,i)=>`
     <div class="cbi" id="ec-${i}">
       <input type="text" value="${esc(c.k)}" class="ef2" style="flex:1;font-size:11px;padding:4px 7px" id="eck-${i}">
@@ -3752,10 +3785,10 @@ function editModal(id){
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:12px;gap:8px">
       <div style="display:flex;gap:8px">
-        <button class="btn btn-d" onclick="delTpl('${id}')"><i class="ti ti-trash"></i> Delete</button>
-        <button class="btn" onclick="duplicateTemplate('${id}')"><i class="ti ti-copy"></i> Duplicate</button>
+        <button class="btn btn-d" onclick="delTpl('${ja(id)}')"><i class="ti ti-trash"></i> Delete</button>
+        <button class="btn" onclick="duplicateTemplate('${ja(id)}')"><i class="ti ti-copy"></i> Duplicate</button>
       </div>
-      <button class="btn ${isZulip?'btn-zulip':'btn-p'}" onclick="saveEdit('${id}')"><i class="ti ti-device-floppy"></i> Save Changes</button>
+      <button class="btn ${isZulip?'btn-zulip':'btn-p'}" onclick="saveEdit('${ja(id)}')"><i class="ti ti-device-floppy"></i> Save Changes</button>
     </div>`;
   editQuill=null;
   renderTodoList('e',t.todos||[]);
@@ -3788,7 +3821,7 @@ function editModal(id){
 // one source of truth instead of two copies of the same field-reading logic.
 function currentEditFormValues(){
   const t=templates.find(x=>x.id===curId);
-  const isZulip=t&&t.domain==='zulip';
+  const isZulip=t?t.domain==='zulip':!!document.getElementById('e-channel');
   let body;
   if(isZulip){body=val('e-body-zulip');}
   else if(editQuill){body=editQuill.root.innerHTML;}
@@ -3837,7 +3870,7 @@ function applyDraftToEditForm(d){
   setVal('e-type',d.type);setVal('e-proc',d.proc);setVal('e-dtype',d.dtype);setVal('e-country',d.country);
   setVal('e-name',d.name);setVal('e-desc',d.desc);
   if(d.domain!=='zulip'){setVal('e-subj',d.subj);setVal('e-to',d.to);setVal('e-cc',d.cc);}
-  if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill){editQuill.root.innerHTML=d.body;fixInvisibleBodyText(document.querySelector('#e-body-editor .ql-editor'));}
+  if(d.domain==='zulip'){setVal('e-channel',d.channel);setVal('e-topic',d.topic);setVal('e-body-zulip',d.body);} else if(editQuill){editQuill.root.innerHTML=sanitizeHtml(d.body);fixInvisibleBodyText(document.querySelector('#e-body-editor .ql-editor'));}
   (d.conds||[]).forEach(c=>{addEditCRow(document.querySelectorAll('#ec-rows .cbi').length);fillLastCondRow('ec-rows',c.k,c.v);});
   renderTodoList('e',d.todos||[]);
 }
@@ -3867,7 +3900,7 @@ function onEditCatChange(){
   const showDtype=(cat==='coordination'||cat==='followup'||cat==='maintenance');
   if(dtypeRow){
     dtypeRow.style.display=showDtype?'':'none';
-    if(showDtype){const s=document.getElementById('e-dtype');if(s)s.innerHTML=iTypes().map(dt=>`<option>${dt}</option>`).join('');}
+    if(showDtype){const s=document.getElementById('e-dtype');if(s)s.innerHTML=iTypes().map(dt=>`<option>${esc(dt)}</option>`).join('');}
   }
 }
 function toggleEdit(){
@@ -3897,7 +3930,20 @@ function addEditCRow(start){
   document.getElementById('ec-rows').appendChild(d);
 }
 function saveEdit(id){
-  const t=templates.find(x=>x.id===id); if(!t) return;
+  const t=templates.find(x=>x.id===id);
+  if(!t){
+    let kept=false;
+    try{
+      if(document.getElementById('e-name')){
+        editingDraftId=null;
+        const p=buildEditDraftPayload();p.domain=document.getElementById('e-channel')?'zulip':'email';p.sourceTemplateId=id;
+        upsertDraft(p);kept=true;
+      }
+    }catch(e){console.warn('[saveEdit] draft',e);}
+    editingDraftId=null;isEdit=false;closeModal();
+    etlWarn('Cannot save: this template no longer exists (it was deleted or changed elsewhere).'+(kept?' Your edit was kept as a draft.':''));
+    return;
+  }
   const reasonOptional=skipEditReasonId===id;
   const reason=(val('e-edit-reason')||'').trim();
   if(!reason&&!reasonOptional){toast('Please fill in "Reason to Edit" before saving.');const rf=document.getElementById('e-edit-reason');if(rf)rf.focus();return;}
@@ -3936,6 +3982,7 @@ function diffTemplateFields(before,after){
   });
   return changed;
 }
+const HIST_SNAPSHOT_BUDGET=600000;
 function logTemplateHistory(t,before,reason,snapshot){
   const changed=before?diffTemplateFields(before,t):['Created'];
   if(before&&!changed.length)return; // saved with no actual field changes — nothing worth logging
@@ -3943,7 +3990,15 @@ function logTemplateHistory(t,before,reason,snapshot){
   const entry={ts:new Date().toISOString(),changed};
   if(before){entry.reason=reason||'';entry.snapshot=snapshot||null;}
   t.history.push(entry);
-  if(t.history.length>50)t.history=t.history.slice(-50); // cap growth of the shared sync payload
+  if(t.history.length>50){t.history=t.history.slice(-50);toastNow('History: only the latest 50 entries are kept for each template.');} // cap growth of the shared sync payload
+  // Keep every entry (who/why/what changed) but cap the total size of stored full-body snapshots, newest first.
+  let used=0,trimmed=0;
+  for(let i=t.history.length-1;i>=0;i--){
+    const h=t.history[i];if(!h||!h.snapshot)continue;
+    const sz=JSON.stringify(h.snapshot).length;
+    if(used>0&&used+sz>HIST_SNAPSHOT_BUDGET){h.snapshot=null;h.snapshotTrimmed=true;trimmed++;}else used+=sz;
+  }
+  if(trimmed)toastNow('History: older version snapshots of this template were trimmed to keep the workspace small (the entries and reasons are kept).');
 }
 // One-time reset of every template's edit-history log, baselined on
 // whatever each template's most recently saved content already is —
@@ -3995,7 +4050,7 @@ function renderHistoryList(id){
           <div style="font-size:10.5px;color:var(--tx3);margin-top:1px">${esc(changedLine)}</div>
           ${metaLine}
         </div>
-        <button class="btn" style="font-size:11px;padding:3px 10px;align-self:flex-start" onclick="toggleHistorySpoiler('${spId}',this)"><i class="ti ti-eye"></i> View Spoiler</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px;align-self:flex-start" onclick="toggleHistorySpoiler('${ja(spId)}',this)"><i class="ti ti-eye"></i> View Spoiler</button>
         <div id="${spId}" class="cond-box" style="display:none;font-size:11px">
           <div style="font-size:10px;font-weight:600;color:var(--or);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Remark: Template before this edit</div>
           ${renderHistorySnapshotBody(e.snapshot)}
@@ -4031,8 +4086,18 @@ function renderHistorySnapshotBody(snap){
 }
 function nextTplId(domain,cat){
   const pfx=domain==='zulip'?'Z':cat==='followup'?'F':cat==='maintenance'?'M':cat==='integration'?'T':'C';
-  const same=templates.filter(x=>x.id.startsWith(pfx));
-  return pfx+String(same.length+1).padStart(3,'0');
+  // Highest numeric suffix across live templates, Trash and drafts (draft ids + the template a draft edits),
+  // plus one — never "count + 1", which re-issues an existing id after any deletion.
+  const re=new RegExp('^'+pfx+'(\\d+)$');
+  let max=0;
+  const seen=function(id){if(typeof id!=='string')return;const m=re.exec(id);if(m){const n=parseInt(m[1],10);if(n>max)max=n;}};
+  templates.forEach(function(x){seen(x&&x.id);});
+  trash.forEach(function(x){seen(x&&x.id);});
+  drafts.forEach(function(d){seen(d&&d.id);seen(d&&d.sourceTemplateId);});
+  const taken=function(id){return templates.some(function(x){return x&&x.id===id;})||trash.some(function(x){return x&&x.id===id;});};
+  let id;
+  do{max++;id=pfx+String(max).padStart(3,'0');}while(taken(id));
+  return id;
 }
 // ══════════════════════════════════════════════════
 // DRAFTS — adapted from Assignment Log.html's Drafts feature: a real list of
@@ -4085,8 +4150,8 @@ function renderDraftsList(){
         <div style="font-size:11px;color:var(--tx3);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">${domainBadge}${editTag}<span>${when}</span></div>
       </div>
       <div class="row-actions">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="resumeDraft('${d.id}')"><i class="ti ti-arrow-forward-up" style="font-size:12px"></i> Resume</button>
-        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteDraftEntry('${d.id}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="resumeDraft('${ja(d.id)}')"><i class="ti ti-arrow-forward-up" style="font-size:12px"></i> Resume</button>
+        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteDraftEntry('${ja(d.id)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
       </div>
     </div>`;
   }).join('');
@@ -4143,8 +4208,7 @@ function moveToTrashBulk(ids){
 function restoreTrashItem(id){
   const idx=trash.findIndex(t=>t.id===id); if(idx===-1)return;
   const rest=Object.assign({},trash[idx]); delete rest.deletedAt;
-  // nextTplId only ever counts current templates, so a real collision here
-  // shouldn't happen — this is a safety net rather than an expected path.
+  // Collision with a live template (e.g. restored after its id was re-issued): take a fresh id.
   if(templates.some(t=>t.id===rest.id)) rest.id=nextTplId(rest.domain,rest.cat);
   templates.push(rest);
   trash.splice(idx,1);
@@ -4190,8 +4254,8 @@ function renderTrashList(){
         <div style="font-size:11px;color:var(--tx3);margin-top:2px">${isZulip?'Zulip':'Email'} · ${trashTimeRemaining(t.deletedAt)} · deletes ${expiresStr}</div>
       </div>
       <div class="row-actions" style="flex-shrink:0">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="restoreTrashItem('${t.id}')"><i class="ti ti-rotate-2"></i> Restore</button>
-        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="permanentlyDeleteTrashItem('${t.id}')"><i class="ti ti-trash"></i> Delete Permanently</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="restoreTrashItem('${ja(t.id)}')"><i class="ti ti-rotate-2"></i> Restore</button>
+        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="permanentlyDeleteTrashItem('${ja(t.id)}')"><i class="ti ti-trash"></i> Delete Permanently</button>
       </div>
     </div>`;
   }).join('');
@@ -4234,7 +4298,7 @@ function setYN(tid,key,val,idx){
   if(ok){res.innerHTML='';}
   else{
     const alts=templates.filter(x=>x.id!==tid&&x.type===t.type&&x.proc===t.proc&&(x.conds||[]).length&&x.conds.every(c=>condState[c.k]===undefined||condState[c.k]===c.v));
-    const links=alts.map(a=>`<a href="#" onclick="openModal('${a.id}');return false;" style="color:var(--bl);text-decoration:underline">${a.name}</a>`).join(', ')||'no alternative found';
+    const links=alts.map(a=>`<a href="#" onclick="openModal('${ja(a.id)}');return false;" style="color:var(--bl);text-decoration:underline">${esc(a.name)}</a>`).join(', ')||'no alternative found';
     res.innerHTML=`<div class="rbox nomatch"><i class="ti ti-circle-x"></i> Conditions don't match. Try: ${links}</div>`;
   }
 }
@@ -4270,18 +4334,18 @@ function initCfgMultiDrops(){
   // Country dropdown
   const ctrDrop=document.getElementById('cfmd-ctr');
   if(ctrDrop) ctrDrop.innerHTML=getCountries().map(c=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${c}" onchange="cfgMultiChange('ctr',this)" ${cfgFilterCtr.has(c)?'checked':''}><span>${c}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(c)}" onchange="cfgMultiChange('ctr',this)" ${cfgFilterCtr.has(c)?'checked':''}><span>${esc(c)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="cfgMultiClear('ctr')">Clear</div>`;
   // Type dropdown — all types
   const allTypes=[...new Set([...iTypes(),...coordTypes.map(c=>c.key),...fuTypes.map(f=>f.key),...maTypes.map(m=>m.key)])];
   const typeDrop=document.getElementById('cfmd-type');
   if(typeDrop) typeDrop.innerHTML=allTypes.map(t=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${t}" onchange="cfgMultiChange('type',this)" ${cfgFilterType.has(t)?'checked':''}><span>${t}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(t)}" onchange="cfgMultiChange('type',this)" ${cfgFilterType.has(t)?'checked':''}><span>${esc(t)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="cfgMultiClear('type')">Clear</div>`;
   // Process dropdown
   const procDrop=document.getElementById('cfmd-proc');
   if(procDrop) procDrop.innerHTML=processes.map(p=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${p.key}" onchange="cfgMultiChange('proc',this)" ${cfgFilterProc.has(p.key)?'checked':''}><span>${p.label}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(p.key)}" onchange="cfgMultiChange('proc',this)" ${cfgFilterProc.has(p.key)?'checked':''}><span>${esc(p.label)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="cfgMultiClear('proc')">Clear</div>`;
   updateCfgMultiLabel('ctr',cfgFilterCtr);
   updateCfgMultiLabel('type',cfgFilterType);
@@ -4355,17 +4419,17 @@ function renderCfgTable(){
 
   document.getElementById('cfg-tb').innerHTML=sorted.map(t=>{
     const ts=styleForType(t),ps=styleForProc(t);
-    return `<tr id="cfgrow-${t.id}" onclick="showTplViewer('${t.id}',this)">
-      <td onclick="event.stopPropagation()"><input type="checkbox" class="chk" onchange="toggleCfgSel('${t.id}',this.checked)"></td>
-      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${t.id}</span></td>
-      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${t.country}</span>`:'-'}</td>
-      <td><span class="tbadge" style="${ts};font-size:10px">${t.type}</span></td>
-      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${labelForProc(t)}</span></td>
-      <td style="font-weight:500;max-width:200px;cursor:pointer;color:var(--ac)">${t.name}</td>
+    return `<tr id="cfgrow-${esc(t.id)}" onclick="showTplViewer('${ja(t.id)}',this)">
+      <td onclick="event.stopPropagation()"><input type="checkbox" class="chk" onchange="toggleCfgSel('${ja(t.id)}',this.checked)"></td>
+      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${esc(t.id)}</span></td>
+      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${esc(t.country)}</span>`:'-'}</td>
+      <td><span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span></td>
+      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${esc(labelForProc(t))}</span></td>
+      <td style="font-weight:500;max-width:200px;cursor:pointer;color:var(--ac)">${esc(t.name)}</td>
       <td onclick="event.stopPropagation()">
-        <button class="ibtn" title="Edit" onclick="openModal('${t.id}');setTimeout(()=>{if(!isEdit)toggleEdit();},60)"><i class="ti ti-edit"></i></button>
-        <button class="ibtn" title="Duplicate" onclick="duplicateTemplate('${t.id}')"><i class="ti ti-copy"></i></button>
-        <button class="delbtn" title="Delete" onclick="if(confirm('Delete? It will be moved to the Trash Bin.')){moveToTrash('${t.id}');renderCfgTable();closeTplViewer();toast('Moved to Trash.');}"><i class="ti ti-trash"></i></button>
+        <button class="ibtn" title="Edit" onclick="openModal('${ja(t.id)}');setTimeout(()=>{if(!isEdit)toggleEdit();},60)"><i class="ti ti-edit"></i></button>
+        <button class="ibtn" title="Duplicate" onclick="duplicateTemplate('${ja(t.id)}')"><i class="ti ti-copy"></i></button>
+        <button class="delbtn" title="Delete" onclick="if(confirm('Delete? It will be moved to the Trash Bin.')){moveToTrash('${ja(t.id)}');renderCfgTable();closeTplViewer();toast('Moved to Trash.');}"><i class="ti ti-trash"></i></button>
       </td>
     </tr>`;
   }).join('');
@@ -4380,10 +4444,10 @@ function showTplViewer(id,trEl){
   const t=templates.find(x=>x.id===id); if(!t) return;
   document.getElementById('tv-title').textContent=t.name;
   const ts=styleForType(t),ps=styleForProc(t);
-  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${t.country}</span>`:'';
-  document.getElementById('tv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${t.type}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
+  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${esc(t.country)}</span>`:'';
+  document.getElementById('tv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${esc(labelForProc(t))}</span>`;
   const isHtml=/<[a-z][\s\S]*>/i.test(t.body);
-  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
+  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${ctagCls(c.v)}" style="font-size:10px">${esc(c.k)}: <b>${esc(c.v)}</b></span>`).join('')}</div>`:'';
   const body=isHtml?stripTableWrappers(t.body):t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   const toCcRows=`${t.to?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">To:</b> ${esc(t.to)}</div>`:''}${t.cc?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">CC:</b> ${esc(t.cc)}</div>`:''}`;
   document.getElementById('tv-body').innerHTML=`${toCcRows}<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Subject:</b> ${esc(t.subj)}</div>${conds}<div class="${isHtml?'ql-editor':''}" style="padding:0;min-height:0;font-size:12px;line-height:1.75;${isHtml?'':'white-space:pre-wrap'}">${body}</div>`;
@@ -4429,16 +4493,16 @@ let zCfgSortCol='id',zCfgSortDir=1,zCfgSelectedIds=new Set(),zTvCurId=null;
 function initZCfgMultiDrops(){
   const ctrDrop=document.getElementById('zcfmd-ctr');
   if(ctrDrop) ctrDrop.innerHTML=getCountries().map(c=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${c}" onchange="zCfgMultiChange('ctr',this)" ${zCfgFilterCtr.has(c)?'checked':''}><span>${c}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(c)}" onchange="zCfgMultiChange('ctr',this)" ${zCfgFilterCtr.has(c)?'checked':''}><span>${esc(c)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="zCfgMultiClear('ctr')">Clear</div>`;
   const allTypes=[...new Set([...iTypes(),...coordTypes.map(c=>c.key),...fuTypes.map(f=>f.key),...maTypes.map(m=>m.key)])];
   const typeDrop=document.getElementById('zcfmd-type');
   if(typeDrop) typeDrop.innerHTML=allTypes.map(t=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${t}" onchange="zCfgMultiChange('type',this)" ${zCfgFilterType.has(t)?'checked':''}><span>${t}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(t)}" onchange="zCfgMultiChange('type',this)" ${zCfgFilterType.has(t)?'checked':''}><span>${esc(t)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="zCfgMultiClear('type')">Clear</div>`;
   const procDrop=document.getElementById('zcfmd-proc');
   if(procDrop) procDrop.innerHTML=processes.map(p=>`
-    <div class="cf-multi-opt"><input type="checkbox" value="${p.key}" onchange="zCfgMultiChange('proc',this)" ${zCfgFilterProc.has(p.key)?'checked':''}><span>${p.label}</span></div>`).join('')+
+    <div class="cf-multi-opt"><input type="checkbox" value="${esc(p.key)}" onchange="zCfgMultiChange('proc',this)" ${zCfgFilterProc.has(p.key)?'checked':''}><span>${esc(p.label)}</span></div>`).join('')+
     `<div class="cf-multi-clear" onclick="zCfgMultiClear('proc')">Clear</div>`;
   updateZCfgMultiLabel('ctr',zCfgFilterCtr);
   updateZCfgMultiLabel('type',zCfgFilterType);
@@ -4508,18 +4572,18 @@ function renderZCfgTable(){
 
   tb.innerHTML=sorted.map(t=>{
     const ts=styleForType(t),ps=styleForProc(t);
-    return `<tr id="zcfgrow-${t.id}" onclick="showZTplViewer('${t.id}',this)">
-      <td onclick="event.stopPropagation()"><input type="checkbox" class="chk" onchange="toggleZCfgSel('${t.id}',this.checked)"></td>
-      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${t.id}</span></td>
-      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${t.country}</span>`:'-'}</td>
+    return `<tr id="zcfgrow-${esc(t.id)}" onclick="showZTplViewer('${ja(t.id)}',this)">
+      <td onclick="event.stopPropagation()"><input type="checkbox" class="chk" onchange="toggleZCfgSel('${ja(t.id)}',this.checked)"></td>
+      <td><span class="mono" style="font-size:10px;color:var(--tx3)">${esc(t.id)}</span></td>
+      <td>${t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px">${esc(t.country)}</span>`:'-'}</td>
       <td style="font-size:11px">${esc(catLabel(t.cat))}</td>
-      <td><span class="tbadge" style="${ts};font-size:10px">${t.type}</span></td>
-      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${labelForProc(t)}</span></td>
-      <td style="font-weight:500;max-width:200px;cursor:pointer;color:var(--ac)">${t.name}</td>
+      <td><span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span></td>
+      <td><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500">${esc(labelForProc(t))}</span></td>
+      <td style="font-weight:500;max-width:200px;cursor:pointer;color:var(--ac)">${esc(t.name)}</td>
       <td onclick="event.stopPropagation()">
-        <button class="ibtn" title="Edit" onclick="openModal('${t.id}');setTimeout(()=>{if(!isEdit)toggleEdit();},60)"><i class="ti ti-edit"></i></button>
-        <button class="ibtn" title="Duplicate" onclick="duplicateTemplate('${t.id}')"><i class="ti ti-copy"></i></button>
-        <button class="delbtn" title="Delete" onclick="if(confirm('Delete? It will be moved to the Trash Bin.')){moveToTrash('${t.id}');renderZCfgTable();closeZTplViewer();toast('Moved to Trash.');}"><i class="ti ti-trash"></i></button>
+        <button class="ibtn" title="Edit" onclick="openModal('${ja(t.id)}');setTimeout(()=>{if(!isEdit)toggleEdit();},60)"><i class="ti ti-edit"></i></button>
+        <button class="ibtn" title="Duplicate" onclick="duplicateTemplate('${ja(t.id)}')"><i class="ti ti-copy"></i></button>
+        <button class="delbtn" title="Delete" onclick="if(confirm('Delete? It will be moved to the Trash Bin.')){moveToTrash('${ja(t.id)}');renderZCfgTable();closeZTplViewer();toast('Moved to Trash.');}"><i class="ti ti-trash"></i></button>
       </td>
     </tr>`;
   }).join('');
@@ -4534,9 +4598,9 @@ function showZTplViewer(id,trEl){
   const t=templates.find(x=>x.id===id); if(!t) return;
   document.getElementById('ztv-title').textContent=t.name;
   const ts=styleForType(t),ps=styleForProc(t);
-  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${t.country}</span>`:'';
-  document.getElementById('ztv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${t.type}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${labelForProc(t)}</span>`;
-  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${c.v}" style="font-size:10px">${c.k}: <b>${c.v}</b></span>`).join('')}</div>`:'';
+  const ctrTag=t.country?`<span class="tbadge" style="background:var(--acl);color:var(--ac);font-size:9px;margin-right:4px">${esc(t.country)}</span>`:'';
+  document.getElementById('ztv-meta').innerHTML=`${ctrTag}<span class="tbadge" style="${ts};font-size:10px">${esc(t.type)}</span><span class="pbadge" style="${ps};font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-left:4px">${esc(labelForProc(t))}</span>`;
+  const conds=(t.conds||[]).length?`<div style="margin-bottom:10px">${t.conds.map(c=>`<span class="ctag ${ctagCls(c.v)}" style="font-size:10px">${esc(c.k)}: <b>${esc(c.v)}</b></span>`).join('')}</div>`:'';
   const body=t.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\[([^\]]+)\]/g,'<span style="color:var(--acm);font-style:italic;background:var(--acl);padding:0 3px;border-radius:3px;font-size:11px">[$1]</span>');
   const ztvHead=`${t.channel?`<div style="margin-bottom:4px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Channel:</b> ${esc(t.channel)}</div>`:''}${t.topic?`<div style="margin-bottom:6px;font-size:11px;color:var(--tx3)"><b style="color:var(--tx2)">Topic:</b> ${esc(t.topic)}</div>`:''}`;
   document.getElementById('ztv-body').innerHTML=`${ztvHead}${conds}<div style="font-size:12px;line-height:1.75;white-space:pre-wrap">${body}</div>`;
@@ -4606,11 +4670,11 @@ function renderTypeList(){
     const s=typeStyle(t);
     return `<div class="tbrow">
       <i class="ti ti-grip-vertical row-drag-handle"></i>
-      <span class="tbadge" style="${s}">${t}</span>
+      <span class="tbadge" style="${s}">${esc(t)}</span>
       <span style="font-size:12px;color:var(--tx2);flex:1;margin-left:8px">${templates.filter(x=>x.type===t).length} template(s)</span>
       <div class="row-actions">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameType('${esc(t)}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
-        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteType('${esc(t)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameType('${ja(t)}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
+        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteType('${ja(t)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
       </div>
     </div>`;
   }).join('');
@@ -4684,12 +4748,12 @@ function renderCountryList(){
     const isPinned=PINNED_COUNTRIES.includes(c);
     return `<div class="tbrow">
       <i class="ti ti-grip-vertical row-drag-handle"></i>
-      <span style="font-size:11px;padding:2px 7px;background:var(--acl);color:var(--ac);border-radius:4px;font-family:'DM Mono',monospace">${c}</span>
+      <span style="font-size:11px;padding:2px 7px;background:var(--acl);color:var(--ac);border-radius:4px;font-family:'DM Mono',monospace">${esc(c)}</span>
       <span style="font-size:12px;color:var(--tx2);flex:1;margin-left:8px">${isPinned?'<span style="font-size:10px;color:var(--tx3)">(pinned)</span>':''}</span>
       <div class="row-actions">
         ${!isPinned
-          ?`<button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameCountry('${c}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
-            <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteCountry('${c}')"><i class="ti ti-trash" style="font-size:12px"></i> Remove</button>`
+          ?`<button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameCountry('${ja(c)}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
+            <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteCountry('${ja(c)}')"><i class="ti ti-trash" style="font-size:12px"></i> Remove</button>`
           :'<span style="font-size:11px;color:var(--tx3);padding:3px 10px">🔒 Default</span>'}
       </div>
     </div>`;
@@ -4709,7 +4773,7 @@ function renameCountry(old){
 }
 function updateCountryOpts(){
   const el=document.getElementById('nc-country');if(!el)return;
-  el.innerHTML=getCountries().map(c=>`<option value="${c}"${c==='TH'?' selected':''}>${c}</option>`).join('');
+  el.innerHTML=getCountries().map(c=>`<option value="${esc(c)}"${c==='TH'?' selected':''}>${esc(c)}</option>`).join('');
 }
 function addCountry(){
   const n=prompt('Country code (e.g. SG, MY):');if(!n||!n.trim())return;
@@ -4734,8 +4798,8 @@ function renderCoordTypeList(){
   el.innerHTML=coordTypes.map((c,i)=>`
     <div class="tbrow">
       <i class="ti ti-grip-vertical row-drag-handle"></i>
-      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${c.bg};color:${c.fg};border-radius:4px">${c.label}</span>
-      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${c.abbr||''}</span>
+      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${cssColor(c.bg,'#e3f6fb')};color:${cssColor(c.fg,'#0a5a6b')};border-radius:4px">${esc(c.label)}</span>
+      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${esc(c.abbr||'')}</span>
       <span style="font-size:12px;color:var(--tx2);flex:1;margin-left:8px">${templates.filter(t=>t.type===c.key).length} template(s)</span>
       <div class="row-actions">
         <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameCoordType(${i})"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
@@ -4770,10 +4834,10 @@ function deleteCoordType(i){
 function renderProcPills(){
   const el=document.getElementById('proc-pill-list');if(!el)return;
   el.innerHTML=processes.map(p=>`
-    <span class="proc-pill" style="background:${p.bg};color:${p.fg};border-color:${p.fg}40">
+    <span class="proc-pill" style="background:${cssColor(p.bg,'#f0f0ee')};color:${cssColor(p.fg,'#3a3a3a')};border-color:${cssColor(p.fg,'#3a3a3a')}40">
       <i class="ti ti-grip-vertical row-drag-handle" style="font-size:11px"></i>
-      ${p.label}
-      ${!p.builtin?`<button class="ppx" onclick="removeProc('${p.key}')">×</button>`:'<span style="opacity:.3;padding-left:2px;font-size:11px">🔒</span>'}
+      ${esc(p.label)}
+      ${!p.builtin?`<button class="ppx" onclick="removeProc('${ja(p.key)}')">×</button>`:'<span style="opacity:.3;padding-left:2px;font-size:11px">🔒</span>'}
     </span>`).join('');
   enableRowReorder(el,processes,saveProcs,renderProcPills);
 }
@@ -4804,8 +4868,8 @@ function renderFuTypeList(){
     const st=getFuStyle(f.key);
     return `<div class="tbrow">
       <i class="ti ti-grip-vertical row-drag-handle"></i>
-      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${st.bg};color:${st.fg};border-radius:4px">${f.label}</span>
-      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${f.abbr||''}</span>
+      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${cssColor(st.bg,'#f0f0ee')};color:${cssColor(st.fg,'#3a3a3a')};border-radius:4px">${esc(f.label)}</span>
+      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${esc(f.abbr||'')}</span>
       <span style="font-size:12px;color:var(--tx2);flex:1;margin-left:8px">${templates.filter(t=>t.type===f.key).length} template(s)</span>
       <div class="row-actions">
         <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameFuType(${i})"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
@@ -4846,8 +4910,8 @@ function renderMaTypeList(){
     const st=getMaBg(m.key);
     return `<div class="tbrow">
       <i class="ti ti-grip-vertical row-drag-handle"></i>
-      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${st.bg};color:${st.fg};border-radius:4px">${m.label}</span>
-      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${m.abbr||''}</span>
+      <span style="font-size:11px;font-family:'DM Mono',monospace;padding:2px 7px;background:${cssColor(st.bg,'#f0f0ee')};color:${cssColor(st.fg,'#3a3a3a')};border-radius:4px">${esc(m.label)}</span>
+      <span style="font-size:11px;color:var(--tx3);margin-left:6px;font-family:'DM Mono',monospace">${esc(m.abbr||'')}</span>
       <span style="font-size:12px;color:var(--tx2);flex:1;margin-left:8px">${templates.filter(t=>t.type===m.key).length} template(s)</span>
       <div class="row-actions">
         <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameMaType(${i})"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
@@ -4884,7 +4948,7 @@ function deleteMaType(i){
 // ══════════════════════════════════════════════════
 function updateZCountryOpts(){
   const el=document.getElementById('zc-country');if(!el)return;
-  el.innerHTML=getCountries().map(c=>`<option value="${c}"${c==='TH'?' selected':''}>${c}</option>`).join('');
+  el.innerHTML=getCountries().map(c=>`<option value="${esc(c)}"${c==='TH'?' selected':''}>${esc(c)}</option>`).join('');
 }
 
 // ══════════════════════════════════════════════════
@@ -4895,20 +4959,20 @@ function updateCatOpts(){
   const tw=document.getElementById('nc-type-w'),pw=document.getElementById('nc-proc-w'),dw=document.getElementById('nc-dtype-w');
   pw.style.display=cat==='integration'?'':'none';
   dw.style.display=(cat==='coordination'||cat==='followup'||cat==='maintenance')?'':'none';
-  if(dw.style.display!=='none')document.getElementById('nc-dtype').innerHTML=iTypes().map(t=>`<option>${t}</option>`).join('');
+  if(dw.style.display!=='none')document.getElementById('nc-dtype').innerHTML=iTypes().map(t=>`<option>${esc(t)}</option>`).join('');
   if(cat==='integration'){
     tw.innerHTML='<label>Data</label><select id="nc-type"></select>';
-    document.getElementById('nc-type').innerHTML=iTypes().map(t=>`<option>${t}</option>`).join('');
-    document.getElementById('nc-proc').innerHTML=processes.map(p=>`<option value="${p.key}">${p.label}</option>`).join('');
+    document.getElementById('nc-type').innerHTML=iTypes().map(t=>`<option>${esc(t)}</option>`).join('');
+    document.getElementById('nc-proc').innerHTML=processes.map(p=>`<option value="${esc(p.key)}">${esc(p.label)}</option>`).join('');
   } else if(cat==='coordination'){
     tw.innerHTML='<label>Data</label><select id="nc-type"></select>';
-    document.getElementById('nc-type').innerHTML=coordTypes.map(c=>`<option>${c.label}</option>`).join('');
+    document.getElementById('nc-type').innerHTML=coordTypes.map(c=>`<option>${esc(c.label)}</option>`).join('');
   } else if(cat==='followup'){
     tw.innerHTML='<label>Data</label><select id="nc-type"></select>';
-    document.getElementById('nc-type').innerHTML=fuTypes.map(f=>`<option>${f.label}</option>`).join('');
+    document.getElementById('nc-type').innerHTML=fuTypes.map(f=>`<option>${esc(f.label)}</option>`).join('');
   } else if(cat==='maintenance'){
     tw.innerHTML='<label>Data</label><select id="nc-type"></select>';
-    document.getElementById('nc-type').innerHTML=maTypes.map(m=>`<option>${m.label}</option>`).join('');
+    document.getElementById('nc-type').innerHTML=maTypes.map(m=>`<option>${esc(m.label)}</option>`).join('');
   } else {
     tw.innerHTML='<label>Data</label><input type="text" id="nc-type" placeholder="e.g. Custom label">';
   }
@@ -4918,20 +4982,20 @@ function updateZCatOpts(){
   const tw=document.getElementById('zc-type-w'),pw=document.getElementById('zc-proc-w'),dw=document.getElementById('zc-dtype-w');
   pw.style.display=cat==='integration'?'':'none';
   dw.style.display=(cat==='coordination'||cat==='followup'||cat==='maintenance')?'':'none';
-  if(dw.style.display!=='none')document.getElementById('zc-dtype').innerHTML=iTypes().map(t=>`<option>${t}</option>`).join('');
+  if(dw.style.display!=='none')document.getElementById('zc-dtype').innerHTML=iTypes().map(t=>`<option>${esc(t)}</option>`).join('');
   if(cat==='integration'){
     tw.innerHTML='<label>Data</label><select id="zc-type"></select>';
-    document.getElementById('zc-type').innerHTML=iTypes().map(t=>`<option>${t}</option>`).join('');
-    document.getElementById('zc-proc').innerHTML=processes.map(p=>`<option value="${p.key}">${p.label}</option>`).join('');
+    document.getElementById('zc-type').innerHTML=iTypes().map(t=>`<option>${esc(t)}</option>`).join('');
+    document.getElementById('zc-proc').innerHTML=processes.map(p=>`<option value="${esc(p.key)}">${esc(p.label)}</option>`).join('');
   } else if(cat==='coordination'){
     tw.innerHTML='<label>Data</label><select id="zc-type"></select>';
-    document.getElementById('zc-type').innerHTML=coordTypes.map(c=>`<option>${c.label}</option>`).join('');
+    document.getElementById('zc-type').innerHTML=coordTypes.map(c=>`<option>${esc(c.label)}</option>`).join('');
   } else if(cat==='followup'){
     tw.innerHTML='<label>Data</label><select id="zc-type"></select>';
-    document.getElementById('zc-type').innerHTML=fuTypes.map(f=>`<option>${f.label}</option>`).join('');
+    document.getElementById('zc-type').innerHTML=fuTypes.map(f=>`<option>${esc(f.label)}</option>`).join('');
   } else if(cat==='maintenance'){
     tw.innerHTML='<label>Data</label><select id="zc-type"></select>';
-    document.getElementById('zc-type').innerHTML=maTypes.map(m=>`<option>${m.label}</option>`).join('');
+    document.getElementById('zc-type').innerHTML=maTypes.map(m=>`<option>${esc(m.label)}</option>`).join('');
   } else {
     tw.innerHTML='<label>Data</label><input type="text" id="zc-type" placeholder="e.g. Custom label">';
   }
@@ -4960,7 +5024,7 @@ function saveNewEmail(){
   const to=document.getElementById('nc-to').value.trim();
   const cc=document.getElementById('nc-cc').value.trim();
   const body=document.getElementById('nc-body').value.trim();
-  const bodyText=(()=>{const d=document.createElement('div');d.innerHTML=body;return(d.textContent||d.innerText||'').trim();})();
+  const bodyText=htmlToText(body).trim();
   if(!name||!subj||!bodyText){toast('Fill Name, Subject and Body.');return;}
   const conds=[];
   document.querySelectorAll('[id^="ncr-"]').forEach(row=>{
@@ -4969,9 +5033,7 @@ function saveNewEmail(){
     const v=document.getElementById('ncv-'+idx)?.value;
     if(k)conds.push({k,v});
   });
-  const pfx=cat==='followup'?'F':cat==='maintenance'?'M':cat==='integration'?'T':'C';
-  const same=templates.filter(t=>t.id.startsWith(pfx));
-  const id=pfx+String(same.length+1).padStart(3,'0');
+  const id=nextTplId('email',cat);
   const kw=[type.toLowerCase(),proc,country,...(dtype?[dtype.toLowerCase()]:[]),...name.toLowerCase().split(' '),...desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   const todos=getTodos('nc');
   const newTpl={id,domain:'email',cat,country,type,proc,dtype,name,desc,subj,to,cc,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
@@ -5006,8 +5068,7 @@ function saveNewZulip(){
     const v=document.getElementById('zcv-'+idx)?.value;
     if(k)conds.push({k,v});
   });
-  const same=templates.filter(t=>t.id.startsWith('Z'));
-  const id='Z'+String(same.length+1).padStart(3,'0');
+  const id=nextTplId('zulip',cat);
   const kw=[type.toLowerCase(),proc,country,...(dtype?[dtype.toLowerCase()]:[]),...name.toLowerCase().split(' '),...desc.toLowerCase().split(' ')].filter(x=>x.length>2);
   const todos=getTodos('zc');
   const newTpl={id,domain:'zulip',cat,country,type,proc,dtype,name,desc,channel,topic,body,conds,kw,folder:null,todos,updatedAt:new Date().toISOString()};
@@ -5055,12 +5116,12 @@ function renderFolderList(){
   el.innerHTML=[...folders].sort((a,b)=>a.name.localeCompare(b.name)).map(f=>`
     <div class="tbrow">
       <i class="ti ti-folder" style="font-size:14px;color:var(--am)"></i>
-      <span style="flex:1;font-size:12px;font-weight:500;margin-left:4px">${f.name}</span>
-      <span style="font-size:11px;color:var(--tx3);margin-right:8px">${f.parent}</span>
+      <span style="flex:1;font-size:12px;font-weight:500;margin-left:4px">${esc(f.name)}</span>
+      <span style="font-size:11px;color:var(--tx3);margin-right:8px">${esc(f.parent)}</span>
       <span style="font-size:11px;color:var(--tx3);margin-right:8px">${templates.filter(t=>t.folder===f.id).length} tpl</span>
       <div class="row-actions">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameFolder('${f.id}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
-        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteFolder('${f.id}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameFolder('${ja(f.id)}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
+        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteFolder('${ja(f.id)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
       </div>
     </div>`).join('');
 }
@@ -5069,16 +5130,29 @@ function renderFolderList(){
 // UTILS
 // ══════════════════════════════════════════════════
 // TEMPLATE IMPORT START
+const IMPORT_MAX_BYTES=5*1024*1024,IMPORT_MAX_RECORDS=5000;
+const IMPORT_LIMITS={id:40,name:200,desc:1000,subj:500,to:1000,cc:1000,channel:200,topic:300,body:1000000};
 function parseTemplateImport(text){
   let data;try{data=JSON.parse(text.replace(/^\uFEFF/,''));}catch(e){throw new Error('Invalid JSON file.');}
   if(!data||data.app!=='Coordinate Template Library'||data.schemaVersion!==1||!Array.isArray(data.templates))throw new Error('Choose a JSON file exported from Coordinate Template Library (schema version 1).');
   if(data.templateCount!==data.templates.length)throw new Error('Template count does not match the file contents.');
+  if(data.templates.length>IMPORT_MAX_RECORDS)throw new Error('The file has '+data.templates.length+' templates; the import limit is '+IMPORT_MAX_RECORDS+' records.');
   const ids=new Set(),stringFields=['country','cat','type','proc','dtype','desc','subj','to','cc','channel','topic','updatedAt'];
+  const catKeys=new Set([...BUILTIN_CATS,...customCats.map(c=>c.key)]);
+  const typeSet=new Set(['Others',...iTypes(),...coordTypes.flatMap(c=>[c.key,c.label]),...fuTypes.flatMap(c=>[c.key,c.label]),...maTypes.flatMap(c=>[c.key,c.label])]);
+  const procSet=new Set([...processes.map(p=>p.key),...catKeys]);
+  const ctrSet=new Set(getCountries());
   for(const t of data.templates){
     if(!t||typeof t!=='object'||Array.isArray(t)||typeof t.id!=='string'||! /^[A-Za-z0-9_-]+$/.test(t.id)||ids.has(t.id))throw new Error('Invalid or duplicate template ID.');
     ids.add(t.id);
+    if(t.id.length>IMPORT_LIMITS.id)throw new Error('Template ID "'+t.id.slice(0,20)+'…" is too long.');
     if(!['email','zulip'].includes(t.domain)||typeof t.name!=='string'||!t.name.trim()||typeof t.body!=='string')throw new Error('Invalid Name, Domain or Body in '+t.id+'.');
     for(const key of stringFields)if(t[key]!=null&&typeof t[key]!=='string')throw new Error('Invalid '+key+' in '+t.id+'.');
+    for(const key of Object.keys(IMPORT_LIMITS))if(typeof t[key]==='string'&&t[key].length>IMPORT_LIMITS[key])throw new Error('The '+key+' of '+t.id+' is too long ('+t[key].length+' characters; limit '+IMPORT_LIMITS[key]+').');
+    if(typeof t.cat!=='string'||!catKeys.has(t.cat))throw new Error('Unknown category "'+String(t.cat).slice(0,40)+'" in '+t.id+'. Add the category first or fix the file.');
+    if(typeof t.type!=='string'||(!typeSet.has(t.type)&&isBuiltinCat(t.cat)))throw new Error('Unknown data type "'+String(t.type).slice(0,40)+'" in '+t.id+'. Add it under Configure → Data Types (or the matching label list) first, or fix the file.');
+    if(typeof t.proc!=='string'||!procSet.has(t.proc))throw new Error('Unknown process "'+String(t.proc).slice(0,40)+'" in '+t.id+'. Add it under Configure → Process first, or fix the file.');
+    if(t.country&&!ctrSet.has(t.country))throw new Error('Unknown country "'+String(t.country).slice(0,20)+'" in '+t.id+'. Add it under Configure → Countries first, or fix the file.');
     if(t.folder!=null&&(typeof t.folder!=='string'||!/^[A-Za-z0-9_-]+$/.test(t.folder)))throw new Error('Invalid folder in '+t.id+'.');
     if(t.starred!=null&&typeof t.starred!=='boolean')throw new Error('Invalid starred flag in '+t.id+'.');
     if(t.conds!=null&&(!Array.isArray(t.conds)||t.conds.some(c=>!c||typeof c.k!=='string'||!['yes','no'].includes(c.v))))throw new Error('Invalid conditions in '+t.id+'.');
@@ -5090,38 +5164,32 @@ function parseTemplateImport(text){
 }
 function planTemplateImport(current,incoming,deleted){
   const deletedIds=new Set(deleted.map(t=>t.id));
-  if(incoming.some(t=>deletedIds.has(t.id)))throw new Error('Some imported IDs already exist in Trash. Restore or resolve those records before importing.');
+  const inTrash=incoming.filter(t=>deletedIds.has(t.id)).map(t=>t.id);
+  if(inTrash.length)throw new Error('These imported IDs already exist in Trash: '+inTrash.slice(0,8).join(', ')+(inTrash.length>8?' …':'')+'. Restore or permanently delete those records (Trash Bin), or remove them from the file, then import again.');
   const rows=JSON.parse(JSON.stringify(current)),positions=new Map(rows.map((t,i)=>[t.id,i]));let added=0,updated=0;
-  if(positions.size!==rows.length)throw new Error('Existing templates contain duplicate IDs. Resolve them before importing.');
+  if(positions.size!==rows.length)throw new Error('Existing templates contain duplicate IDs ('+etlDupIds(rows).slice(0,6).join(', ')+'). Resolve them before importing.');
   for(const raw of incoming){const t=JSON.parse(JSON.stringify(raw));if(positions.has(t.id)){rows[positions.get(t.id)]=t;updated++;}else{positions.set(t.id,rows.length);rows.push(t);added++;}}
   return {templates:rows,added,updated};
 }
 function validateTemplateImportMarkup(rows){
-  // Reject executable markup rather than silently rewriting exported rich text.
-  const doc=document.implementation.createHTMLDocument('');
-  const inspect=value=>{
-    if(typeof value==='string'){
-      const host=doc.createElement('div');host.innerHTML=value;
-      for(const el of host.querySelectorAll('*')){
-        if(['SCRIPT','IFRAME','OBJECT','EMBED','SVG','MATH','FORM','INPUT','BUTTON','LINK','META','BASE','STYLE','TEMPLATE'].includes(el.tagName))throw new Error('The file contains unsupported active HTML.');
-        for(const attr of el.attributes){
-          if(/^on/i.test(attr.name)||attr.name==='srcdoc'||(attr.name==='style'&&/url\s*\(|expression\s*\(|@import/i.test(attr.value)))throw new Error('The file contains unsafe HTML attributes.');
-          if(['href','src','action','xlink:href'].includes(attr.name)){
-            const url=attr.value.replace(/[\s\u0000-\u001f]/g,'');
-            if(/^[a-z][a-z0-9+.-]*:/i.test(url)&&! /^(https?:|mailto:|tel:|blob:)/i.test(url)&&!(el.tagName==='IMG'&&attr.name==='src'&&/^data:image\/(png|jpeg|gif|webp);base64,/i.test(url)))throw new Error('The file contains an unsafe URL.');
-          }
-        }
-      }
-    }else if(Array.isArray(value))value.forEach(inspect);
-    else if(value&&typeof value==='object')Object.values(value).forEach(inspect);
+  // Allowlist-based (same rules as the render-time sanitizer): anything that would have to be stripped is rejected
+  // rather than silently rewritten. Zulip bodies are plain text and always escaped on display, so they are skipped.
+  const check=function(body,domain,id,where){
+    if(typeof body!=='string'||domain==='zulip'||body.indexOf('<')<0)return;
+    const v=sanHtmlViolations(body);
+    if(v.length)throw new Error('Template '+id+' ('+where+') contains HTML that is not allowed ['+v.slice(0,3).join(', ')+']. Nothing was imported.');
   };
-  rows.forEach(inspect);
+  rows.forEach(function(r){
+    check(r.body,r.domain,r.id,'body');
+    (r.history||[]).forEach(function(h){if(h&&h.snapshot&&typeof h.snapshot==='object')check(h.snapshot.body,h.snapshot.domain||r.domain,r.id,'history snapshot');});
+  });
 }
 async function importTemplateJson(input){
   const file=input.files&&input.files[0];if(!file)return;
   const btn=document.getElementById('cfg-import-btn');btn.disabled=true;
   try{
     if(!/\.json$/i.test(file.name))throw new Error('Choose a .json file.');
+    if(file.size>IMPORT_MAX_BYTES)throw new Error('The file is larger than the 5 MB import limit.');
     const incoming=parseTemplateImport(await file.text());validateTemplateImportMarkup(incoming);
     if(!incoming.length){toast('The file contains no templates.');return;}
     const preview=planTemplateImport(templates,incoming,trash);
@@ -5208,7 +5276,219 @@ function exportAllTemplates(format){
   }catch(e){toast('Export failed: '+e.message);}
 }
 // TEMPLATE EXPORT END
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+// ══════════════════════════════════════════════════
+// SECURITY HELPERS — one escaper, JS-attribute encoder, allowlist HTML sanitizer, user notices
+// ══════════════════════════════════════════════════
+// esc(): HTML text + attribute context (& < > " ').
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':c==='"'?'&quot;':'&#39;';});}
+// ja(): value placed inside a single-quoted JS string inside a double-quoted HTML attribute, e.g. onclick="f('${ja(id)}')".
+// Everything outside a tiny safe set becomes a \uXXXX escape, so no value can end the string, the attribute or the tag.
+function ja(s){return String(s==null?'':s).replace(/[^A-Za-z0-9 _.:@#\/|,()+-]/g,function(c){return '\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4);});}
+function cssColor(v,fb){v=String(v==null?'':v).trim();return /^(#[0-9a-fA-F]{3,8}|[a-zA-Z]{3,24}|(?:rgb|hsl)a?\([0-9\s.,%\/]+\))$/.test(v)?v:fb;}
+function ctagCls(v){return v==='yes'||v==='no'?v:'other';}
+
+const SAN_XHTML='http://www.w3.org/1999/xhtml';
+const SAN_OK=new Set(['a','abbr','b','blockquote','br','caption','code','col','colgroup','dd','del','div','dl','dt','em','font','h1','h2','h3','h4','h5','h6','hr','i','img','ins','li','mark','ol','p','pre','q','s','small','span','strike','strong','sub','sup','table','tbody','td','tfoot','th','thead','tr','u','ul']);
+const SAN_DROP=new Set(['script','style','iframe','frame','frameset','object','embed','applet','svg','math','form','input','button','select','option','optgroup','textarea','link','meta','base','template','noscript','noembed','noframes','audio','video','source','track','canvas','head','title','xmp','plaintext','dialog','portal','slot','datalist','keygen','marquee','bgsound','image','details','summary']);
+const SAN_VOID=new Set(['br','col','hr','img']);
+const SAN_STYLE_OK=new Set(['color','background','background-color','font-size','font-family','font-weight','font-style','font-variant','text-decoration','text-decoration-line','text-align','text-indent','text-transform','line-height','letter-spacing','word-spacing','white-space','vertical-align','margin','margin-top','margin-right','margin-bottom','margin-left','padding','padding-top','padding-right','padding-bottom','padding-left','border','border-top','border-right','border-bottom','border-left','border-color','border-style','border-width','border-collapse','border-spacing','border-radius','width','height','min-width','min-height','max-width','list-style-type','direction','table-layout']);
+const SAN_ATTR_COMMON=['class','style','title','dir'];
+const SAN_ATTR_TAG={a:['href','target','rel'],img:['src','alt','width','height'],td:['colspan','rowspan','align','valign','width','height','bgcolor'],th:['colspan','rowspan','align','valign','width','height','bgcolor'],tr:['align','valign','bgcolor'],table:['border','cellpadding','cellspacing','width','align','bgcolor'],col:['span','width'],colgroup:['span','width'],ol:['start','type','reversed'],li:['value'],font:['color','size','face'],div:['contenteditable']};
+function sanUrlOk(raw,isImg){
+  const u=String(raw).replace(/[\u0000-\u0020\u007f-\u009f\u200b-\u200f\u2028\u2029\ufeff]/g,'');
+  const l=u.toLowerCase();
+  const ok=isImg?(/^https?:\/\/[^\s]+$/.test(l)||/^data:image\/(png|jpeg|jpg|gif|webp|bmp);base64,[a-z0-9+\/=]*$/.test(l)):/^(https?:\/\/[^\s]+|mailto:[^\s]*|tel:[^\s]*|#[^\s]*)$/.test(l);
+  return ok?u:null;
+}
+function sanStyle(v,rep){
+  const out=[];
+  String(v).replace(/\/\*[\s\S]*?\*\//g,'').split(';').forEach(function(d){
+    d=d.trim();if(!d)return;
+    const i=d.indexOf(':');if(i<1){rep('style');return;}
+    const prop=d.slice(0,i).trim().toLowerCase(),val=d.slice(i+1).trim();
+    if(!SAN_STYLE_OK.has(prop)||!val||/url\s*\(|expression|javascript|@import|[<>\\]|\bvar\s*\(|behavior|binding|\d\s*(vw|vh|vmin|vmax)\b/i.test(val)){rep('style:'+prop);return;}
+    out.push(prop+': '+val);
+  });
+  return out.length?out.join('; ')+';':'';
+}
+// Allowlist sanitizer. Parses with DOMParser (inert: nothing loads or runs) and rebuilds a fresh tree in a second
+// inert document; only allowlisted tags/attributes/URLs/CSS survive. opts.report(reason) is called for everything
+// that had to be removed; opts.unwrap strips the Quill table-editing island (view/copy mode).
+function sanitizeCore(html,opts){
+  opts=opts||{};const rep=opts.report||function(){};
+  if(typeof html!=='string'||!html)return '';
+  const src=new DOMParser().parseFromString('<!DOCTYPE html><html><body>'+html,'text/html');
+  const doc=document.implementation.createHTMLDocument('');
+  const root=doc.createElement('div');
+  function walk(from,to,depth){
+    Array.prototype.slice.call(from.childNodes).forEach(function(ch){
+      if(ch.nodeType===3){to.appendChild(doc.createTextNode(ch.nodeValue));return;}
+      if(ch.nodeType!==1)return;
+      const tag=ch.localName.toLowerCase();
+      if(ch.namespaceURI!==SAN_XHTML||SAN_DROP.has(tag)){rep('tag:'+tag);return;}
+      if(depth>150){rep('depth');return;}
+      const cls=(ch.getAttribute('class')||'').split(/\s+/).filter(Boolean);
+      const isWrap=tag==='div'&&cls.indexOf('etl-inline-table-wrap')>-1;
+      if(opts.unwrap&&isWrap){walk(ch,to,depth+1);return;}
+      if(!SAN_OK.has(tag)){rep('tag:'+tag);walk(ch,to,depth+1);return;}
+      const el=doc.createElement(tag);
+      const allowed=SAN_ATTR_COMMON.concat(SAN_ATTR_TAG[tag]||[]);
+      let keep=true;
+      Array.prototype.slice.call(ch.attributes).forEach(function(a){
+        const n=a.name.toLowerCase(),v=a.value;
+        if(allowed.indexOf(n)<0){rep('attr:'+n);return;}
+        if(n==='class'){
+          const good=cls.filter(function(c){return /^ql-[A-Za-z0-9_-]+$/.test(c)||c==='etl-inline-table-wrap';});
+          if(good.length!==cls.length)rep('attr:class');
+          if(good.length)el.setAttribute('class',good.join(' '));
+        }else if(n==='style'){
+          const s=sanStyle(v,rep);if(s)el.setAttribute('style',s);
+        }else if(n==='href'||n==='src'){
+          const u=sanUrlOk(v,tag==='img');
+          if(u===null){rep('url:'+n);if(n==='src')keep=false;}else el.setAttribute(n,u);
+        }else if(n==='target'){
+          if(v==='_blank')el.setAttribute('target','_blank');else rep('attr:target');
+        }else if(n==='rel'){/* always recomputed below */}
+        else if(n==='contenteditable'){
+          if(v==='true'&&isWrap)el.setAttribute('contenteditable','true');else rep('attr:contenteditable');
+        }else if(n==='dir'){if(/^(ltr|rtl|auto)$/i.test(v))el.setAttribute('dir',v.toLowerCase());else rep('attr:dir');}
+        else if(n==='align'){if(/^(left|right|center|justify)$/i.test(v))el.setAttribute(n,v.toLowerCase());else rep('attr:align');}
+        else if(n==='valign'){if(/^(top|middle|bottom|baseline)$/i.test(v))el.setAttribute(n,v.toLowerCase());else rep('attr:valign');}
+        else if(n==='type'){if(/^[1aAiI]$/.test(v))el.setAttribute(n,v);else rep('attr:type');}
+        else if(n==='reversed'){el.setAttribute(n,'');}
+        else if(n==='color'||n==='bgcolor'){const c=cssColor(v,null);if(c)el.setAttribute(n,c);else rep('attr:'+n);}
+        else if(n==='face'){if(/^[\w\s,'-]{1,80}$/.test(v))el.setAttribute(n,v);else rep('attr:face');}
+        else if(n==='title'||n==='alt'){el.setAttribute(n,v.slice(0,500));}
+        else if(n==='size'){if(/^[+-]?\d{1,2}$/.test(v))el.setAttribute(n,v);else rep('attr:size');}
+        else {if(/^\d{1,5}%?$/.test(v))el.setAttribute(n,v);else rep('attr:'+n);}
+      });
+      if(tag==='img'&&!el.getAttribute('src')){return;}
+      if(tag==='a'&&el.getAttribute('target')==='_blank')el.setAttribute('rel','noopener noreferrer');
+      if(!keep)return;
+      to.appendChild(el);
+      if(!SAN_VOID.has(tag))walk(ch,el,depth+1);
+    });
+  }
+  walk(src.body,root,0);
+  return root.innerHTML;
+}
+function sanitizeHtml(html){return sanitizeCore(html,{});}
+function sanHtmlViolations(html){const r=[];sanitizeCore(html,{report:function(x){if(r.indexOf(x)<0)r.push(x);}});return r;}
+function htmlToText(html){return new DOMParser().parseFromString('<!DOCTYPE html><html><body>'+String(html==null?'':html),'text/html').body.textContent||'';}
+
+// ─── user-visible notices (non-silent): toast + persistent banner ───
+let etlWarnLog=[];
+function etlWarn(msg){
+  etlWarnLog.push(String(msg));if(etlWarnLog.length>4)etlWarnLog=etlWarnLog.slice(-4);
+  const box=document.getElementById('etl-warn'),t=document.getElementById('etl-warn-text');
+  if(box&&t){t.textContent=etlWarnLog.join('  ·  ');box.hidden=false;}
+  try{toastNow(String(msg));}catch(e){}
+}
+function etlWarnClear(){
+  etlWarnLog=[];
+  const box=document.getElementById('etl-warn'),t=document.getElementById('etl-warn-text');
+  if(t)t.textContent='';if(box)box.hidden=true;
+}
+
+// ─── ID safety ───
+function etlDupIds(list){
+  const c=new Map();(list||[]).forEach(function(t){if(t&&typeof t.id==='string')c.set(t.id,(c.get(t.id)||0)+1);});
+  const d=[];c.forEach(function(n,id){if(n>1)d.push(id);});return d;
+}
+function etlWarnDuplicates(){
+  const d=etlDupIds(templates);
+  if(d.length)etlWarn('Duplicate template IDs found in the shared workspace: '+d.slice(0,8).join(', ')+(d.length>8?' …':'')+'. Existing duplicates are left untouched, but any save that would create a NEW duplicate is blocked. Please resolve them (rename or delete one copy).');
+}
+
+// ─── save guards (size, duplicates) ───
+const CS_WARN_BYTES=1.5*1024*1024,CS_MAX_BYTES=8*1024*1024;
+function csMB(n){return (n/1048576).toFixed(1)+' MB';}
+function csPreSaveGuard(payload,json){
+  const now=etlDupIds(payload.templates);
+  if(now.length){
+    let base=new Map();
+    try{(JSON.parse(cloud.committedJSON).templates||[]).forEach(function(t){if(t&&typeof t.id==='string')base.set(t.id,(base.get(t.id)||0)+1);});}catch(e){}
+    const cnt=new Map();payload.templates.forEach(function(t){cnt.set(t.id,(cnt.get(t.id)||0)+1);});
+    const fresh=now.filter(function(id){return cnt.get(id)>Math.max(1,base.get(id)||1);});
+    if(fresh.length)return 'Not saved: this change would create duplicate template ID(s) '+fresh.slice(0,6).join(', ')+'. Nothing was changed on the server — your last saved data was restored.';
+  }
+  const bytes=new Blob([json]).size;
+  if(bytes>CS_MAX_BYTES)return 'Not saved: the workspace data is too large ('+csMB(bytes)+', limit '+csMB(CS_MAX_BYTES)+'). Remove large images or old history, then try again. Your last saved data was restored.';
+  if(bytes>CS_WARN_BYTES){
+    if(!cloud.largeWarned||bytes>cloud.largeWarned*1.25){cloud.largeWarned=bytes;etlWarn('Heads-up: the workspace data is getting large ('+csMB(bytes)+'; hard limit '+csMB(CS_MAX_BYTES)+'). Saving still works but will be slower — consider trimming big images or old history.');}
+  }else cloud.largeWarned=0;
+  return null;
+}
+function csIsAuthError(res){
+  const e=res&&res.error;if(!e)return false;
+  return res.status===401||e.status===401||e.code==='PGRST301'||e.code==='PGRST303'||/\bjwt\b/i.test(e.message||'');
+}
+
+// ─── keep local work recoverable when the shared state is replaced under the user ───
+const CS_CONTENT_FIELDS=['name','desc','subj','to','cc','channel','topic','body','cat','type','proc','dtype','country','conds','todos'];
+function csContentChanged(a,b){return CS_CONTENT_FIELDS.some(function(k){return JSON.stringify(a[k]==null?null:a[k])!==JSON.stringify(b[k]==null?null:b[k]);});}
+function csDraftFromTemplate(t,sourceId){
+  const d={domain:t.domain||'email',sourceTemplateId:sourceId||null};
+  CS_CONTENT_FIELDS.forEach(function(k){if(t[k]!==undefined)d[k]=JSON.parse(JSON.stringify(t[k]));});
+  return d;
+}
+function csLocalChangesAsDrafts(){
+  const out=[];
+  try{
+    const base=cloud.committedJSON?JSON.parse(cloud.committedJSON):null;if(!base)return out;
+    const bm=new Map((base.templates||[]).map(function(t){return [t.id,t];}));
+    templates.forEach(function(t){
+      if(!t||typeof t.id!=='string')return;
+      const b=bm.get(t.id);
+      if(!b)out.push(csDraftFromTemplate(t,null));
+      else if(csContentChanged(b,t))out.push(csDraftFromTemplate(t,t.id));
+    });
+  }catch(e){console.warn('[recover]',e);}
+  return out.slice(0,20);
+}
+function csOpenEditDraft(){
+  try{
+    const m=document.getElementById('modal');
+    if(!(m&&m.classList.contains('open')&&isEdit&&curId&&isEditDirty()))return null;
+    return buildEditDraftPayload();
+  }catch(e){return null;}
+}
+function csSnapshotView(){
+  const m=document.getElementById('modal');
+  const open=!!(m&&m.classList.contains('open')&&curId);
+  const t=open?templates.find(function(x){return x.id===curId;}):null;
+  return {open:open,id:open?curId:null,editing:open&&isEdit,json:t?JSON.stringify(t):null,form:csOpenEditDraft()};
+}
+// Called after shared state was replaced (remote push, conflict reload, rollback).
+function csReconcileView(snap,locals){
+  const notes=[],toKeep=[];
+  if(snap&&snap.open){
+    const nt=templates.find(function(x){return x.id===snap.id;});
+    const changed=!nt||JSON.stringify(nt)!==snap.json;
+    if(changed){
+      if(snap.form){
+        toKeep.push(snap.form);
+        notes.push(nt?'Your unsaved edit was kept as a draft because this template was changed by someone else.':'Your unsaved edit was kept as a draft; the template was deleted by someone else.');
+      }
+      if(!nt){
+        closeModal();
+        if(!snap.form)notes.push('The template you had open was deleted by someone else, so it was closed.');
+      }else if(snap.form){closeModal();}
+      else{
+        const was=isEdit;isEdit=false;editingDraftId=null;viewModal(snap.id);
+        if(was)notes.push('This template was updated by someone else; the latest version is shown.');
+      }
+    }
+  }
+  (locals||[]).forEach(function(d){toKeep.push(d);});
+  if(toKeep.length){
+    toKeep.forEach(function(p){drafts.push(Object.assign({id:'d'+Date.now()+Math.random().toString(36).slice(2,7),savedAt:new Date().toISOString()},p));});
+    updateDraftBadges();
+    notes.push(toKeep.length+' unsaved change(s) were kept as draft(s) — open Drafts to review and re-apply them.');
+    scheduleSync();
+  }
+  if(notes.length)etlWarn(notes.join(' '));
+}
 function toast(msg){
   const el=document.getElementById('toast');document.getElementById('tmsg').textContent=msg;
   el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2400);
@@ -5238,7 +5518,7 @@ function fillLastCondRow(containerId,k,v){
 function inlineQlFontClasses(html){
   const tmp=document.createElement('div');
   tmp.style.cssText='position:fixed;left:-9999px;top:0;';
-  tmp.innerHTML=html;
+  tmp.innerHTML=sanitizeHtml(html);
   document.body.appendChild(tmp);
   tmp.querySelectorAll('[class*="ql-font-"]').forEach(el=>{
     const fam=getComputedStyle(el).fontFamily;
@@ -5287,8 +5567,7 @@ async function doCopy(id,f){
     toast('Message copied — paste directly into Zulip.');
     return;
   }
-  const tmp=document.createElement('div');tmp.innerHTML=t.body;
-  const plain=tmp.innerText||tmp.textContent||t.body;
+  const plain=htmlToText(t.body)||t.body;
   const ok=await copyRichHtml(bodyToRichHtml(t.body),plain);
   toast(ok?'Body copied — paste into Zimbra to keep formatting!':'Copy failed, please try again.');
 }
@@ -5432,7 +5711,7 @@ const TableBlot=(function(){
   class TableBlot extends BlockEmbed{
     static create(value){
       const node=super.create();
-      node.innerHTML=value;
+      node.innerHTML=sanitizeHtml(value);
       node.setAttribute('contenteditable','true');
       return node;
     }
@@ -5448,13 +5727,8 @@ const TableBlot=(function(){
 // the wrapper (and its contenteditable flag) is only needed while the
 // Quill editor is actively managing it.
 function stripTableWrappers(html){
-  const tmp=document.createElement('div');tmp.innerHTML=html||'';
-  tmp.querySelectorAll('.etl-inline-table-wrap').forEach(w=>{
-    w.removeAttribute('contenteditable');
-    while(w.firstChild)w.parentNode.insertBefore(w.firstChild,w);
-    w.remove();
-  });
-  return tmp.innerHTML;
+  // Sanitized AND unwrapped: the result is safe to assign to innerHTML / put on the clipboard.
+  return sanitizeCore(html||'',{unwrap:true});
 }
 let ncQuill=null,editQuill=null,ncFocusedTable=null,editFocusedTable=null,ncFocusedCell=null,editFocusedCell=null;
 function trackTableFocus(quill,setTbl,setCell,prefix){
@@ -5624,20 +5898,20 @@ function tableToolbarButtonsHtml(prefix){
   return `<span class="tbl-dd-wrap">
     <button type="button" class="tblbtn" title="Table" onclick="toggleTableDropdown(this,event)"><i class="ti ti-table"></i></button>
     <div class="tbl-dd-menu">
-      <button type="button" class="tbl-dd-item" onclick="insertTableInto('${prefix}');closeTableDropdowns()"><i class="ti ti-table-plus"></i> Insert new table…</button>
+      <button type="button" class="tbl-dd-item" onclick="insertTableInto('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-table-plus"></i> Insert new table…</button>
       <div class="tbl-dd-sep"></div>
-      <button type="button" class="tbl-dd-item" onclick="insertTableRow('${prefix}','above');closeTableDropdowns()"><i class="ti ti-row-insert-top"></i> Insert row above</button>
-      <button type="button" class="tbl-dd-item" onclick="insertTableRow('${prefix}','below');closeTableDropdowns()"><i class="ti ti-row-insert-bottom"></i> Insert row below</button>
-      <button type="button" class="tbl-dd-item" onclick="insertTableCol('${prefix}','left');closeTableDropdowns()"><i class="ti ti-column-insert-left"></i> Insert column left</button>
-      <button type="button" class="tbl-dd-item" onclick="insertTableCol('${prefix}','right');closeTableDropdowns()"><i class="ti ti-column-insert-right"></i> Insert column right</button>
+      <button type="button" class="tbl-dd-item" onclick="insertTableRow('${ja(prefix)}','above');closeTableDropdowns()"><i class="ti ti-row-insert-top"></i> Insert row above</button>
+      <button type="button" class="tbl-dd-item" onclick="insertTableRow('${ja(prefix)}','below');closeTableDropdowns()"><i class="ti ti-row-insert-bottom"></i> Insert row below</button>
+      <button type="button" class="tbl-dd-item" onclick="insertTableCol('${ja(prefix)}','left');closeTableDropdowns()"><i class="ti ti-column-insert-left"></i> Insert column left</button>
+      <button type="button" class="tbl-dd-item" onclick="insertTableCol('${ja(prefix)}','right');closeTableDropdowns()"><i class="ti ti-column-insert-right"></i> Insert column right</button>
       <div class="tbl-dd-sep"></div>
-      <button type="button" class="tbl-dd-item" onclick="mergeCellRight('${prefix}');closeTableDropdowns()"><i class="ti ti-arrow-bar-right"></i> Merge cell right</button>
-      <button type="button" class="tbl-dd-item" onclick="mergeCellDown('${prefix}');closeTableDropdowns()"><i class="ti ti-arrow-bar-down"></i> Merge cell down</button>
-      <button type="button" class="tbl-dd-item" onclick="splitCellRight('${prefix}');closeTableDropdowns()"><i class="ti ti-square-half"></i> Split cell horizontally</button>
-      <button type="button" class="tbl-dd-item" onclick="splitCellDown('${prefix}');closeTableDropdowns()"><i class="ti ti-square-half"></i> Split cell vertically</button>
+      <button type="button" class="tbl-dd-item" onclick="mergeCellRight('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-arrow-bar-right"></i> Merge cell right</button>
+      <button type="button" class="tbl-dd-item" onclick="mergeCellDown('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-arrow-bar-down"></i> Merge cell down</button>
+      <button type="button" class="tbl-dd-item" onclick="splitCellRight('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-square-half"></i> Split cell horizontally</button>
+      <button type="button" class="tbl-dd-item" onclick="splitCellDown('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-square-half"></i> Split cell vertically</button>
       <div class="tbl-dd-sep"></div>
-      <button type="button" class="tbl-dd-item tbl-dd-danger" onclick="deleteTableRow('${prefix}');closeTableDropdowns()"><i class="ti ti-row-remove"></i> Delete row</button>
-      <button type="button" class="tbl-dd-item tbl-dd-danger" onclick="deleteTableCol('${prefix}');closeTableDropdowns()"><i class="ti ti-column-remove"></i> Delete column</button>
+      <button type="button" class="tbl-dd-item tbl-dd-danger" onclick="deleteTableRow('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-row-remove"></i> Delete row</button>
+      <button type="button" class="tbl-dd-item tbl-dd-danger" onclick="deleteTableCol('${ja(prefix)}');closeTableDropdowns()"><i class="ti ti-column-remove"></i> Delete column</button>
     </div>
   </span>`;
 }
@@ -5717,7 +5991,7 @@ function initEditQuill(htmlContent){
   if(htmlContent){
     if(!/<[a-z][\s\S]*>/i.test(htmlContent)){
       editQuill.root.innerHTML=htmlContent.split('\n').map(l=>l.trim()===''?'<p><br></p>':`<p>${l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`).join('');
-    } else editQuill.root.innerHTML=htmlContent;
+    } else editQuill.root.innerHTML=sanitizeHtml(htmlContent);
   }
   editFocusedTable=null;editFocusedCell=null;
   trackTableFocus(editQuill,t=>editFocusedTable=t,c=>editFocusedCell=c,'e');
@@ -6136,7 +6410,7 @@ function toggleZulipEmojiPicker(ev,prefix){
   if(isOpen)return;
   if(!menu.dataset.built){
     menu.innerHTML='<div class="emoji-grid">'+ZULIP_EMOJI.map(([code,glyph])=>
-      `<button type="button" title=":${code}:" onclick="insertZulipEmoji(event,'${prefix}','${code}')">${glyph}</button>`
+      `<button type="button" title=":${code}:" onclick="insertZulipEmoji(event,'${ja(prefix)}','${ja(code)}')">${glyph}</button>`
     ).join('')+'</div>';
     menu.dataset.built='1';
   }
@@ -6560,13 +6834,13 @@ function renderMyThemesList(){
   if(nd)nd.style.display='none';
   el.innerHTML=[...myThemes].sort((a,b)=>a.name.localeCompare(b.name)).map(t=>`
     <div class="tbrow">
-      <span class="theme-preview" style="width:58px;flex-shrink:0">${['--bg','--surface','--tx'].map(k=>`<span class="theme-color" style="background:${t.tokens[k]||'#ccc'}"></span>`).join('')}</span>
-      <span style="flex:1;font-size:12px;font-weight:500;margin-left:8px">${t.name}</span>
+      <span class="theme-preview" style="width:58px;flex-shrink:0">${['--bg','--surface','--tx'].map(k=>`<span class="theme-color" style="background:${cssColor(t.tokens[k],'#ccc')}"></span>`).join('')}</span>
+      <span style="flex:1;font-size:12px;font-weight:500;margin-left:8px">${esc(t.name)}</span>
       <div class="row-actions">
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="applyMyTheme('${t.id}')"><i class="ti ti-check" style="font-size:12px"></i> Apply</button>
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="updateMyTheme('${t.id}')"><i class="ti ti-refresh" style="font-size:12px"></i> Update</button>
-        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameMyTheme('${t.id}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
-        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteMyTheme('${t.id}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="applyMyTheme('${ja(t.id)}')"><i class="ti ti-check" style="font-size:12px"></i> Apply</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="updateMyTheme('${ja(t.id)}')"><i class="ti ti-refresh" style="font-size:12px"></i> Update</button>
+        <button class="btn" style="font-size:11px;padding:3px 10px" onclick="renameMyTheme('${ja(t.id)}')"><i class="ti ti-pencil" style="font-size:12px"></i> Rename</button>
+        <button class="btn btn-d" style="font-size:11px;padding:3px 10px" onclick="deleteMyTheme('${ja(t.id)}')"><i class="ti ti-trash" style="font-size:12px"></i> Delete</button>
       </div>
     </div>`).join('');
 }
@@ -6611,9 +6885,9 @@ function renderDesignPanel(){
     const curVars=JSON.parse(localStorage.getItem('etl_theme_vars')||'{}');
     themePresetGrid.innerHTML=THEME_PRESETS.map(p=>{
       const isActive=Object.entries(p.tokens).every(([k,v])=>(curVars[k]||THEME_VARS.find(t=>t.key===k).fallback).toLowerCase()===v.toLowerCase());
-      return `<button type="button" class="theme-btn${isActive?' active':''}" onclick="applyThemePreset('${p.id}')" title="${p.name}">
+      return `<button type="button" class="theme-btn${isActive?' active':''}" onclick="applyThemePreset('${ja(p.id)}')" title="${esc(p.name)}">
         <span class="theme-preview">${p.swatches.map(c=>`<span class="theme-color" style="background:${c}"></span>`).join('')}</span>
-        <span class="theme-name">${p.name}</span>
+        <span class="theme-name">${esc(p.name)}</span>
       </button>`;
     }).join('');
   }
@@ -6622,7 +6896,7 @@ function renderDesignPanel(){
   const presetsEl=document.getElementById('accent-presets');
   const curAccent=localStorage.getItem('etl_accent')||'#876F80';
   if(presetsEl){
-    presetsEl.innerHTML=ACCENT_PRESETS.map(hex=>`<span class="accent-swatch${hex.toLowerCase()===curAccent.toLowerCase()?' on':''}" data-hex="${hex}" style="background:${hex}" title="${hex}" onclick="applyAccent('${hex}')"></span>`).join('');
+    presetsEl.innerHTML=ACCENT_PRESETS.map(hex=>`<span class="accent-swatch${hex.toLowerCase()===curAccent.toLowerCase()?' on':''}" data-hex="${hex}" style="background:${hex}" title="${hex}" onclick="applyAccent('${ja(hex)}')"></span>`).join('');
   }
   const accentInp=document.getElementById('design-accent');if(accentInp)accentInp.value=curAccent;
   const accentHexInp=document.getElementById('design-accent-hex');if(accentHexInp)accentHexInp.value=curAccent;
@@ -6632,7 +6906,7 @@ function renderDesignPanel(){
   const zPresetsEl=document.getElementById('zaccent-presets');
   const curZAccent=localStorage.getItem('etl_zulip_accent')||'#3a1a7a';
   if(zPresetsEl){
-    zPresetsEl.innerHTML=ACCENT_PRESETS.map(hex=>`<span class="accent-swatch${hex.toLowerCase()===curZAccent.toLowerCase()?' on':''}" data-hex="${hex}" style="background:${hex}" title="${hex}" onclick="applyZulipAccent('${hex}')"></span>`).join('');
+    zPresetsEl.innerHTML=ACCENT_PRESETS.map(hex=>`<span class="accent-swatch${hex.toLowerCase()===curZAccent.toLowerCase()?' on':''}" data-hex="${hex}" style="background:${hex}" title="${hex}" onclick="applyZulipAccent('${ja(hex)}')"></span>`).join('');
   }
   const zAccentInp=document.getElementById('design-zulip-accent');if(zAccentInp)zAccentInp.value=curZAccent;
   const zAccentHexInp=document.getElementById('design-zulip-accent-hex');if(zAccentHexInp)zAccentHexInp.value=curZAccent;
@@ -6651,14 +6925,14 @@ function renderDesignPanel(){
   const curFont=localStorage.getItem('etl_font_body')||'Poppins';
   if(sel){
     allFonts().forEach(loadFont);
-    sel.innerHTML=allFonts().map(f=>`<option value="${f}" ${f===curFont?'selected':''}>${f}</option>`).join('');
+    sel.innerHTML=allFonts().map(f=>`<option value="${esc(f)}" ${f===curFont?'selected':''}>${esc(f)}</option>`).join('');
   }
   const prev=document.getElementById('font-preview');if(prev)prev.style.fontFamily=`'${curFont}',sans-serif`;
   const listEl=document.getElementById('custom-font-list');
   if(listEl){
     listEl.innerHTML=customFonts.length?[...customFonts].sort((a,b)=>a.localeCompare(b)).map(f=>`
-      <div class="tbrow"><span style="font-family:'${f}',sans-serif;flex:1;font-size:13px">${f}</span>
-        <div class="row-actions"><button class="delbtn" title="Remove" onclick="removeCustomFont('${f.replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button></div>
+      <div class="tbrow"><span style="font-family:'${esc(f)}',sans-serif;flex:1;font-size:13px">${esc(f)}</span>
+        <div class="row-actions"><button class="delbtn" title="Remove" onclick="removeCustomFont('${ja(f)}')"><i class="ti ti-trash"></i></button></div>
       </div>`).join(''):'<div style="padding:10px 2px;font-size:12px;color:var(--tx3)">No custom fonts added yet.</div>';
   }
 }
@@ -6707,6 +6981,101 @@ makeCsecsCollapsible(document.getElementById('cfg-panel-stg'));
   ['design-accent','design-accent-bg','design-zulip-accent','design-zulip-accent-bg'].forEach(attachEyedropper);
   THEME_VARS.forEach(v=>attachEyedropper(v.id));
 })();
+
+// ══════════════════════════════════════════════════
+// UNLOAD WARNING + DIALOG ACCESSIBILITY (role/aria, Escape, focus trap + restore, keyboard cards)
+// ══════════════════════════════════════════════════
+window.addEventListener('beforeunload',function(ev){
+  let dirty=false;
+  try{
+    dirty=!!(cloud.connected&&(cloud.dirty||cloud.saving));
+    const m=document.getElementById('modal');
+    if(!dirty&&m&&m.classList.contains('open')&&isEdit&&isEditDirty())dirty=true;
+    if(!dirty&&document.getElementById('add-email-modal').classList.contains('open')&&isAddEmailDirty())dirty=true;
+    if(!dirty&&document.getElementById('add-zulip-modal').classList.contains('open')&&isAddZulipDirty())dirty=true;
+  }catch(e){}
+  if(dirty){ev.preventDefault();ev.returnValue='';return '';}
+});
+function etlCloseOverlay(ov){
+  switch(ov.id){
+    case 'modal':
+      if(isEdit&&isEditDirty()){
+        if(!confirm('Save this as a draft before closing?'))return;
+        upsertDraft(buildEditDraftPayload());toast('Draft saved.');
+        editingDraftId=null;if(skipEditReasonId===curId)skipEditReasonId=null;closeModal();
+      }else handleModalClose();
+      break;
+    case 'add-email-modal':cancelAddEmailModal();break;
+    case 'add-zulip-modal':cancelAddZulipModal();break;
+    case 'changelog-modal':closeChangelog();break;
+    case 'drafts-modal':closeDraftsPanel();break;
+    case 'table-insert-modal':closeTableInsertModal();break;
+    case 'history-modal':closeHistoryModal();break;
+    case 'gen-modal':closeGenModal();break;
+    case 'trash-modal':closeTrashPanel();break;
+    default:ov.classList.remove('open');
+  }
+}
+function etlA11yInit(){
+  const SEL='a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[contenteditable="true"],[tabindex]:not([tabindex="-1"])';
+  const ovs=Array.prototype.slice.call(document.querySelectorAll('.ov'));
+  ovs.forEach(function(ov){
+    const m=ov.querySelector('.modal');if(!m)return;
+    const t=ov.querySelector('.mt');if(t&&!t.id)t.id=ov.id+'-title';
+    m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
+    if(t)m.setAttribute('aria-labelledby',t.id);
+    if(!m.hasAttribute('tabindex'))m.setAttribute('tabindex','-1');
+  });
+  const visible=function(el){return el.getClientRects().length>0&&getComputedStyle(el).visibility!=='hidden';};
+  const focusables=function(root){return Array.prototype.slice.call(root.querySelectorAll(SEL)).filter(function(el){return visible(el)&&!el.closest('[inert]');});};
+  const stack=[],openers=new Map();
+  const mo=new MutationObserver(function(list){
+    list.forEach(function(r){
+      const ov=r.target,open=ov.classList.contains('open'),was=stack.indexOf(ov)>-1;
+      if(open&&!was){
+        const a=document.activeElement;
+        closeUserMenu(false);
+        closeTemplateExportMenu();
+        const holder=a&&a.closest?a.closest('[data-id]'):null;
+        openers.set(ov,{el:a,id:holder&&holder.dataset?holder.dataset.id:null});
+        stack.push(ov);
+        const m=ov.querySelector('.modal'),f=m?focusables(m):[];
+        if(f.length)f[0].focus();else if(m)m.focus();
+      }else if(!open&&was){
+        stack.splice(stack.indexOf(ov),1);
+        const op=openers.get(ov);openers.delete(ov);
+        const a=document.activeElement;
+        if(op&&(!a||a===document.body||ov.contains(a))){
+          let el=op.el;
+          if(!el||!document.contains(el)||!visible(el))el=op.id?document.querySelector('.card[data-id="'+CSS.escape(op.id)+'"]'):null;
+          if(el&&el.focus)el.focus();
+        }
+      }
+    });
+  });
+  ovs.forEach(function(o){mo.observe(o,{attributes:true,attributeFilter:['class']});});
+  document.addEventListener('keydown',function(ev){
+    const top=stack[stack.length-1];
+    if(!top)return;
+    if(ev.key==='Tab'){
+      const m=top.querySelector('.modal');if(!m)return;
+      const f=focusables(m);
+      if(!f.length){ev.preventDefault();m.focus();return;}
+      const first=f[0],last=f[f.length-1],a=document.activeElement;
+      if(!m.contains(a)){ev.preventDefault();(ev.shiftKey?last:first).focus();}
+      else if(ev.shiftKey&&(a===first||a===m)){ev.preventDefault();last.focus();}
+      else if(!ev.shiftKey&&a===last){ev.preventDefault();first.focus();}
+      return;
+    }
+    if(ev.key==='Escape'){
+      if(ev.defaultPrevented)return;
+      const um=document.getElementById('cs-user-menu');
+      if((um&&!um.hidden)||document.getElementById('cfg-export-menu'))return;
+      ev.preventDefault();etlCloseOverlay(top);
+    }
+  });
+}
+etlA11yInit();
 cloudInit();
 (function(){const el=document.getElementById('changelog-trigger-ver');if(el)el.textContent=CHANGELOG_VERSION;})();
 updateTrashBadge();
